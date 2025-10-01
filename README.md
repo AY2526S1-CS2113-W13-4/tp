@@ -1,6 +1,6 @@
-# Duke project template
+# BusyBreak Itinerary Manager
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+BusyBreak is an app for managing your travel itinerary. If you type fast, BusyBreak can help you organize your trip details quickly and efficiently.
 
 ## Setting up in Intellij
 
