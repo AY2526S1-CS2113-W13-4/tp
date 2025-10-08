@@ -17,6 +17,12 @@ public class Duke {
     public static void handleUserInput() {
         String userInput;
         Scanner in = new Scanner(System.in);
+        if (!in.hasNextLine()) {
+            System.out.println(LINE);
+            System.out.println("Please Input a Command.");
+            System.out.println(LINE);
+            return;
+        }
         userInput = in.nextLine();
         String[] userInputArray = userInput.split(" ");
         String command = userInputArray[0]; //read first word of input as command
