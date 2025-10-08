@@ -5,13 +5,13 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Duke {
-    public static final String line = "______________________________________________________________________";
+    public static final String LINE = "______________________________________________________________________";
     static ArrayList<Activity> list = new ArrayList<>();
 
     public static void intro() {
-        System.out.println(line);
+        System.out.println(LINE);
         System.out.println("Welcome to BusyBreak, your helpful travel assistant! How may I assist you?");
-        System.out.println(line);
+        System.out.println(LINE);
     }
 
     public static void handleUserInput() {
@@ -39,24 +39,26 @@ public class Duke {
     }
 
     private static void invalidInput() {
-        System.out.println(line);
+        System.out.println(LINE);
         System.out.println("Invalid Command.");
-        System.out.println(line);
+        System.out.println(LINE);
     }
 
     private static void addActivityDataToList(ParseActivityData activityData) {
-        list.add(new Activity(activityData.date(), activityData.time(), activityData.description(), activityData.cost()));
-        System.out.println(line);
+        list.add(new Activity(activityData.date(), activityData.time(),
+                activityData.description(), activityData.cost()));
+        System.out.println(LINE);
         System.out.print("Added Activity to Itinerary: ");
         System.out.print("Date: " + activityData.date() + "|");
         System.out.print("Time: " + activityData.time() + "|");
         System.out.print("Description: " + activityData.description() + "|");
         System.out.println("Cost: $" + activityData.cost());
-        System.out.println(line);
+        System.out.println(LINE);
     }
 
     private static ParseActivityData getParseActivityData(String[] userInputArray) {
-        String[] parsedUserInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);//truncate the command from userInput
+        //truncate the command from userInput
+        String[] parsedUserInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
         String parsedUserInput = String.join(" ", parsedUserInputArray).trim();
 
         String[] parseDate = parsedUserInput.split("d/", 2);
@@ -76,26 +78,26 @@ public class Duke {
 
     private static void listItems() {
         if (list.isEmpty()) {
-            System.out.println(line);
+            System.out.println(LINE);
             System.out.println("Itinerary is Empty!");
-            System.out.println(line);
+            System.out.println(LINE);
             return;
         }
-        System.out.println(line);
+        System.out.println(LINE);
         for (int index = 0; index < list.size(); index++) {
             System.out.println((index + 1) + ". ");
             System.out.println("Date: " + list.get(index).getDate());
             System.out.println("Time: " + list.get(index).getTime());
             System.out.println("Description: " + list.get(index).getDescription());
             System.out.println("Cost: $" + list.get(index).getCost());
-            System.out.println(line);
+            System.out.println(LINE);
         }
     }
 
     private static void terminateProgram() {
-        System.out.println(line);
+        System.out.println(LINE);
         System.out.println("Program Terminated.");
-        System.out.println(line);
+        System.out.println(LINE);
         System.exit(0);
     }
 
