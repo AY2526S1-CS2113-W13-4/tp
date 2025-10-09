@@ -7,11 +7,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Time {
-    private LocalDateTime dateTime;
-
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private LocalDateTime dateTime;
 
     public Time(String date, String time) {
         this.dateTime = parseDateTime(date, time);
@@ -23,7 +23,8 @@ public class Time {
             LocalTime time = LocalTime.parse(timeStr, TIME_FORMATTER);
             return LocalDateTime.of(date, time);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date or time format. Use yyyy-MM-dd for date and HH:mm for time.");
+            throw new IllegalArgumentException("Invalid date or time format."
+                    + " Use yyyy-MM-dd for date and HH:mm for time.");
         }
     }
 
@@ -54,18 +55,5 @@ public class Time {
     @Override
     public String toString() {
         return getDateTimeString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Time time = (Time) obj;
-        return dateTime.equals(time.dateTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return dateTime.hashCode();
     }
 }
