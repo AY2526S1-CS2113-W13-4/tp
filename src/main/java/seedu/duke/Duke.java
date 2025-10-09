@@ -2,12 +2,11 @@ package seedu.duke;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Duke {
     public static final String LINE = "______________________________________________________________________";
-    public static final int MAX_RECORDS = 100;
-    static Activity[] list = new Activity[MAX_RECORDS];
-    static int listLength = 0;
+    static ArrayList<Activity> list = new ArrayList<>();
 
     public static void intro() {
         System.out.println(LINE);
@@ -18,6 +17,12 @@ public class Duke {
     public static void handleUserInput() {
         String userInput;
         Scanner in = new Scanner(System.in);
+        if (!in.hasNextLine()) {
+            System.out.println(LINE);
+            System.out.println("Please Input a Command.");
+            System.out.println(LINE);
+            return;
+        }
         userInput = in.nextLine();
         String[] userInputArray = userInput.split(" ");
         String command = userInputArray[0]; //read first word of input as command
@@ -29,33 +34,37 @@ public class Duke {
         case "list": //list out all items
             listItems();
             break;
-        case "add_item": //add itinerary entry
-            //add_item d/yyyy-MM-dd t/HH:mm desc/itinerary c/cost
+        case "add": //add itinerary entry
             ParseActivityData activityData = getParseActivityData(userInputArray);
             addActivityDataToList(activityData);
             break;
 
         default:
-            System.out.println(LINE);
-            System.out.println("Invalid Command.");
-            System.out.println(LINE);
+            invalidInput();
         }
     }
 
+    private static void invalidInput() {
+        System.out.println(LINE);
+        System.out.println("Invalid Command.");
+        System.out.println(LINE);
+    }
+
     private static void addActivityDataToList(ParseActivityData activityData) {
-        list[listLength] = new Activity(activityData.date(), activityData.time(), activityData.description(), activityData.cost());
+        list.add(new Activity(activityData.date(), activityData.time(),
+                activityData.description(), activityData.cost()));
         System.out.println(LINE);
         System.out.print("Added Activity to Itinerary: ");
-        System.out.print("Date: " + list[listLength].getDate() + "|");
-        System.out.print("Time: " + list[listLength].getTime() + "|");
-        System.out.print("Description: " + list[listLength].getDescription() + "|");
-        System.out.println("Cost: $" + list[listLength].getCost());
+        System.out.print("Date: " + activityData.date() + "|");
+        System.out.print("Time: " + activityData.time() + "|");
+        System.out.print("Description: " + activityData.description() + "|");
+        System.out.println("Cost: $" + activityData.cost());
         System.out.println(LINE);
-        listLength++;
     }
 
     private static ParseActivityData getParseActivityData(String[] userInputArray) {
-        String[] parsedUserInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);//truncate the command from userInput
+        //truncate the command from userInput
+        String[] parsedUserInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
         String parsedUserInput = String.join(" ", parsedUserInputArray).trim();
 
         String[] parseDate = parsedUserInput.split("d/", 2);
@@ -74,16 +83,20 @@ public class Duke {
     }
 
     private static void listItems() {
-        int index = 0;
-        System.out.println(LINE);
-        while (list[index] != null) {
-            System.out.println((index + 1) + ". ");
-            System.out.println("Date: " + list[index].getDate());
-            System.out.println("Time: " + list[index].getTime());
-            System.out.println("Description: " + list[index].getDescription());
-            System.out.println("Cost: $" + list[index].getCost());
+        if (list.isEmpty()) {
             System.out.println(LINE);
-            index++;
+            System.out.println("Itinerary is Empty!");
+            System.out.println(LINE);
+            return;
+        }
+        System.out.println(LINE);
+        for (int index = 0; index < list.size(); index++) {
+            System.out.println((index + 1) + ". ");
+            System.out.println("Date: " + list.get(index).getDate());
+            System.out.println("Time: " + list.get(index).getTime());
+            System.out.println("Description: " + list.get(index).getDescription());
+            System.out.println("Cost: $" + list.get(index).getCost());
+            System.out.println(LINE);
         }
     }
 
@@ -101,5 +114,6 @@ public class Duke {
             handleUserInput();
         }
     }
+
 }
 
