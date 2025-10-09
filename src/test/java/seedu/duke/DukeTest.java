@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DukeTest {
     @Test
     public void addActivityDataToList() {
+        //test basic adding to list
         Duke.list = new ArrayList<>();
         Activity a = new Activity("2025-10-09", "09:00", "visit museum", "67");
         Duke.list.add(a);
