@@ -11,13 +11,13 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ScheduleTest {
+public class TimeTest {
 
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private PrintStream originalOut;
 
     @BeforeEach
-    void setUp() throws Exception {
+    public void setUp() throws Exception {
         originalOut = System.out;
         System.setOut(new PrintStream(outputStream));
 
@@ -29,7 +29,7 @@ class ScheduleTest {
     }
 
     @Test
-    void setByTime_setAndPrint() throws Exception {
+    public void setByTime_setAndPrint() throws Exception {
         Field listField = Duke.class.getDeclaredField("list");
         listField.setAccessible(true);
         @SuppressWarnings("unchecked")
@@ -63,7 +63,7 @@ class ScheduleTest {
     }
 
     @Test
-    void setByTime_forEmptyList() throws Exception {
+    public void setByTime_forEmptyList() throws Exception {
         Field listField = Duke.class.getDeclaredField("list");
         listField.setAccessible(true);
         @SuppressWarnings("unchecked")
@@ -80,7 +80,8 @@ class ScheduleTest {
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         System.setOut(originalOut);
     }
 }
+
