@@ -1,6 +1,7 @@
 package seedu.duke;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -37,6 +38,9 @@ public class Duke {
         case "add": //add itinerary entry
             ParseActivityData activityData = getParseActivityData(userInputArray);
             addActivityDataToList(activityData);
+            break;
+        case "schedule":
+            setByTime();
             break;
 
         default:
@@ -98,6 +102,21 @@ public class Duke {
             System.out.println("Cost: $" + list.get(index).getCost());
             System.out.println(LINE);
         }
+    }
+
+    private static void setByTime() {
+        if (list.isEmpty()) {
+            System.out.println(LINE);
+            System.out.println("Itinerary is Empty! Nothing to sort.");
+            System.out.println(LINE);
+            return;
+        }
+
+        list.sort(Comparator.comparing(a -> a.getDateTimeObject().getDateTime()));
+
+        System.out.println(LINE);
+        System.out.println("Your Activities are sorted by time now!");
+        listItems();
     }
 
     private static void terminateProgram() {
