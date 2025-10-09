@@ -1,12 +1,20 @@
 package seedu.duke;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class DukeTest {
     @Test
-    public void sampleTest() {
-        assertTrue(true);
+    public void addActivityDataToList() {
+        //test basic adding to list
+        Duke.list = new ArrayList<>();
+        Activity a = new Activity("2025-10-09", "09:00", "visit museum", "67");
+        Duke.list.add(a);
+        assertEquals(1, Duke.list.size());
+        assertTrue(Duke.list.contains(a));
     }
 }
