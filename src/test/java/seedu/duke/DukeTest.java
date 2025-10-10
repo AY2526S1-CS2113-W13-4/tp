@@ -19,6 +19,18 @@ class DukeTest {
     }
 
     @Test
+    public void deleteActivityDataFromList() {
+        Duke.list = new ArrayList<>();
+        Activity a = new Activity("2025-10-10", "11:11", "film tiktok video", "69");
+        Activity b = new Activity("2025-11-11", "11:11", "farm aura", "67");
+        Duke.list.add(a);
+        Duke.list.add(b);
+        Duke.list.remove(a);
+        assertEquals(1, Duke.list.size());
+        assertTrue(Duke.list.contains(b));
+    }
+
+    @Test
     void viewSpecificDate() {
         Duke.list = new ArrayList<>();
         Activity b = new Activity("2025-10-09", "09:00", "visit museum", "67");
