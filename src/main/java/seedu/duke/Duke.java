@@ -1,6 +1,7 @@
 package seedu.duke;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -14,15 +15,17 @@ public class Duke {
         System.out.println(LINE);
     }
 
-    public static void handleUserInput() {
+    public static String handleUserInput() {
         String userInput;
         Scanner in = new Scanner(System.in);
+
         if (!in.hasNextLine()) {
             System.out.println(LINE);
             System.out.println("Please Input a Command.");
             System.out.println(LINE);
-            return;
+            return null;
         }
+
         userInput = in.nextLine();
         String[] userInputArray = userInput.split(" ");
         String command = userInputArray[0]; //read first word of input as command
@@ -38,10 +41,14 @@ public class Duke {
             ParseActivityData activityData = getParseActivityData(userInputArray);
             addActivityDataToList(activityData);
             break;
+        case "schedule":
+            setByTime();
+            break;
 
         default:
             invalidInput();
         }
+        return  userInput;
     }
 
     private static void invalidInput() {
@@ -100,6 +107,21 @@ public class Duke {
         }
     }
 
+    private static void setByTime() {
+        if (list.isEmpty()) {
+            System.out.println(LINE);
+            System.out.println("Itinerary is Empty! Nothing to sort.");
+            System.out.println(LINE);
+            return;
+        }
+
+        list.sort(Comparator.comparing(a -> a.getDateTimeObject().getDateTime()));
+
+        System.out.println(LINE);
+        System.out.println("Your Activities are sorted by time now!");
+        listItems();
+    }
+
     private static void terminateProgram() {
         System.out.println(LINE);
         System.out.println("Program Terminated.");
@@ -111,7 +133,11 @@ public class Duke {
     public static void main(String[] args) {
         intro();
         while (true) {
-            handleUserInput();
+            String userInput = handleUserInput();
+            //detect EOF
+            if (userInput == null) {
+                break;
+            }
         }
     }
 

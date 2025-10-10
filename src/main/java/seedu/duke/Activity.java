@@ -1,32 +1,38 @@
 package seedu.duke;
 
 public class Activity {
-    protected String date;
-    protected String time;
+    protected Time dateTime;
     protected String description;
     protected String cost;
 
     public Activity(String date, String time, String description, String cost) {
-        this.date = date;
-        this.time = time;
+        this.dateTime = new Time(date, time);
         this.description = description;
         this.cost = cost;
     }
 
     public String getDate() {
-        return date;
+        return dateTime.getDateString();
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.dateTime = new Time(date, this.getTime());
     }
 
     public String getTime() {
-        return time;
+        return dateTime.getTimeString();
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.dateTime = new Time(this.getDate(), time);
+    }
+
+    public Time getDateTimeObject() {
+        return dateTime;
+    }
+
+    public void setDateTimeObject(Time dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getDescription() {
