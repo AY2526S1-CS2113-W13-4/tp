@@ -44,7 +44,9 @@ public class Duke {
         case "schedule":
             setByTime();
             break;
-
+        case "view":
+            view(userInputArray);
+            break;
         default:
             invalidInput();
         }
@@ -56,6 +58,44 @@ public class Duke {
         System.out.println("Invalid Command.");
         System.out.println(LINE);
     }
+
+    private static void view(String[] userInputArray) {
+        if (list.isEmpty()) {
+            System.out.println(LINE);
+            System.out.println("Itinerary is Empty!");
+            System.out.println(LINE);
+            return;
+        }
+        if (userInputArray.length == 1) {
+            listItems();
+            return;
+        }
+        String date = userInputArray[1];
+        ArrayList<Activity> matches = new ArrayList<>();
+        for (Activity a : list) {
+            if (date.equals(a.getDate())) {
+                matches.add(a);
+            }
+        }
+        if (matches.isEmpty()) {
+            System.out.println(LINE);
+            System.out.println("No activities found for " + date + ".");
+            System.out.println(LINE);
+            return;
+        }
+        System.out.println(LINE);
+        System.out.println("Itinerary for " + date + ":");
+        for (int i = 0; i < matches.size(); i++) {
+            Activity a = matches.get(i);
+            System.out.println((i + 1) + ". ");
+            System.out.println("Date: " + a.getDate());
+            System.out.println("Time: " + a.getTime());
+            System.out.println("Description: " + a.getDescription());
+            System.out.println("Cost: $" + a.getCost());
+            System.out.println(LINE);
+        }
+    }
+
 
     private static void addActivityDataToList(ParseActivityData activityData) {
         list.add(new Activity(activityData.date(), activityData.time(),
