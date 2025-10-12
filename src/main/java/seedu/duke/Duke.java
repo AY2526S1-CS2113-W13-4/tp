@@ -47,6 +47,9 @@ public class Duke {
         case "view":
             view(userInputArray);
             break;
+        case "delete":
+            deleteActivityDataFromList(userInputArray);
+            break;
         default:
             invalidInput();
         }
@@ -56,6 +59,16 @@ public class Duke {
     private static void invalidInput() {
         System.out.println(LINE);
         System.out.println("Invalid Command.");
+        System.out.println(LINE);
+    }
+
+    private static void deleteActivityDataFromList(String[] userInputArray) {
+        int index = Integer.parseInt(userInputArray[1]) - 1;
+        Activity deletedActivity = list.get(index);
+        list.remove(index);
+        System.out.println(LINE);
+        System.out.println("Deleted activity from Itinerary: ");
+        System.out.println((index + 1) + ". " + deletedActivity.getDescription());
         System.out.println(LINE);
     }
 
