@@ -44,7 +44,12 @@ public class Duke {
         case "schedule":
             setByTime();
             break;
-
+        case "view":
+            view(userInputArray);
+            break;
+        case "delete":
+            deleteActivityDataFromList(userInputArray);
+            break;
         default:
             invalidInput();
         }
@@ -54,6 +59,16 @@ public class Duke {
     private static void invalidInput() {
         System.out.println(LINE);
         System.out.println("Invalid Command.");
+        System.out.println(LINE);
+    }
+
+    private static void deleteActivityDataFromList(String[] userInputArray) {
+        int index = Integer.parseInt(userInputArray[1]) - 1;
+        Activity deletedActivity = list.get(index);
+        list.remove(index);
+        System.out.println(LINE);
+        System.out.println("Deleted activity from Itinerary: ");
+        System.out.println((index + 1) + ". " + deletedActivity.getDescription());
         System.out.println(LINE);
     }
 
@@ -120,6 +135,43 @@ public class Duke {
         System.out.println(LINE);
         System.out.println("Your Activities are sorted by time now!");
         listItems();
+    }
+
+    private static void view(String[] userInputArray) {
+        if (list.isEmpty()) {
+            System.out.println(LINE);
+            System.out.println("Itinerary is Empty!");
+            System.out.println(LINE);
+            return;
+        }
+        if (userInputArray.length == 1) {
+            listItems();
+            return;
+        }
+        String date = userInputArray[1];
+        ArrayList<Activity> matches = new ArrayList<>();
+        for (Activity a : list) {
+            if (date.equals(a.getDate())) {
+                matches.add(a);
+            }
+        }
+        if (matches.isEmpty()) {
+            System.out.println(LINE);
+            System.out.println("No activities found for " + date + ".");
+            System.out.println(LINE);
+            return;
+        }
+        System.out.println(LINE);
+        System.out.println("Itinerary for " + date + ":");
+        for (int i = 0; i < matches.size(); i++) {
+            Activity a = matches.get(i);
+            System.out.println((i + 1) + ". ");
+            System.out.println("Date: " + a.getDate());
+            System.out.println("Time: " + a.getTime());
+            System.out.println("Description: " + a.getDescription());
+            System.out.println("Cost: $" + a.getCost());
+            System.out.println(LINE);
+        }
     }
 
     private static void terminateProgram() {
