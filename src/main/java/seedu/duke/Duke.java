@@ -101,6 +101,10 @@ public class Duke {
         String time = parseDescription[0].trim();
         String description = parseCost[0].trim();
         String cost = parseCost[1].trim();
+        assert !date.isEmpty() : "Date cannot be empty.";
+        assert !time.isEmpty() : "Time cannot be empty.";
+        assert !description.isEmpty() : "Description cannot be empty.";
+        assert !cost.isEmpty() : "Cost cannot be empty.";
 
         return new ParseActivityData(date, time, description, cost);
     }
