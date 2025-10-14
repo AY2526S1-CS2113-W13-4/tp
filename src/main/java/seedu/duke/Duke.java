@@ -53,7 +53,7 @@ public class Duke {
         default:
             invalidInput();
         }
-        return  userInput;
+        return userInput;
     }
 
     private static void invalidInput() {
@@ -73,6 +73,7 @@ public class Duke {
     }
 
     private static void addActivityDataToList(ParseActivityData activityData) {
+        assert activityData != null : "ActivityData cannot be null";
         list.add(new Activity(activityData.date(), activityData.time(),
                 activityData.description(), activityData.cost()));
         System.out.println(LINE);
@@ -89,6 +90,8 @@ public class Duke {
         String[] parsedUserInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
         String parsedUserInput = String.join(" ", parsedUserInputArray).trim();
 
+        assert !parsedUserInput.isEmpty() : "User input cannot be empty.";
+
         String[] parseDate = parsedUserInput.split("d/", 2);
         String[] parseTime = parseDate[1].split("t/", 2);
         String[] parseDescription = parseTime[1].split("desc/", 2);
@@ -98,6 +101,11 @@ public class Duke {
         String time = parseDescription[0].trim();
         String description = parseCost[0].trim();
         String cost = parseCost[1].trim();
+        assert !date.isEmpty() : "Date cannot be empty.";
+        assert !time.isEmpty() : "Time cannot be empty.";
+        assert !description.isEmpty() : "Description cannot be empty.";
+        assert !cost.isEmpty() : "Cost cannot be empty.";
+
         return new ParseActivityData(date, time, description, cost);
     }
 
@@ -105,6 +113,7 @@ public class Duke {
     }
 
     private static void listItems() {
+
         if (list.isEmpty()) {
             System.out.println(LINE);
             System.out.println("Itinerary is Empty!");
