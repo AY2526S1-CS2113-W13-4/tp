@@ -189,9 +189,7 @@ public class Duke {
     }
 
     static BudgetPlan budgetPlan = new BudgetPlan();
-
     private static void handleBudget(String[] userInputArray) {
-
         if (userInputArray.length < 2) {
             System.out.println(LINE);
             System.out.println("Please specify a budget command: set / add / list / delete");
@@ -218,10 +216,14 @@ public class Duke {
 
                 case "add":
                     // format: budget add n/<name> c/<cost> cat/<category>
-                    String joined = String.join(" ", Arrays.copyOfRange(userInputArray, 2, userInputArray.length));
-                    String name = joined.contains("n/") ? joined.split("n/", 2)[1].split("c/", 2)[0].trim() : "";
-                    String cost = joined.contains("c/") ? joined.split("c/", 2)[1].split("cat/", 2)[0].trim() : "";
-                    String category = joined.contains("cat/") ? joined.split("cat/", 2)[1].trim() : "Uncategorized";
+                    String joined = String.join(" ",
+                            Arrays.copyOfRange(userInputArray, 2, userInputArray.length));
+                    String name = joined.contains("n/") ? joined.split("n/", 2)[1]
+                            .split("c/", 2)[0].trim() : "";
+                    String cost = joined.contains("c/") ? joined.split("c/", 2)[1]
+                            .split("cat/", 2)[0].trim() : "";
+                    String category = joined.contains("cat/") ? joined.split("cat/", 2)[1].trim()
+                            : "Uncategorized";
 
                     if (name.isEmpty() || cost.isEmpty()) {
                         System.out.println(LINE);
@@ -251,6 +253,7 @@ public class Duke {
                     System.out.println(LINE);
                     System.out.println("Invalid budget command. Try: set / add / list / delete");
                     System.out.println(LINE);
+                    break;
             }
         } catch (Exception e) {
             System.out.println(LINE);
