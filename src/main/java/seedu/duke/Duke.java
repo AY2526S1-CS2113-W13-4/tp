@@ -12,9 +12,8 @@ public class Duke {
 
     public static final String LINE = "______________________________________________________________________";
     static ArrayList<Activity> list = new ArrayList<>();
-    private static Logger logger = Logger.getLogger(Duke.class.getName());
-
     static BudgetPlan budgetPlan = new BudgetPlan();
+    private static Logger logger = Logger.getLogger(Duke.class.getName());
 
     public static void intro() {
         System.out.println(LINE);
@@ -59,6 +58,7 @@ public class Duke {
             break;
         case "edit":
             editActivityDataInList(userInputArray);
+            break;
         case "budget":
             handleBudget(userInputArray);
             break;
