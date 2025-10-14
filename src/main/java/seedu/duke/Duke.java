@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Duke {
+
     public static final String LINE = "______________________________________________________________________";
     static ArrayList<Activity> list = new ArrayList<>();
 
@@ -53,7 +54,7 @@ public class Duke {
         default:
             invalidInput();
         }
-        return  userInput;
+        return userInput;
     }
 
     private static void invalidInput() {
@@ -77,9 +78,9 @@ public class Duke {
                 activityData.description(), activityData.cost()));
         System.out.println(LINE);
         System.out.print("Added Activity to Itinerary: ");
-        System.out.print("Date: " + activityData.date() + "|");
-        System.out.print("Time: " + activityData.time() + "|");
-        System.out.print("Description: " + activityData.description() + "|");
+        System.out.print("Date: " + activityData.date() + " | ");
+        System.out.print("Time: " + activityData.time() + " | ");
+        System.out.print("Description: " + activityData.description() + " | ");
         System.out.println("Cost: $" + activityData.cost());
         System.out.println(LINE);
     }
