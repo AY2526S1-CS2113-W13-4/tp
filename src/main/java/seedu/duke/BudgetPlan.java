@@ -29,7 +29,9 @@ public class BudgetPlan {
 
     public double getTotalSpent() {
         double sum = 0.0;
-        for (double a : amounts) sum += a;
+        for (double a : amounts) {
+            sum += a;
+        }
         return sum;
     }
 
@@ -42,7 +44,9 @@ public class BudgetPlan {
         assert cost != null && !cost.isBlank() : "Expense cost cannot be empty";
 
         double amount = parseAmount(cost);
-        if (category == null || category.isBlank()) category = "Uncategorized";
+        if (category == null || category.isBlank()){
+            category = "Uncategorized";
+        }
 
         names.add(name.trim());
         amounts.add(amount);
@@ -89,7 +93,9 @@ public class BudgetPlan {
         try {
             double val = Double.parseDouble(cleaned);
             assert val >= 0 : "Expense amount cannot be negative";
-            if (val < 0) throw new IllegalArgumentException("Expense amount cannot be negative");
+            if (val < 0) {
+                throw new IllegalArgumentException("Expense amount cannot be negative");
+            }
             return val;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid cost format: " + raw);
