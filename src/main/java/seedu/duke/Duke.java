@@ -4,10 +4,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 
 public class Duke {
     public static final String LINE = "______________________________________________________________________";
     static ArrayList<Activity> list = new ArrayList<>();
+    private static Logger logger = Logger.getLogger(Duke.class.getName());
+
 
     public static void intro() {
         System.out.println(LINE);
@@ -66,12 +71,26 @@ public class Duke {
     }
 
     private static void editActivityDataInList(String[] userInputArray) {
+        logger.log(Level.INFO, "Editing Activity " +  userInputArray[0]);
         String[] parsedEditedInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
+        assert parsedEditedInputArray.length == userInputArray.length - 1 : "Parsed input must not have the command";
+
         int index = Integer.parseInt(parsedEditedInputArray[0]) - 1;
+        assert index >= 0 && index < list.size() : "Index out of bounds";
 
         ParseActivityData editedActivityData = getParseActivityData(parsedEditedInputArray);
+        assert editedActivityData != null : "Parsed activity data cannot be null";
+
         list.set(index, new Activity(editedActivityData.date(), editedActivityData.time(),
                 editedActivityData.description(), editedActivityData.cost()));
+
+        Activity updatedActivity = list.get(index);
+        assert updatedActivity.getDate().equals(editedActivityData.date()) : "Date must match edited date";
+        assert updatedActivity.getTime().equals(editedActivityData.time()) : "Time must match edited time";
+        assert updatedActivity.getDescription().equals(editedActivityData.description()) : "Description " +
+                "must match edited description";
+        assert updatedActivity.getCost().equals(editedActivityData.cost()) : "Date must match edited date";
+
         System.out.println(LINE);
         System.out.println("Activity " + parsedEditedInputArray[0] + " has been edited with the following details:");
         System.out.print("Date: " + editedActivityData.date() + "|");
@@ -82,9 +101,19 @@ public class Duke {
     }
 
     private static void deleteActivityDataFromList(String[] userInputArray) {
+        assert userInputArray.length >= 2 : "User input array must have at least 2 elements" ;
+        logger.log(Level.INFO, "Deleting Activity " + userInputArray[0] + " from the list.");
+
         int index = Integer.parseInt(userInputArray[1]) - 1;
+        assert index >= 0 && index < list.size() : "Index out of bounds";
+
         Activity deletedActivity = list.get(index);
+        assert deletedActivity != null : "Activity " + userInputArray[0] + " cannot be null";
+
+        int originalSize = list.size();
         list.remove(index);
+        assert list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
+
         System.out.println(LINE);
         System.out.println("Deleted activity from Itinerary: ");
         System.out.println((index + 1) + ". " + deletedActivity.getDescription());
