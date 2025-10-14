@@ -88,4 +88,5 @@ class BudgetPlanTest {
         assertTrue(caught,
                 "Assertions should be enabled (-ea) so in-code assert statements are tested.");
     }
+
 }
