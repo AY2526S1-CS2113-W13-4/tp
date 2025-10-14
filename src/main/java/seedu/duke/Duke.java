@@ -50,6 +50,9 @@ public class Duke {
         case "delete":
             deleteActivityDataFromList(userInputArray);
             break;
+        case "edit":
+            editActivityDataInList(userInputArray);
+            break;
         default:
             invalidInput();
         }
@@ -59,6 +62,22 @@ public class Duke {
     private static void invalidInput() {
         System.out.println(LINE);
         System.out.println("Invalid Command.");
+        System.out.println(LINE);
+    }
+
+    private static void editActivityDataInList(String[] userInputArray) {
+        String[] parsedEditedInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
+        int index = Integer.parseInt(parsedEditedInputArray[0]) - 1;
+
+        ParseActivityData editedActivityData = getParseActivityData(parsedEditedInputArray);
+        list.set(index, new Activity(editedActivityData.date(), editedActivityData.time(),
+                editedActivityData.description(), editedActivityData.cost()));
+        System.out.println(LINE);
+        System.out.println("Activity " + parsedEditedInputArray[0] + " has been edited with the following details:");
+        System.out.print("Date: " + editedActivityData.date() + "|");
+        System.out.print("Time: " + editedActivityData.time() + "|");
+        System.out.print("Description: " + editedActivityData.description() + "|");
+        System.out.println("Cost: $" + editedActivityData.cost());
         System.out.println(LINE);
     }
 
