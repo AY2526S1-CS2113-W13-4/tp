@@ -251,17 +251,27 @@ public class Duke {
     }
 
     private static void view(String[] userInputArray) {
+        if (userInputArray.length != 2) {
+            System.out.println(LINE);
+            System.out.println("Invalid command format.");
+            System.out.println("Please use the command in the following format: view YYYY-MM-DD");
+            System.out.println(LINE);
+            return;
+        }
+        String date = userInputArray[1].trim();
+        if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            System.out.println(LINE);
+            System.out.println("Invalid date: \"" + date + "\"");
+            System.out.println("Please use the command in the following format: view YYYY-MM-DD");
+            System.out.println(LINE);
+            return;
+        }
         if (list.isEmpty()) {
             System.out.println(LINE);
             System.out.println("Itinerary is Empty!");
             System.out.println(LINE);
             return;
         }
-        if (userInputArray.length == 1) {
-            listItems();
-            return;
-        }
-        String date = userInputArray[1];
         ArrayList<Activity> matches = new ArrayList<>();
         for (Activity a : list) {
             if (date.equals(a.getDate())) {
@@ -286,6 +296,7 @@ public class Duke {
             System.out.println(LINE);
         }
     }
+
 
     private static void handleBudget(String[] userInputArray) {
         if (userInputArray.length < 2) {
