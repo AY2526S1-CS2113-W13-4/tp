@@ -1,6 +1,10 @@
 package seedu.duke;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 public class Activity {
+    private static final Logger logger = Logger.getLogger(Activity.class.getName());
     protected Time dateTime;
     protected String description;
     protected String cost;
@@ -9,6 +13,9 @@ public class Activity {
         this.dateTime = new Time(date, time);
         this.description = description;
         this.cost = cost;
+        logger.log(Level.INFO, String.format(
+                "Created Activity with Date: %s | Time: %s | Description: %s | Cost: %s",date,time,description,cost
+        ));
     }
 
     public String getDate() {
