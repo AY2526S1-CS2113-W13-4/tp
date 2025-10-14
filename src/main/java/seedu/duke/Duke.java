@@ -51,7 +51,11 @@ public class Duke {
         case "delete":
             deleteActivityDataFromList(userInputArray);
             break;
-        default:
+        case "budget":
+            handleBudget(userInputArray);
+            break;
+
+            default:
             invalidInput();
         }
         return userInput;
@@ -183,6 +187,78 @@ public class Duke {
             System.out.println(LINE);
         }
     }
+
+    static BudgetPlan budgetPlan = new BudgetPlan();
+
+    private static void handleBudget(String[] userInputArray) {
+
+        if (userInputArray.length < 2) {
+            System.out.println(LINE);
+            System.out.println("Please specify a budget command: set / add / list / delete");
+            System.out.println(LINE);
+            return;
+        }
+
+        String sub = userInputArray[1].toLowerCase();
+
+        try {
+            switch (sub) {
+                case "set":
+                    if (userInputArray.length < 3) {
+                        System.out.println(LINE);
+                        System.out.println("Usage: budget set <amount>");
+                        System.out.println(LINE);
+                        return;
+                    }
+                    budgetPlan.setBudget(Double.parseDouble(userInputArray[2]));
+                    System.out.println(LINE);
+                    System.out.printf("Budget set to $%.2f%n", budgetPlan.getTotalBudget());
+                    System.out.println(LINE);
+                    break;
+
+                case "add":
+                    // format: budget add n/<name> c/<cost> cat/<category>
+                    String joined = String.join(" ", Arrays.copyOfRange(userInputArray, 2, userInputArray.length));
+                    String name = joined.contains("n/") ? joined.split("n/", 2)[1].split("c/", 2)[0].trim() : "";
+                    String cost = joined.contains("c/") ? joined.split("c/", 2)[1].split("cat/", 2)[0].trim() : "";
+                    String category = joined.contains("cat/") ? joined.split("cat/", 2)[1].trim() : "Uncategorized";
+
+                    if (name.isEmpty() || cost.isEmpty()) {
+                        System.out.println(LINE);
+                        System.out.println("Usage: budget add n/<name> c/<cost> cat/<category>");
+                        System.out.println(LINE);
+                        return;
+                    }
+                    budgetPlan.addExpense(name, cost, category);
+                    break;
+
+                case "list":
+                    budgetPlan.listExpenses();
+                    break;
+
+                case "delete":
+                    if (userInputArray.length < 3) {
+                        System.out.println(LINE);
+                        System.out.println("Usage: budget delete <index>");
+                        System.out.println(LINE);
+                        return;
+                    }
+                    int idx = Integer.parseInt(userInputArray[2]);
+                    budgetPlan.deleteExpense(idx);
+                    break;
+
+                default:
+                    System.out.println(LINE);
+                    System.out.println("Invalid budget command. Try: set / add / list / delete");
+                    System.out.println(LINE);
+            }
+        } catch (Exception e) {
+            System.out.println(LINE);
+            System.out.println("Error: " + e.getMessage());
+            System.out.println(LINE);
+        }
+    }
+
 
     private static void terminateProgram() {
         System.out.println(LINE);
