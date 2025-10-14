@@ -19,6 +19,17 @@ class DukeTest {
     }
 
     @Test
+    public void editActivityDataInList() {
+        Duke.list = new ArrayList<>();
+        Activity a = new Activity("2025-10-10", "11:11", "film tiktok video", "69");
+        Activity b = new Activity("2025-11-11", "11:11", "farm aura", "67");
+        Duke.list.add(a);
+        Duke.list.set(0, b);
+        assertEquals(1, Duke.list.size());
+        assertTrue(Duke.list.contains(b));
+    }
+
+    @Test
     public void deleteActivityDataFromList() {
         Duke.list = new ArrayList<>();
         Activity a = new Activity("2025-10-10", "11:11", "film tiktok video", "69");
