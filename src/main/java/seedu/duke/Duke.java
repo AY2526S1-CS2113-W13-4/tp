@@ -4,12 +4,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Duke {
 
     public static final String LINE = "______________________________________________________________________";
     static ArrayList<Activity> list = new ArrayList<>();
     static BudgetPlan budgetPlan = new BudgetPlan();
+    private static Logger logger = Logger.getLogger(Duke.class.getName());
 
     public static void intro() {
         System.out.println(LINE);
@@ -204,7 +207,9 @@ public class Duke {
     }
 
     private static void view(String[] userInputArray) {
+        assert userInputArray != null : "Input cannot be null";
         if (userInputArray.length != 2) {
+            logger.log(Level.WARNING, "Invalid command format for view");
             System.out.println(LINE);
             System.out.println("Invalid command format.");
             System.out.println("Please use the command in the following format: view YYYY-MM-DD");
@@ -212,7 +217,11 @@ public class Duke {
             return;
         }
         String date = userInputArray[1].trim();
+        assert !date.isEmpty() : "Date cannot be empty";
+        logger.log(Level.INFO, "Date: " + date);
+
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            logger.log(Level.WARNING, "Invalid date: " + date);
             System.out.println(LINE);
             System.out.println("Invalid date: \"" + date + "\"");
             System.out.println("Please use the command in the following format: view YYYY-MM-DD");
@@ -220,6 +229,7 @@ public class Duke {
             return;
         }
         if (list.isEmpty()) {
+            logger.log(Level.INFO, "Itinerary is currently empty");
             System.out.println(LINE);
             System.out.println("Itinerary is Empty!");
             System.out.println(LINE);
@@ -232,6 +242,7 @@ public class Duke {
             }
         }
         if (matches.isEmpty()) {
+            logger.log(Level.INFO, "No activities for " + date);
             System.out.println(LINE);
             System.out.println("No activities found for " + date + ".");
             System.out.println(LINE);
