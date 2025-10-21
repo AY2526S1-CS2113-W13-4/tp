@@ -1,4 +1,4 @@
-package seedu.duke;
+package seedu.busybreak;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

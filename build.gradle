@@ -29,12 +29,11 @@ test {
 }
 
 application {
-    mainClass.set("seedu.duke.Duke")
-    applicationDefaultJvmArgs = ["-ea"]
+    mainClass.set("seedu.busybreak.BusyBreak")
 }
 
 shadowJar {
-    archiveBaseName.set("duke")
+    archiveBaseName.set("busybreak")
     archiveClassifier.set("")
 }
 
@@ -44,4 +43,5 @@ checkstyle {
 
 run{
     standardInput = System.in
+    jvmArgs '-ea'
 }

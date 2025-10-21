@@ -1,4 +1,4 @@
-package seedu.duke;
+package seedu.busybreak;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -8,12 +8,12 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 
-public class Duke {
+public class BusyBreak {
 
     public static final String LINE = "______________________________________________________________________";
     static ArrayList<Activity> list = new ArrayList<>();
     static BudgetPlan budgetPlan = new BudgetPlan();
-    private static Logger logger = Logger.getLogger(Duke.class.getName());
+    private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
 
     public static void intro() {
         System.out.println(LINE);
