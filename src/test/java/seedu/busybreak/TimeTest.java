@@ -1,4 +1,4 @@
-package seedu.duke;
+package seedu.busybreak;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ public class TimeTest {
         originalOut = System.out;
         System.setOut(new PrintStream(outputStream));
 
-        Field listField = Duke.class.getDeclaredField("list");
+        Field listField = BusyBreak.class.getDeclaredField("list");
         listField.setAccessible(true);
         @SuppressWarnings("unchecked")
         ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
@@ -30,7 +30,7 @@ public class TimeTest {
 
     @Test
     public void setByTime_setAndPrint() throws Exception {
-        Field listField = Duke.class.getDeclaredField("list");
+        Field listField = BusyBreak.class.getDeclaredField("list");
         listField.setAccessible(true);
         @SuppressWarnings("unchecked")
         ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
@@ -46,7 +46,7 @@ public class TimeTest {
         list.add(a2);
         list.add(a3);
 
-        var method = Duke.class.getDeclaredMethod("setByTime");
+        var method = BusyBreak.class.getDeclaredMethod("setByTime");
         method.setAccessible(true);
         method.invoke(null);
 
@@ -64,13 +64,13 @@ public class TimeTest {
 
     @Test
     public void setByTime_forEmptyList() throws Exception {
-        Field listField = Duke.class.getDeclaredField("list");
+        Field listField = BusyBreak.class.getDeclaredField("list");
         listField.setAccessible(true);
         @SuppressWarnings("unchecked")
         ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
         list.clear();
 
-        var method = Duke.class.getDeclaredMethod("setByTime");
+        var method = BusyBreak.class.getDeclaredMethod("setByTime");
         method.setAccessible(true);
         method.invoke(null);
 

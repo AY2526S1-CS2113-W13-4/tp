@@ -26,6 +26,19 @@ Examples:<br/>
 * `add d/2025-10-12 t/19:00 desc/Watch the sunset c/0`
 
 
+### Editing an activity: `edit`
+Edits an existing activity in the list using its index number.<br/>
+Format: `edit INDEX d/DATE t/TIME desc/DESCRIPTION c/COST`<br/>
+* The `INDEX` is the integer displayed in the itinerary list.
+* The `DATE` should use the format `yyyy-MM-dd`
+* The `TIME` should use the format `HH:mm`
+* The unit of `COST` is the Singapore dollar.<br/>
+
+Examples:<br/>
+* `edit 1 d/2025-04-20 t/11:11 desc/Go to theme park c/67`
+* `edit 2 d/2025-09-11 t/08:46 desc/Visit historical site c/67`
+
+
 ### Listing all activities: `list`
 Displays all activities in the itinerary.<br/>
 Format: `list`<br/>
@@ -94,12 +107,13 @@ Format: `exit`<br/>
 
 ## Command summary
 
-| Command                    | Format                                             |
-|----------------------------|----------------------------------------------------|
-| Adding activities          | `add d/yyyy-MM-dd t/HH:mm desc/DESCRIPTION c/COST` |
-| Listing activities         | `list`                                             |
-| Viewing activities by date | `view` or `view yyyy-MM-dd`                        |
-| Deleting activities        | `delete INDEX`                                     |
-| Sorting activities by time | `schedule`                                         |
-| Exiting the program        | `exit`                                             |
+| Command                    | Format                                                    |
+|----------------------------|-----------------------------------------------------------|
+| Adding activities          | `add d/yyyy-MM-dd t/HH:mm desc/DESCRIPTION c/COST`        |
+| Editing activities         | `edit INDEX d/yyyy-MM-dd t/HH:mm desc/DESCRIPTION c/COST` |
+| Listing activities         | `list`                                                    |
+| Viewing activities by date | `view` or `view yyyy-MM-dd`                               |
+| Deleting activities        | `delete INDEX`                                            |
+| Sorting activities by time | `schedule`                                                |
+| Exiting the program        | `exit`                                                    |
 
