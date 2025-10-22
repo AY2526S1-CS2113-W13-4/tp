@@ -17,7 +17,7 @@ public class BusyBreak {
     public static ArrayList<Activity> list = new ArrayList<>();
     public static BudgetPlan budgetPlan = new BudgetPlan();
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
-    static Storage storage = new Storage();
+    private static Storage storage = new Storage();
 
     public static void intro() {
         System.out.println(LINE);

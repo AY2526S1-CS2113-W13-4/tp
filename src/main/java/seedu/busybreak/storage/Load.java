@@ -29,7 +29,9 @@ public class Load {
         try {
             List<String> lines = Files.readAllLines(Paths.get(ACTIVITIES_FILE));
             for (String line : lines) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
 
                 String[] parts = line.split("\\|", -1);
                 if (parts.length != 4) {
@@ -62,7 +64,9 @@ public class Load {
         try {
             List<String> lines = Files.readAllLines(Paths.get(BUDGETS_FILE));
             for (String line : lines) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
 
                 String[] parts = line.split("\\|", -1);
                 if (parts.length < 1) {
