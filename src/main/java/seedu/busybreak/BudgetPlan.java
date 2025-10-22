@@ -11,9 +11,9 @@ public class BudgetPlan {
 
     private double totalBudget = 0;
 
-    private final ArrayList<String> names = new ArrayList<>();
-    private final ArrayList<Double> amounts = new ArrayList<>();
-    private final ArrayList<String> categories = new ArrayList<>();
+    public final ArrayList<String> names = new ArrayList<>();
+    public final ArrayList<Double> amounts = new ArrayList<>();
+    public final ArrayList<String> categories = new ArrayList<>();
 
     public void setBudget(double amount) {
         if (amount < 0) {
