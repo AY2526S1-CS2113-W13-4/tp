@@ -80,7 +80,8 @@ public class BusyBreak {
 
         try {
             int index = Integer.parseInt(parsedEditedInputArray[0]) - 1;
-            assert parsedEditedInputArray.length == userInputArray.length - 1 : "Parsed input must not have the command";
+            assert parsedEditedInputArray.length == userInputArray.length - 1 :
+                    "Parsed input must not have the command";
             assert index >= 0 && index < list.size() : "Index out of bounds";
 
             if (index < 0 || index >= list.size()) {
@@ -104,7 +105,8 @@ public class BusyBreak {
             assert updatedActivity.getCost().equals(editedActivityData.cost()) : "Date must match edited date";
 
             System.out.println(LINE);
-            System.out.println("Activity " + parsedEditedInputArray[0] + " has been edited with the following details:");
+            System.out.println("Activity " + parsedEditedInputArray[0]
+                    + " has been edited with the following details:");
             System.out.print("Date: " + editedActivityData.date() + "|");
             System.out.print("Time: " + editedActivityData.time() + "|");
             System.out.print("Description: " + editedActivityData.description() + "|");
