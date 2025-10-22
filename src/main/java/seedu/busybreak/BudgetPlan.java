@@ -5,12 +5,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BudgetPlan {
+    private static final Logger logger = Logger.getLogger(BudgetPlan.class.getName());
+    private static final String LINE = "______________________________________________________________________";
+
     public final ArrayList<String> names = new ArrayList<>();
     public final ArrayList<Double> amounts = new ArrayList<>();
     public final ArrayList<String> categories = new ArrayList<>();
-
-    private static final Logger logger = Logger.getLogger(BudgetPlan.class.getName());
-    private static final String LINE = "______________________________________________________________________";
 
     private double totalBudget = 0;
 
