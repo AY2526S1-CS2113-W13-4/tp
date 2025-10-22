@@ -77,51 +77,81 @@ public class BusyBreak {
     private static void editActivityDataInList(String[] userInputArray) {
         logger.log(Level.INFO, "Editing Activity " +  userInputArray[0]);
         String[] parsedEditedInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
-        assert parsedEditedInputArray.length == userInputArray.length - 1 : "Parsed input must not have the command";
 
-        int index = Integer.parseInt(parsedEditedInputArray[0]) - 1;
-        assert index >= 0 && index < list.size() : "Index out of bounds";
+        try {
+            int index = Integer.parseInt(parsedEditedInputArray[0]) - 1;
+            assert parsedEditedInputArray.length == userInputArray.length - 1 :
+                    "Parsed input must not have the command";
+            assert index >= 0 && index < list.size() : "Index out of bounds";
 
-        ParseActivityData editedActivityData = getParseActivityData(parsedEditedInputArray);
-        assert editedActivityData != null : "Parsed activity data cannot be null";
+            if (index < 0 || index >= list.size()) {
+                System.out.println(LINE);
+                System.out.println("Invalid index. Please provide a valid activity number.");
+                System.out.println(LINE);
+                return;
+            }
 
-        list.set(index, new Activity(editedActivityData.date(), editedActivityData.time(),
-                editedActivityData.description(), editedActivityData.cost()));
+            ParseActivityData editedActivityData = getParseActivityData(parsedEditedInputArray);
+            assert editedActivityData != null : "Parsed activity data cannot be null";
 
-        Activity updatedActivity = list.get(index);
-        assert updatedActivity.getDate().equals(editedActivityData.date()) : "Date must match edited date";
-        assert updatedActivity.getTime().equals(editedActivityData.time()) : "Time must match edited time";
-        assert updatedActivity.getDescription().equals(editedActivityData.description()) : "Description " +
-                "must match edited description";
-        assert updatedActivity.getCost().equals(editedActivityData.cost()) : "Date must match edited date";
+            list.set(index, new Activity(editedActivityData.date(), editedActivityData.time(),
+                    editedActivityData.description(), editedActivityData.cost()));
 
-        System.out.println(LINE);
-        System.out.println("Activity " + parsedEditedInputArray[0] + " has been edited with the following details:");
-        System.out.print("Date: " + editedActivityData.date() + "|");
-        System.out.print("Time: " + editedActivityData.time() + "|");
-        System.out.print("Description: " + editedActivityData.description() + "|");
-        System.out.println("Cost: $" + editedActivityData.cost());
-        System.out.println(LINE);
+            Activity updatedActivity = list.get(index);
+            assert updatedActivity.getDate().equals(editedActivityData.date()) : "Date must match edited date";
+            assert updatedActivity.getTime().equals(editedActivityData.time()) : "Time must match edited time";
+            assert updatedActivity.getDescription().equals(editedActivityData.description()) : "Description " +
+                    "must match edited description";
+            assert updatedActivity.getCost().equals(editedActivityData.cost()) : "Date must match edited date";
+
+            System.out.println(LINE);
+            System.out.println("Activity " + parsedEditedInputArray[0]
+                    + " has been edited with the following details:");
+            System.out.print("Date: " + editedActivityData.date() + "|");
+            System.out.print("Time: " + editedActivityData.time() + "|");
+            System.out.print("Description: " + editedActivityData.description() + "|");
+            System.out.println("Cost: $" + editedActivityData.cost());
+            System.out.println(LINE);
+
+        } catch (NumberFormatException e) {
+            System.out.println(LINE);
+            System.out.println("Invalid index format. Please provide a valid number.");
+            System.out.println(LINE);
+        }
     }
 
     private static void deleteActivityDataFromList(String[] userInputArray) {
         assert userInputArray.length >= 2 : "User input array must have at least 2 elements" ;
-        logger.log(Level.INFO, "Deleting Activity " + userInputArray[0] + " from the list.");
 
-        int index = Integer.parseInt(userInputArray[1]) - 1;
-        assert index >= 0 && index < list.size() : "Index out of bounds";
+        try {
+            int index = Integer.parseInt(userInputArray[1]) - 1;
 
-        Activity deletedActivity = list.get(index);
-        assert deletedActivity != null : "Activity " + userInputArray[0] + " cannot be null";
+            logger.log(Level.INFO, "Deleting Activity " + userInputArray[0] + " from the list.");
+            assert index >= 0 && index < list.size() : "Index out of bounds";
+            if (index < 0 || index >= list.size()) {
+                System.out.println(LINE);
+                System.out.println("Invalid index. Please provide a valid activity number.");
+                System.out.println(LINE);
+                return;
+            }
 
-        int originalSize = list.size();
-        list.remove(index);
-        assert list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
+            Activity deletedActivity = list.get(index);
+            assert deletedActivity != null : "Activity " + userInputArray[0] + " cannot be null";
 
-        System.out.println(LINE);
-        System.out.println("Deleted activity from Itinerary: ");
-        System.out.println((index + 1) + ". " + deletedActivity.getDescription());
-        System.out.println(LINE);
+            int originalSize = list.size();
+            list.remove(index);
+            assert list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
+
+            System.out.println(LINE);
+            System.out.println("Deleted activity from Itinerary: ");
+            System.out.println((index + 1) + ". " + deletedActivity.getDescription());
+            System.out.println(LINE);
+
+        } catch (NumberFormatException e) {
+            System.out.println(LINE);
+            System.out.println("Invalid index format. Please provide a valid number.");
+            System.out.println(LINE);
+        }
     }
 
     private static void addActivityDataToList(ParseActivityData activityData) {
