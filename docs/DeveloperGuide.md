@@ -49,9 +49,21 @@ while the Load class handles parsing these text files and reconstructing the app
 
 ---
 
+### Feature: Budget Management
+
+#### Design
+
+The budget feature enables users to set a total budget and track spending during trip planning. 
+It helps monitor total expenses and remaining funds as activities are added or removed.
 
 
+#### Implementation
 
+The feature is implemented in the BudgetPlan class, 
+which stores the total budget and records each expense added by the user. 
+It validates inputs to prevent negative or invalid budget values and uses assertions to ensure data integrity.
+
+---
 
 ## Product scope
 ### Target user profile
