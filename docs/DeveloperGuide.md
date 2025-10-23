@@ -65,6 +65,22 @@ It validates inputs to prevent negative or invalid budget values and uses assert
 
 ---
 
+### Feature: Item management
+
+#### Design
+
+This feature allows users to delete certain items in their activity list or 
+edit certain details if necessary. It prevents unnecessary clutter within the
+user's list.
+
+#### Implementation
+
+It uses Java's ArrayList implementation to handle the deletion of items, as well
+as sets the variables of the Activity item at the relevant index when the user wants 
+to edit that item.
+
+---
+
 ## Product scope
 ### Target user profile
 
