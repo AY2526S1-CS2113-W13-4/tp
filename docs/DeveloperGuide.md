@@ -65,6 +65,21 @@ It validates inputs to prevent negative or invalid budget values and uses assert
 
 ---
 
+### Feature: Adding to list
+
+#### Design
+
+The lets a user add an activity to their travel itinerary with a date, time, cost and description.
+It provides a way for users to build up a complete trip schedule activity by activity.
+
+#### Implementation
+
+The feature is implemented in through the addActivityDataToList method in the BusyBreak class.
+User input is parsed through getParsedActivityData to extract date,time,cost and description from a User's input.
+This then creates an Activity object which is stored in an ArrayList.
+
+---
+
 ## Product scope
 ### Target user profile
 
