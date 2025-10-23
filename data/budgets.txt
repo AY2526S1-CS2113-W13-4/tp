@@ -1,0 +1,2 @@
+BUDGET|100.0
+EXPENSE|nothing|0.0|Uncategorized
