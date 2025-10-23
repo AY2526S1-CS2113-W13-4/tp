@@ -5,15 +5,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BudgetPlan {
-
     private static final Logger logger = Logger.getLogger(BudgetPlan.class.getName());
     private static final String LINE = "______________________________________________________________________";
 
-    private double totalBudget = 0;
+    public final ArrayList<String> names = new ArrayList<>();
+    public final ArrayList<Double> amounts = new ArrayList<>();
+    public final ArrayList<String> categories = new ArrayList<>();
 
-    private final ArrayList<String> names = new ArrayList<>();
-    private final ArrayList<Double> amounts = new ArrayList<>();
-    private final ArrayList<String> categories = new ArrayList<>();
+    private double totalBudget = 0;
 
     public void setBudget(double amount) {
         if (amount < 0) {

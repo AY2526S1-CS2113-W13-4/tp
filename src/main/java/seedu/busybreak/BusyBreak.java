@@ -1,19 +1,23 @@
 package seedu.busybreak;
 
+import seedu.busybreak.storage.Storage;
+import seedu.busybreak.storage.Load;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-
+import java.util.logging.Handler;
 
 public class BusyBreak {
 
     public static final String LINE = "______________________________________________________________________";
-    static ArrayList<Activity> list = new ArrayList<>();
-    static BudgetPlan budgetPlan = new BudgetPlan();
+    public static ArrayList<Activity> list = new ArrayList<>();
+    public static BudgetPlan budgetPlan = new BudgetPlan();
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
+    private static Storage storage = new Storage();
 
     public static void intro() {
         System.out.println(LINE);
@@ -113,6 +117,8 @@ public class BusyBreak {
             System.out.println("Cost: $" + editedActivityData.cost());
             System.out.println(LINE);
 
+            storage.saveActivities();
+
         } catch (NumberFormatException e) {
             System.out.println(LINE);
             System.out.println("Invalid index format. Please provide a valid number.");
@@ -147,6 +153,8 @@ public class BusyBreak {
             System.out.println((index + 1) + ". " + deletedActivity.getDescription());
             System.out.println(LINE);
 
+            storage.saveActivities();
+
         } catch (NumberFormatException e) {
             System.out.println(LINE);
             System.out.println("Invalid index format. Please provide a valid number.");
@@ -168,6 +176,8 @@ public class BusyBreak {
         System.out.print("Description: " + activityData.description() + " | ");
         System.out.println("Cost: $" + activityData.cost());
         System.out.println(LINE);
+
+        storage.saveActivities();
     }
 
     private static ParseActivityData getParseActivityData(String[] userInputArray) {
@@ -278,6 +288,8 @@ public class BusyBreak {
         System.out.println(LINE);
         System.out.println("Your Activities are sorted by time now!");
         listItems();
+
+        storage.saveActivities();
     }
 
     private static void view(String[] userInputArray) {
@@ -358,6 +370,7 @@ public class BusyBreak {
                 System.out.println(LINE);
                 System.out.printf("Budget set to $%.2f%n", budgetPlan.getTotalBudget());
                 System.out.println(LINE);
+                storage.saveBudgets();
                 break;
 
             case "add":
@@ -378,6 +391,7 @@ public class BusyBreak {
                     return;
                 }
                 budgetPlan.addExpense(name, cost, category);
+                storage.saveBudgets();
                 break;
 
             case "list":
@@ -393,6 +407,7 @@ public class BusyBreak {
                 }
                 int idx = Integer.parseInt(userInputArray[2]);
                 budgetPlan.deleteExpense(idx);
+                storage.saveBudgets();
                 break;
 
             default:
@@ -418,7 +433,17 @@ public class BusyBreak {
 
 
     public static void main(String[] args) {
+        // Configure the log level to WARNING to output only warnings and errors
+        Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(Level.WARNING);
+        for (Handler handler : rootLogger.getHandlers()) {
+            handler.setLevel(Level.WARNING);
+        }
+
         intro();
+        Load loader = new Load();
+        loader.loadActivities();
+        loader.loadBudgets();
         while (true) {
             String userInput = handleUserInput();
             //detect EOF
