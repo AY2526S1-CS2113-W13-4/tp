@@ -65,6 +65,55 @@ It validates inputs to prevent negative or invalid budget values and uses assert
 
 ---
 
+
+### Feature: Adding to list
+
+#### Design
+
+The lets a user add an activity to their travel itinerary with a date, time, cost and description.
+It provides a way for users to build up a complete trip schedule activity by activity.
+
+#### Implementation
+
+The feature is implemented in through the addActivityDataToList method in the BusyBreak class.
+User input is parsed through getParsedActivityData to extract date,time,cost and description from a User's input.
+This then creates an Activity object which is stored in an ArrayList.
+
+---
+
+### Feature: Item management
+
+#### Design
+
+This feature allows users to delete certain items in their activity list or 
+edit certain details if necessary. It prevents unnecessary clutter within the
+user's list.
+
+#### Implementation
+
+It uses Java's ArrayList implementation to handle the deletion of items, as well
+as sets the variables of the Activity item at the relevant index when the user wants 
+to edit that item.
+
+
+---
+
+
+#### Feature: View Itinerary
+
+This feature allows the user to see all the activities scheduled on a specific date in 
+YYYY-MM-DD format. It prints each activity with its date, time, description, and cost 
+in a clean list.
+
+#### Implementation
+
+It is implemented through the view method in the BusyBreak class. It processes the command
+view {date}, where the date must follow the YYYY-MM-DD format.
+
+
+---
+
+
 ## Product scope
 ### Target user profile
 
