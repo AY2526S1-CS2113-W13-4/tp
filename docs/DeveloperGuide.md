@@ -98,6 +98,22 @@ to edit that item.
 
 ---
 
+
+#### Feature: View Itinerary
+
+This feature allows the user to see all the activities scheduled on a specific date in 
+YYYY-MM-DD format. It prints each activity with its date, time, description, and cost 
+in a clean list.
+
+#### Implementation
+
+It is implemented through the view method in the BusyBreak class. It processes the command
+view {date}, where the date must follow the YYYY-MM-DD format.
+
+
+---
+
+
 ## Product scope
 ### Target user profile
 
