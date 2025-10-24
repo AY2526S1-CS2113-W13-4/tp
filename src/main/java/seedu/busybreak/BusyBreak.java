@@ -2,6 +2,7 @@ package seedu.busybreak;
 
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
+import seedu.busybreak.command.Clear;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -18,6 +19,10 @@ public class BusyBreak {
     public static BudgetPlan budgetPlan = new BudgetPlan();
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
     private static Storage storage = new Storage();
+
+    public static Storage getStorage() {
+        return storage;
+    }
 
     public static void intro() {
         System.out.println(LINE);
@@ -65,6 +70,9 @@ public class BusyBreak {
             break;
         case "budget":
             handleBudget(userInputArray);
+            break;
+        case "clear":
+            Clear.handleClearCommand(userInputArray);
             break;
         default:
             invalidInput();

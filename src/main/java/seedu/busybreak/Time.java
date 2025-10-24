@@ -8,6 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+//@@author msc-123456
 public class Time {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");

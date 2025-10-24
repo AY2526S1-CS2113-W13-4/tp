@@ -2,7 +2,6 @@ package seedu.busybreak.storage;
 
 import seedu.busybreak.Activity;
 import seedu.busybreak.BusyBreak;
-//import seedu.busybreak.BudgetPlan;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+//@@author msc-123456
 public class Load {
     private static final Logger logger = Logger.getLogger(Load.class.getName());
     private static final String ACTIVITIES_FILE = "data/activities.txt";

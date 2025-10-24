@@ -2,9 +2,7 @@ package seedu.busybreak.storage;
 
 import seedu.busybreak.Activity;
 import seedu.busybreak.BusyBreak;
-//import seedu.busybreak.BudgetPlan;
-//
-//import java.io.File;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+//@@author msc-123456
 public class Storage {
     private static final Logger logger = Logger.getLogger(Storage.class.getName());
     private static final String DATA_FOLDER = "data";
