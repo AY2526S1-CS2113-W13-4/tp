@@ -22,14 +22,14 @@ public class Clear {
             clearActivities();
         } else if (userInputArray.length == 2) {
             switch (userInputArray[1].toLowerCase()) {
-                case "budget":
-                    clearBudget();
-                    break;
-                case "all":
-                    clearAll();
-                    break;
-                default:
-                    printInvalidFormat();
+            case "budget":
+                clearBudget();
+                break;
+            case "all":
+                clearAll();
+                break;
+            default:
+                printInvalidFormat();
             }
         } else if (userInputArray.length == 3 && "before".equals(userInputArray[1].toLowerCase())) {
             clearBeforeDate(userInputArray[2]);
