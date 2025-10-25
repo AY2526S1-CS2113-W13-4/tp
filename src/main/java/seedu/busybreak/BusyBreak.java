@@ -19,17 +19,12 @@ public class BusyBreak {
     public static final String LINE = "______________________________________________________________________";
     public static ArrayList<Activity> list = new ArrayList<>();
     public static BudgetPlan budgetPlan = new BudgetPlan();
+    public static Ui ui = new Ui();
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
     private static Storage storage = new Storage();
 
     public static Storage getStorage() {
         return storage;
-    }
-
-    public static void intro() {
-        System.out.println(LINE);
-        System.out.println("Welcome to BusyBreak, your helpful travel assistant! How may I assist you?");
-        System.out.println(LINE);
     }
 
     public static String handleUserInput() {
@@ -49,7 +44,8 @@ public class BusyBreak {
 
         switch (command) {
         case "exit":
-            terminateProgram();
+            ui.showTerminateProgram();
+            System.exit(0);
             break;
         case "list": //list out all items
             List.listItems();
@@ -193,10 +189,7 @@ public class BusyBreak {
         assert userInputArray != null : "Input cannot be null";
         if (userInputArray.length != 2) {
             logger.log(Level.WARNING, "Invalid command format for view");
-            System.out.println(LINE);
-            System.out.println("Invalid command format.");
-            System.out.println("Please use the command in the following format: view YYYY-MM-DD");
-            System.out.println(LINE);
+            ui.showInvalidViewFormat();
             return;
         }
         String date = userInputArray[1].trim();
@@ -205,17 +198,12 @@ public class BusyBreak {
 
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
             logger.log(Level.WARNING, "Invalid date: " + date);
-            System.out.println(LINE);
-            System.out.println("Invalid date: \"" + date + "\"");
-            System.out.println("Please use the command in the following format: view YYYY-MM-DD");
-            System.out.println(LINE);
+            ui.showInvalidDate(date);
             return;
         }
         if (list.isEmpty()) {
             logger.log(Level.INFO, "Itinerary is currently empty");
-            System.out.println(LINE);
-            System.out.println("Itinerary is Empty!");
-            System.out.println(LINE);
+            ui.showEmptyItinerary();
             return;
         }
         ArrayList<Activity> matches = new ArrayList<>();
@@ -226,22 +214,10 @@ public class BusyBreak {
         }
         if (matches.isEmpty()) {
             logger.log(Level.INFO, "No activities for " + date);
-            System.out.println(LINE);
-            System.out.println("No activities found for " + date + ".");
-            System.out.println(LINE);
+            ui.showNoActivitiesFor(date);
             return;
         }
-        System.out.println(LINE);
-        System.out.println("Itinerary for " + date + ":");
-        for (int i = 0; i < matches.size(); i++) {
-            Activity a = matches.get(i);
-            System.out.println((i + 1) + ". ");
-            System.out.println("Date: " + a.getDate());
-            System.out.println("Time: " + a.getTime());
-            System.out.println("Description: " + a.getDescription());
-            System.out.println("Cost: $" + a.getCost());
-            System.out.println(LINE);
-        }
+        ui.showItineraryFor(date, matches);
     }
 
 
@@ -320,15 +296,6 @@ public class BusyBreak {
         }
     }
 
-
-    private static void terminateProgram() {
-        System.out.println(LINE);
-        System.out.println("Program Terminated.");
-        System.out.println(LINE);
-        System.exit(0);
-    }
-
-
     public static void main(String[] args) {
         // Configure the log level to WARNING to output only warnings and errors
         Logger rootLogger = Logger.getLogger("");
@@ -337,7 +304,7 @@ public class BusyBreak {
             handler.setLevel(Level.WARNING);
         }
 
-        intro();
+        ui.showWelcome();
         Load loader = new Load();
         loader.loadActivities();
         loader.loadBudgets();
