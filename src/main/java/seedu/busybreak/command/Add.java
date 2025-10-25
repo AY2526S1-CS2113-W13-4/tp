@@ -2,11 +2,11 @@ package seedu.busybreak.command;
 
 import seedu.busybreak.Activity;
 import seedu.busybreak.BusyBreak;
+import seedu.busybreak.Ui;
 
 import java.util.Arrays;
 
 public class Add {
-
 
     public static void addActivityDataToList(ParseActivityData activityData) {
         if (activityData == null) {
@@ -15,18 +15,8 @@ public class Add {
 
         BusyBreak.list.add(new Activity(activityData.date(), activityData.time(),
                 activityData.description(), activityData.cost()));
-        printAddedItem(activityData);
+        Ui.printAddedItem(activityData);
         BusyBreak.getStorage().saveActivities();
-    }
-
-    private static void printAddedItem(ParseActivityData activityData) {
-        System.out.println(BusyBreak.LINE);
-        System.out.print("Added Activity to Itinerary: ");
-        System.out.print("Date: " + activityData.date() + " | ");
-        System.out.print("Time: " + activityData.time() + " | ");
-        System.out.print("Description: " + activityData.description() + " | ");
-        System.out.println("Cost: $" + activityData.cost());
-        System.out.println(BusyBreak.LINE);
     }
 
     public static ParseActivityData getParseActivityData(String[] userInputArray) {
@@ -56,9 +46,9 @@ public class Add {
 
             return new ParseActivityData(date, time, description, cost);
         } catch (IllegalArgumentException | AssertionError e) {
-            System.out.println(BusyBreak.LINE);
+            Ui.showLine();
             System.out.println(e.getMessage());
-            System.out.println(BusyBreak.LINE);
+            Ui.showLine();
             return null;
         }
     }

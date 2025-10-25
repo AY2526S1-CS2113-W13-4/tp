@@ -32,9 +32,9 @@ public class BusyBreak {
         Scanner in = new Scanner(System.in);
 
         if (!in.hasNextLine()) {
-            System.out.println(LINE);
+            Ui.showLine();
             System.out.println("Please Input a Command.");
-            System.out.println(LINE);
+            Ui.showLine();
             return null;
         }
 
@@ -73,15 +73,9 @@ public class BusyBreak {
             Clear.handleClearCommand(userInputArray);
             break;
         default:
-            invalidInput();
+            Ui.invalidInput();
         }
         return userInput;
-    }
-
-    private static void invalidInput() {
-        System.out.println(LINE);
-        System.out.println("Invalid Command.");
-        System.out.println(LINE);
     }
 
     private static void editActivityDataInList(String[] userInputArray) {

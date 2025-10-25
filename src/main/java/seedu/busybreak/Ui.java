@@ -1,10 +1,50 @@
 package seedu.busybreak;
+import seedu.busybreak.command.Add;
+
 import java.util.ArrayList;
 public class Ui {
 
     private static final String LINE = "______________________________________________________________________";
 
-    public void showLine() {
+    static void invalidInput() {
+        showLine();
+        System.out.println("Invalid Command.");
+        showLine();
+    }
+
+    public static void printListItems() {
+        if (BusyBreak.list.isEmpty()) {
+            showLine();
+            System.out.println("Itinerary is Empty!");
+            showLine();
+            return;
+        }
+        showLine();
+        for (int index = 0; index < BusyBreak.list.size(); index++) {
+            printItems(index);
+        }
+    }
+
+    private static void printItems(int index) {
+        System.out.println((index + 1) + ". ");
+        System.out.println("Date: " + BusyBreak.list.get(index).getDate());
+        System.out.println("Time: " + BusyBreak.list.get(index).getTime());
+        System.out.println("Description: " + BusyBreak.list.get(index).getDescription());
+        System.out.println("Cost: $" + BusyBreak.list.get(index).getCost());
+        showLine();
+    }
+
+    public static void printAddedItem(Add.ParseActivityData activityData) {
+        showLine();
+        System.out.print("Added Activity to Itinerary: ");
+        System.out.print("Date: " + activityData.date() + " | ");
+        System.out.print("Time: " + activityData.time() + " | ");
+        System.out.print("Description: " + activityData.description() + " | ");
+        System.out.println("Cost: $" + activityData.cost());
+        showLine();
+    }
+
+    public static void showLine() {
         System.out.println(LINE);
     }
 
