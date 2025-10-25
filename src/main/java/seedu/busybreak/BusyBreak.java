@@ -50,10 +50,10 @@ public class BusyBreak {
             view(userInput);
             break;
         case "delete":
-            deleteActivityDataFromList(userInput);
+            deleteActivityDataFromList(userInput); //i need my lines
             break;
         case "edit":
-            editActivityDataInList(userInput);
+            editActivityDataInList(userInput); //i need my lines
             break;
         case "budget":
             handleBudget(userInput);
@@ -68,14 +68,11 @@ public class BusyBreak {
     }
 
     private static void editActivityDataInList(String[] userInputArray) {
-        logger.log(Level.INFO, "Editing Activity " + userInputArray[0]);
-        String[] parsedEditedInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
-
         try {
-            int index = Integer.parseInt(parsedEditedInputArray[0]) - 1;
-            assert parsedEditedInputArray.length == userInputArray.length - 1 :
-                    "Parsed input must not have the command";
+            logger.log(Level.INFO, "Editing Activity " +  userInputArray[1]);
+            int index = Integer.parseInt(userInputArray[1]) - 1;
             assert index >= 0 && index < list.size() : "Index out of bounds";
+            Activity editedActivity = list.get(index);
 
             if (index < 0 || index >= list.size()) {
                 System.out.println(LINE);
@@ -84,26 +81,44 @@ public class BusyBreak {
                 return;
             }
 
-            Parser.ParseActivityData editedActivityData = Parser.getParseActivityData(parsedEditedInputArray);
-            assert editedActivityData != null : "Parsed activity data cannot be null";
-
-            list.set(index, new Activity(editedActivityData.date(), editedActivityData.time(),
-                    editedActivityData.description(), editedActivityData.cost()));
-
-            Activity updatedActivity = list.get(index);
-            assert updatedActivity.getDate().equals(editedActivityData.date()) : "Date must match edited date";
-            assert updatedActivity.getTime().equals(editedActivityData.time()) : "Time must match edited time";
-            assert updatedActivity.getDescription().equals(editedActivityData.description()) : "Description " +
-                    "must match edited description";
-            assert updatedActivity.getCost().equals(editedActivityData.cost()) : "Date must match edited date";
+            String[] inputDetailsArray = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
+            String inputDetails = String.join(" ", inputDetailsArray).trim();
+            String[] editDetails = inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
+            for (int i = 0; i < editDetails.length; i++) {
+                int slash = editDetails[i].trim().indexOf("/");
+                String detailName =  editDetails[i].trim().substring(0, slash);
+                String detailValue =  editDetails[i].trim().substring(slash + 1);
+                switch (detailName) {
+                    case "c":
+                        editedActivity.setCost(detailValue);
+                        assert editedActivity.getCost().equals(detailValue) : "Cost must match edited cost";
+                        break;
+                    case "desc":
+                        editedActivity.setDescription(detailValue);
+                        assert editedActivity.getDescription().equals(detailValue) : "Description " +
+                                "must match edited description";
+                        break;
+                    case "t":
+                        editedActivity.setTime(detailValue);
+                        assert editedActivity.getTime().equals(detailValue) : "Time must match edited time";
+                        break;
+                    case "d":
+                        editedActivity.setDate(detailValue);
+                        assert editedActivity.getDate().equals(detailValue) : "Date must match edited date";
+                        break;
+                    default:
+                        System.out.println(LINE);
+                        System.out.println("Invalid detail detected");
+                }
+            }
 
             System.out.println(LINE);
-            System.out.println("Activity " + parsedEditedInputArray[0]
-                    + " has been edited with the following details:");
-            System.out.print("Date: " + editedActivityData.date() + "|");
-            System.out.print("Time: " + editedActivityData.time() + "|");
-            System.out.print("Description: " + editedActivityData.description() + "|");
-            System.out.println("Cost: $" + editedActivityData.cost());
+            System.out.println("Activity " + userInputArray[1].trim() + " has been edited " +
+                    "with the following details:");
+            System.out.print("Date: " + editedActivity.getDate() + " | ");
+            System.out.print("Time: " + editedActivity.getTime() + " | ");
+            System.out.print("Description: " + editedActivity.getDescription() + " | ");
+            System.out.println("Cost: $" + editedActivity.getCost());
             System.out.println(LINE);
 
             storage.saveActivities();
@@ -120,9 +135,9 @@ public class BusyBreak {
 
         try {
             int index = Integer.parseInt(userInputArray[1]) - 1;
-
-            logger.log(Level.INFO, "Deleting Activity " + userInputArray[0] + " from the list.");
+            logger.log(Level.INFO, "Deleting Activity " + userInputArray[1] + " from the list.");
             assert index >= 0 && index < list.size() : "Index out of bounds";
+
             if (index < 0 || index >= list.size()) {
                 System.out.println(LINE);
                 System.out.println("Invalid index. Please provide a valid activity number.");
@@ -131,11 +146,11 @@ public class BusyBreak {
             }
 
             Activity deletedActivity = list.get(index);
-            assert deletedActivity != null : "Activity " + userInputArray[0] + " cannot be null";
+            assert deletedActivity != null : "Activity " + userInputArray[1] + " cannot be null";
 
             int originalSize = list.size();
             list.remove(index);
-            assert list.size() == originalSize - 1 : "The list size should decrease by 1 after deletion";
+            assert list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
 
             System.out.println(LINE);
             System.out.println("Deleted activity from Itinerary: ");
