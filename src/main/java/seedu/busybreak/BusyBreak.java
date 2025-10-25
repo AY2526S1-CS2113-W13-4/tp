@@ -27,8 +27,10 @@ public class BusyBreak {
     }
 
     public static String handleUserInput() {
-        Parser.getCommand parsedCommand = Parser.parseUserInput();
-        if (parsedCommand == null) return null;
+        Parser.GetCommand parsedCommand = Parser.parseUserInput();
+        if (parsedCommand == null) {
+            return null;
+        }
         String[] userInput = parsedCommand.userInputArray();
         switch (parsedCommand.command()) {
         case "exit":

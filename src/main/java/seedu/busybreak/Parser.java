@@ -4,15 +4,17 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Parser {
-    static getCommand parseUserInput() {
+    static GetCommand parseUserInput() {
         Scanner in = getScanner();
-        if (in == null) return null;
+        if (in == null) {
+            return null;
+        }
         String userInput;
 
         userInput = in.nextLine();
         String[] userInputArray = userInput.split(" ");
         String command = userInputArray[0]; //read first word of input as command
-        return new getCommand(userInput, userInputArray, command);
+        return new GetCommand(userInput, userInputArray, command);
     }
 
     private static Scanner getScanner() {
@@ -103,6 +105,6 @@ public class Parser {
     public record ParseActivityData(String date, String time, String description, String cost) {
     }
 
-    record getCommand(String userInput, String[] userInputArray, String command) {
+    record GetCommand(String userInput, String[] userInputArray, String command) {
     }
 }
