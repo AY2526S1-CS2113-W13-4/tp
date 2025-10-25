@@ -1,12 +1,7 @@
 package seedu.busybreak;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class Ui {
 
-    private final Scanner sc = new Scanner(System.in);
     private static final String LINE = "______________________________________________________________________";
 
     public void showLine() {
@@ -83,6 +78,5 @@ public class Ui {
             showLine();
         }
     }
-
 
 }

@@ -17,11 +17,11 @@ import java.util.logging.Handler;
 public class BusyBreak {
 
     public static final String LINE = "______________________________________________________________________";
+    private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
     public static ArrayList<Activity> list = new ArrayList<>();
     public static BudgetPlan budgetPlan = new BudgetPlan();
-    private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
-    private static Storage storage = new Storage();
     public static Ui ui = new Ui();
+    private static Storage storage = new Storage();
 
     public static Storage getStorage() {
         return storage;
