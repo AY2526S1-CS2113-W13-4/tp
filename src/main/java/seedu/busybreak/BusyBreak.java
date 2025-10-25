@@ -8,7 +8,6 @@ import seedu.busybreak.command.Clear;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -28,21 +27,10 @@ public class BusyBreak {
     }
 
     public static String handleUserInput() {
-        String userInput;
-        Scanner in = new Scanner(System.in);
-
-        if (!in.hasNextLine()) {
-            Ui.showLine();
-            System.out.println("Please Input a Command.");
-            Ui.showLine();
-            return null;
-        }
-
-        userInput = in.nextLine();
-        String[] userInputArray = userInput.split(" ");
-        String command = userInputArray[0]; //read first word of input as command
-
-        switch (command) {
+        Parser.getCommand parsedCommand = Parser.parseUserInput();
+        if (parsedCommand == null) return null;
+        String[] userInput = parsedCommand.userInputArray();
+        switch (parsedCommand.command()) {
         case "exit":
             ui.showTerminateProgram();
             System.exit(0);
@@ -51,35 +39,34 @@ public class BusyBreak {
             List.listItems();
             break;
         case "add": //add itinerary entry
-            Add.ParseActivityData activityData = Add.getParseActivityData(userInputArray);
-            Add.addActivityDataToList(activityData);
+            Add.addActivityDataToList(userInput);
             break;
         case "schedule":
             setByTime();
             break;
         case "view":
-            view(userInputArray);
+            view(userInput);
             break;
         case "delete":
-            deleteActivityDataFromList(userInputArray);
+            deleteActivityDataFromList(userInput);
             break;
         case "edit":
-            editActivityDataInList(userInputArray);
+            editActivityDataInList(userInput);
             break;
         case "budget":
-            handleBudget(userInputArray);
+            handleBudget(userInput);
             break;
         case "clear":
-            Clear.handleClearCommand(userInputArray);
+            Clear.handleClearCommand(userInput);
             break;
         default:
             Ui.invalidInput();
         }
-        return userInput;
+        return parsedCommand.userInput();
     }
 
     private static void editActivityDataInList(String[] userInputArray) {
-        logger.log(Level.INFO, "Editing Activity " +  userInputArray[0]);
+        logger.log(Level.INFO, "Editing Activity " + userInputArray[0]);
         String[] parsedEditedInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
 
         try {
@@ -95,7 +82,7 @@ public class BusyBreak {
                 return;
             }
 
-            Add.ParseActivityData editedActivityData = Add.getParseActivityData(parsedEditedInputArray);
+            Parser.ParseActivityData editedActivityData = Parser.getParseActivityData(parsedEditedInputArray);
             assert editedActivityData != null : "Parsed activity data cannot be null";
 
             list.set(index, new Activity(editedActivityData.date(), editedActivityData.time(),
@@ -127,7 +114,7 @@ public class BusyBreak {
     }
 
     private static void deleteActivityDataFromList(String[] userInputArray) {
-        assert userInputArray.length >= 2 : "User input array must have at least 2 elements" ;
+        assert userInputArray.length >= 2 : "User input array must have at least 2 elements";
 
         try {
             int index = Integer.parseInt(userInputArray[1]) - 1;
@@ -146,7 +133,7 @@ public class BusyBreak {
 
             int originalSize = list.size();
             list.remove(index);
-            assert list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
+            assert list.size() == originalSize - 1 : "The list size should decrease by 1 after deletion";
 
             System.out.println(LINE);
             System.out.println("Deleted activity from Itinerary: ");
