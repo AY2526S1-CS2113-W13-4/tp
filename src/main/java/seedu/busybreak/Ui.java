@@ -1,5 +1,4 @@
 package seedu.busybreak;
-import seedu.busybreak.command.Add;
 
 import java.util.ArrayList;
 public class Ui {
@@ -34,7 +33,7 @@ public class Ui {
         showLine();
     }
 
-    public static void printAddedItem(Add.ParseActivityData activityData) {
+    public static void printAddedItem(Parser.ParseActivityData activityData) {
         showLine();
         System.out.print("Added Activity to Itinerary: ");
         System.out.print("Date: " + activityData.date() + " | ");
