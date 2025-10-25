@@ -1,12 +1,13 @@
 package seedu.busybreak;
 
+import seedu.busybreak.command.Add;
+import seedu.busybreak.command.List;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
 import seedu.busybreak.command.Clear;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ public class BusyBreak {
     public static final String LINE = "______________________________________________________________________";
     public static ArrayList<Activity> list = new ArrayList<>();
     public static BudgetPlan budgetPlan = new BudgetPlan();
+    public static Ui ui = new Ui();
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
     private static Storage storage = new Storage();
 
@@ -24,70 +26,49 @@ public class BusyBreak {
         return storage;
     }
 
-    public static void intro() {
-        System.out.println(LINE);
-        System.out.println("Welcome to BusyBreak, your helpful travel assistant! How may I assist you?");
-        System.out.println(LINE);
-    }
-
     public static String handleUserInput() {
-        String userInput;
-        Scanner in = new Scanner(System.in);
-
-        if (!in.hasNextLine()) {
-            System.out.println(LINE);
-            System.out.println("Please Input a Command.");
-            System.out.println(LINE);
+        Parser.GetCommand parsedCommand = Parser.parseUserInput();
+        if (parsedCommand == null) {
             return null;
         }
-
-        userInput = in.nextLine();
-        String[] userInputArray = userInput.split(" ");
-        String command = userInputArray[0]; //read first word of input as command
-
-        switch (command) {
+        String[] userInput = parsedCommand.userInputArray();
+        switch (parsedCommand.command()) {
         case "exit":
-            terminateProgram();
+            ui.showTerminateProgram();
+            System.exit(0);
             break;
         case "list": //list out all items
-            listItems();
+            List.listItems();
             break;
         case "add": //add itinerary entry
-            ParseActivityData activityData = getParseActivityData(userInputArray);
-            addActivityDataToList(activityData);
+            Add.addActivityDataToList(userInput);
             break;
         case "schedule":
             setByTime();
             break;
         case "view":
-            view(userInputArray);
+            view(userInput);
             break;
         case "delete":
-            deleteActivityDataFromList(userInputArray);
+            deleteActivityDataFromList(userInput);
             break;
         case "edit":
-            editActivityDataInList(userInputArray);
+            editActivityDataInList(userInput);
             break;
         case "budget":
-            handleBudget(userInputArray);
+            handleBudget(userInput);
             break;
         case "clear":
-            Clear.handleClearCommand(userInputArray);
+            Clear.handleClearCommand(userInput);
             break;
         default:
-            invalidInput();
+            Ui.invalidInput();
         }
-        return userInput;
-    }
-
-    private static void invalidInput() {
-        System.out.println(LINE);
-        System.out.println("Invalid Command.");
-        System.out.println(LINE);
+        return parsedCommand.userInput();
     }
 
     private static void editActivityDataInList(String[] userInputArray) {
-        logger.log(Level.INFO, "Editing Activity " +  userInputArray[0]);
+        logger.log(Level.INFO, "Editing Activity " + userInputArray[0]);
         String[] parsedEditedInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
 
         try {
@@ -103,7 +84,7 @@ public class BusyBreak {
                 return;
             }
 
-            ParseActivityData editedActivityData = getParseActivityData(parsedEditedInputArray);
+            Parser.ParseActivityData editedActivityData = Parser.getParseActivityData(parsedEditedInputArray);
             assert editedActivityData != null : "Parsed activity data cannot be null";
 
             list.set(index, new Activity(editedActivityData.date(), editedActivityData.time(),
@@ -135,7 +116,7 @@ public class BusyBreak {
     }
 
     private static void deleteActivityDataFromList(String[] userInputArray) {
-        assert userInputArray.length >= 2 : "User input array must have at least 2 elements" ;
+        assert userInputArray.length >= 2 : "User input array must have at least 2 elements";
 
         try {
             int index = Integer.parseInt(userInputArray[1]) - 1;
@@ -154,7 +135,7 @@ public class BusyBreak {
 
             int originalSize = list.size();
             list.remove(index);
-            assert list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
+            assert list.size() == originalSize - 1 : "The list size should decrease by 1 after deletion";
 
             System.out.println(LINE);
             System.out.println("Deleted activity from Itinerary: ");
@@ -166,119 +147,6 @@ public class BusyBreak {
         } catch (NumberFormatException e) {
             System.out.println(LINE);
             System.out.println("Invalid index format. Please provide a valid number.");
-            System.out.println(LINE);
-        }
-    }
-
-    private static void addActivityDataToList(ParseActivityData activityData) {
-        if (activityData == null) {
-            return;
-        }
-
-        list.add(new Activity(activityData.date(), activityData.time(),
-                activityData.description(), activityData.cost()));
-        System.out.println(LINE);
-        System.out.print("Added Activity to Itinerary: ");
-        System.out.print("Date: " + activityData.date() + " | ");
-        System.out.print("Time: " + activityData.time() + " | ");
-        System.out.print("Description: " + activityData.description() + " | ");
-        System.out.println("Cost: $" + activityData.cost());
-        System.out.println(LINE);
-
-        storage.saveActivities();
-    }
-
-    private static ParseActivityData getParseActivityData(String[] userInputArray) {
-
-        try {
-            //truncate the command from userInput
-            String[] parsedUserInputArray = Arrays.copyOfRange(userInputArray, 1, userInputArray.length);
-            String parsedUserInput = String.join(" ", parsedUserInputArray).trim();
-
-            assert !parsedUserInput.isEmpty() : "User input cannot be empty.";
-
-            String[] parseDate = getParsedDate(parsedUserInput);
-            String[] parseTime = getParsedTime(parseDate);
-            String[] parseDescription = getParsedDescription(parseTime);
-            String[] parseCost = getParsedCost(parseDescription);
-
-            String date = parseTime[0].trim();
-            String time = parseDescription[0].trim();
-            String description = parseCost[0].trim();
-            String cost = parseCost[1].trim();
-            checkEmptyFields(date, time, description, cost);
-
-            assert !date.isEmpty() : "Date cannot be empty.";
-            assert !time.isEmpty() : "Time cannot be empty.";
-            assert !description.isEmpty() : "Description cannot be empty.";
-            assert !cost.isEmpty() : "Cost cannot be empty.";
-
-            return new ParseActivityData(date, time, description, cost);
-        } catch (IllegalArgumentException | AssertionError e) {
-            System.out.println(LINE);
-            System.out.println(e.getMessage());
-            System.out.println(LINE);
-            return null;
-        }
-    }
-
-    private static void checkEmptyFields(String date, String time, String description, String cost) {
-        if (date.isEmpty() || time.isEmpty() || description.isEmpty() || cost.isEmpty()) {
-            throw new IllegalArgumentException("User input is invalid! One or more fields :" +
-                    " date, time, description or cost is empty.");
-        }
-    }
-
-    private static String[] getParsedCost(String[] parseDescription) {
-        String[] parseCost = parseDescription[1].split("c/", 2);
-        if (parseCost.length != 2) {
-            throw new IllegalArgumentException("Missing cost! Set one with c/");
-        }
-        return parseCost;
-    }
-
-    private static String[] getParsedDescription(String[] parseTime) {
-        String[] parseDescription = parseTime[1].split("desc/", 2);
-        if (parseDescription.length != 2) {
-            throw new IllegalArgumentException("Missing description! Set one with desc/");
-        }
-        return parseDescription;
-    }
-
-    private static String[] getParsedTime(String[] parseDate) {
-        String[] parseTime = parseDate[1].split("t/", 2);
-        if (parseTime.length != 2) {
-            throw new IllegalArgumentException("Missing time! Set one with t/");
-        }
-        return parseTime;
-    }
-
-    private static String[] getParsedDate(String parsedUserInput) {
-        String[] parseDate = parsedUserInput.split("d/", 2);
-        if (parseDate.length != 2) {
-            throw new IllegalArgumentException("Missing date! Set one with d/");
-        }
-        return parseDate;
-    }
-
-    private record ParseActivityData(String date, String time, String description, String cost) {
-    }
-
-    private static void listItems() {
-
-        if (list.isEmpty()) {
-            System.out.println(LINE);
-            System.out.println("Itinerary is Empty!");
-            System.out.println(LINE);
-            return;
-        }
-        System.out.println(LINE);
-        for (int index = 0; index < list.size(); index++) {
-            System.out.println((index + 1) + ". ");
-            System.out.println("Date: " + list.get(index).getDate());
-            System.out.println("Time: " + list.get(index).getTime());
-            System.out.println("Description: " + list.get(index).getDescription());
-            System.out.println("Cost: $" + list.get(index).getCost());
             System.out.println(LINE);
         }
     }
@@ -295,7 +163,7 @@ public class BusyBreak {
 
         System.out.println(LINE);
         System.out.println("Your Activities are sorted by time now!");
-        listItems();
+        List.listItems();
 
         storage.saveActivities();
     }
@@ -304,10 +172,7 @@ public class BusyBreak {
         assert userInputArray != null : "Input cannot be null";
         if (userInputArray.length != 2) {
             logger.log(Level.WARNING, "Invalid command format for view");
-            System.out.println(LINE);
-            System.out.println("Invalid command format.");
-            System.out.println("Please use the command in the following format: view YYYY-MM-DD");
-            System.out.println(LINE);
+            ui.showInvalidViewFormat();
             return;
         }
         String date = userInputArray[1].trim();
@@ -316,17 +181,12 @@ public class BusyBreak {
 
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
             logger.log(Level.WARNING, "Invalid date: " + date);
-            System.out.println(LINE);
-            System.out.println("Invalid date: \"" + date + "\"");
-            System.out.println("Please use the command in the following format: view YYYY-MM-DD");
-            System.out.println(LINE);
+            ui.showInvalidDate(date);
             return;
         }
         if (list.isEmpty()) {
             logger.log(Level.INFO, "Itinerary is currently empty");
-            System.out.println(LINE);
-            System.out.println("Itinerary is Empty!");
-            System.out.println(LINE);
+            ui.showEmptyItinerary();
             return;
         }
         ArrayList<Activity> matches = new ArrayList<>();
@@ -337,22 +197,10 @@ public class BusyBreak {
         }
         if (matches.isEmpty()) {
             logger.log(Level.INFO, "No activities for " + date);
-            System.out.println(LINE);
-            System.out.println("No activities found for " + date + ".");
-            System.out.println(LINE);
+            ui.showNoActivitiesFor(date);
             return;
         }
-        System.out.println(LINE);
-        System.out.println("Itinerary for " + date + ":");
-        for (int i = 0; i < matches.size(); i++) {
-            Activity a = matches.get(i);
-            System.out.println((i + 1) + ". ");
-            System.out.println("Date: " + a.getDate());
-            System.out.println("Time: " + a.getTime());
-            System.out.println("Description: " + a.getDescription());
-            System.out.println("Cost: $" + a.getCost());
-            System.out.println(LINE);
-        }
+        ui.showItineraryFor(date, matches);
     }
 
 
@@ -431,15 +279,6 @@ public class BusyBreak {
         }
     }
 
-
-    private static void terminateProgram() {
-        System.out.println(LINE);
-        System.out.println("Program Terminated.");
-        System.out.println(LINE);
-        System.exit(0);
-    }
-
-
     public static void main(String[] args) {
         // Configure the log level to WARNING to output only warnings and errors
         Logger rootLogger = Logger.getLogger("");
@@ -448,7 +287,7 @@ public class BusyBreak {
             handler.setLevel(Level.WARNING);
         }
 
-        intro();
+        ui.showWelcome();
         Load loader = new Load();
         loader.loadActivities();
         loader.loadBudgets();
