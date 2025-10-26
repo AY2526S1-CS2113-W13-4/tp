@@ -1,11 +1,12 @@
 package seedu.busybreak;
 
 import seedu.busybreak.command.Add;
+import seedu.busybreak.command.Budget;
+import seedu.busybreak.command.Clear;
 import seedu.busybreak.command.List;
 import seedu.busybreak.command.Schedule;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
-import seedu.busybreak.command.Clear;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class BusyBreak {
             editActivityDataInList(userInput);
             break;
         case "budget":
-            handleBudget(userInput);
+            Budget.handleBudget(userInput);
             break;
         case "breakdown":
             budgetPlan.listByCategory();
@@ -190,7 +191,7 @@ public class BusyBreak {
     }
 
 
-    private static void handleBudget(String[] userInputArray) {
+    /*private static void handleBudget(String[] userInputArray) {
         if (userInputArray.length < 2) {
             System.out.println(LINE);
             System.out.println("Please specify a budget command: set / add / list / delete");
@@ -265,7 +266,7 @@ public class BusyBreak {
             System.out.println(LINE);
         }
     }
-
+   */
     public static void main(String[] args) {
         // Configure the log level to WARNING to output only warnings and errors
         Logger rootLogger = Logger.getLogger("");

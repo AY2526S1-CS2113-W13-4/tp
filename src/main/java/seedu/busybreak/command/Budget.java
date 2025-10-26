@@ -1,0 +1,98 @@
+package seedu.busybreak.command;
+import seedu.busybreak.BusyBreak;
+import java.util.Arrays;
+
+public class Budget {
+    public static void handleBudget(String[] userInputArray) {
+        if (userInputArray.length < 2) {
+            System.out.println(BusyBreak.LINE);
+            System.out.println("Please specify a budget command: set / add / list / delete / setcat");
+            System.out.println(BusyBreak.LINE);
+            return;
+        }
+
+        String sub = userInputArray[1].toLowerCase();
+        try {
+            switch (sub) {
+            case "set":
+                if (userInputArray.length < 3) {
+                    System.out.println(BusyBreak.LINE);
+                    System.out.println("Usage: budget set <amount>");
+                    System.out.println(BusyBreak.LINE);
+                    return;
+                }
+                BusyBreak.budgetPlan.setBudget(Double.parseDouble(userInputArray[2]));
+                BusyBreak.getStorage().saveBudgets();
+                System.out.println(BusyBreak.LINE);
+                System.out.printf("Budget set to $%.2f%n", BusyBreak.budgetPlan.getTotalBudget());
+                System.out.println(BusyBreak.LINE);
+                break;
+
+            case "add":
+                String joined = String.join(" ", Arrays.copyOfRange(userInputArray, 2,
+                        userInputArray.length));
+                String name = joined.contains("n/") ? joined.split("n/", 2)[1]
+                        .split("c/", 2)[0].trim() : "";
+                String cost = joined.contains("c/") ? joined.split("c/", 2)[1]
+                        .split("cat/", 2)[0].trim() : "";
+                String category = joined.contains("cat/") ? joined.split("cat/", 2)[1].trim()
+                        : "Uncategorized";
+
+                if (name.isEmpty() || cost.isEmpty()) {
+                    System.out.println(BusyBreak.LINE);
+                    System.out.println("Usage: budget add n/<name> c/<cost> cat/<category>");
+                    System.out.println(BusyBreak.LINE);
+                    return;
+                }
+                BusyBreak.budgetPlan.addExpense(name, cost, category);
+                BusyBreak.getStorage().saveBudgets();
+                break;
+
+            case "list":
+                BusyBreak.budgetPlan.listExpenses();
+                break;
+
+            case "delete":
+                if (userInputArray.length < 3) {
+                    System.out.println(BusyBreak.LINE);
+                    System.out.println("Usage: budget delete <index>");
+                    System.out.println(BusyBreak.LINE);
+                    return;
+                }
+                int idx = Integer.parseInt(userInputArray[2]);
+                BusyBreak.budgetPlan.deleteExpense(idx);
+                BusyBreak.getStorage().saveBudgets();
+                break;
+
+            case "setcat": {
+                if (userInputArray.length < 4) {
+                    System.out.println(BusyBreak.LINE);
+                    System.out.println("Usage: budget setcat <index> cat/<newCategory>");
+                    System.out.println(BusyBreak.LINE);
+                    return;
+                }
+                int editIndex = Integer.parseInt(userInputArray[2]);
+
+                String catJoined = String.join(" ",
+                            java.util.Arrays.copyOfRange(userInputArray, 3, userInputArray.length));
+                String newCat = catJoined.startsWith("cat/") ? catJoined.substring(4).trim()
+                            : catJoined.trim();
+
+                BusyBreak.budgetPlan.setExpenseCategory(editIndex, newCat);
+                BusyBreak.getStorage().saveBudgets();
+                break;
+            }
+
+            default:
+                System.out.println(BusyBreak.LINE);
+                System.out.println("Invalid budget command. Try: set / add / list / delete / setcat");
+                System.out.println(BusyBreak.LINE);
+                break;
+            }
+        } catch (Exception e) {
+            System.out.println(BusyBreak.LINE);
+            System.out.println("Error: " + e.getMessage());
+            System.out.println(BusyBreak.LINE);
+        }
+    }
+}
