@@ -118,4 +118,42 @@ public class Ui {
         }
     }
 
+    //edit function
+    public static void showInvalidIndexMessage() {
+        showLine();
+        System.out.println("Invalid index. Please provide a valid activity number.");
+        showLine();
+    }
+
+    //edit function
+    public static void showInvalidIndexFormatMessage() {
+        showLine();
+        System.out.println("Invalid index format. Please provide a valid number.");
+        showLine();
+    }
+
+    //edit function
+    public static void showInvalidDetailMessage() {
+        showLine();
+        System.out.println("Invalid detail detected");
+        showLine();
+    }
+
+    public static void showEditedActivity(String activityNumber, Activity activity) {
+        showLine();
+        System.out.println("Activity " + activityNumber + " has been edited with the following details:");
+        System.out.print("Date: " + activity.getDate() + " | ");
+        System.out.print("Time: " + activity.getTime() + " | ");
+        System.out.print("Description: " + activity.getDescription() + " | ");
+        System.out.println("Cost: $" + activity.getCost());
+        showLine();
+    }
+
+    public static void showDeletedActivity(String activityNumber, Activity activity) {
+        showLine();
+        System.out.println("Deleted activity from Itinerary: ");
+        System.out.println(activityNumber + ". " + activity.getDescription());
+        showLine();
+    }
+
 }

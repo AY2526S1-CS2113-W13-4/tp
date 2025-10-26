@@ -3,13 +3,14 @@ package seedu.busybreak;
 import seedu.busybreak.activity.BudgetPlan;
 import seedu.busybreak.command.Add;
 import seedu.busybreak.command.Budget;
-import seedu.busybreak.command.Clear;
 import seedu.busybreak.command.List;
 import seedu.busybreak.command.Schedule;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
+import seedu.busybreak.command.Clear;
+import seedu.busybreak.command.Delete;
+import seedu.busybreak.command.Edit;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -52,10 +53,10 @@ public class BusyBreak {
             view(userInput);
             break;
         case "delete":
-            deleteActivityDataFromList(userInput);
+            Delete.deleteActivityDataFromList(userInput);
             break;
         case "edit":
-            editActivityDataInList(userInput);
+            Edit.editActivityDataInList(userInput);
             break;
         case "budget":
             Budget.handleBudget(userInput);
