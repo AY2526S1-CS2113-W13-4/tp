@@ -87,6 +87,82 @@ public class BudgetPlan {
         System.out.println(LINE);
     }
 
+
+    private String normalizeCategory(String category) {
+        if (category == null || category.isBlank()) {
+            return "Uncategorized";
+        }
+        String c = category.trim();
+        return Character.toUpperCase(c.charAt(0)) + c.substring(1);
+    }
+
+    private static int findIndex(java.util.ArrayList<String> list, String target) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).equals(target)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void buildCategoryTotals(java.util.ArrayList<String> cats, java.util.ArrayList<Double> totals) {
+        for (int i = 0; i < categories.size(); i++) {
+            String cat = categories.get(i);
+            double amt = amounts.get(i);
+            int idx = findIndex(cats, cat);
+            if (idx == -1) {
+                cats.add(cat);
+                totals.add(amt);
+            } else {
+                totals.set(idx, totals.get(idx) + amt);
+            }
+        }
+    }
+
+    private static void sortByTotalsDesc(java.util.ArrayList<String> cats,  java.util.ArrayList<Double> totals) {
+        for (int i = 0; i < totals.size(); i++) {
+            int maxIdx = i;
+            for (int j = i + 1; j < totals.size(); j++) {
+                if (totals.get(j) > totals.get(maxIdx)) {
+                    maxIdx = j;
+                }
+            }
+            if (maxIdx != i) {
+                double t = totals.get(i);
+                totals.set(i, totals.get(maxIdx));
+                totals.set(maxIdx, t);
+                String c = cats.get(i);
+                cats.set(i, cats.get(maxIdx));
+                cats.set(maxIdx, c);
+            }
+        }
+    }
+
+
+    public void listByCategory() {
+        java.util.ArrayList<String> cats = new java.util.ArrayList<>();
+        java.util.ArrayList<Double> totals = new java.util.ArrayList<>();
+        buildCategoryTotals(cats, totals);
+        sortByTotalsDesc(cats, totals);
+
+        System.out.println(LINE);
+        if (cats.isEmpty()) {
+            System.out.println("No expenses recorded yet.");
+            System.out.println(LINE);
+            return;
+        }
+        System.out.println("Spending by category:");
+        for (int i = 0; i < cats.size(); i++) {
+            System.out.printf(java.util.Locale.US, " - %s: $%.2f%n", cats.get(i), totals.get(i));
+        }
+        System.out.printf(java.util.Locale.US,
+                "Total Spent: $%.2f | Remaining Budget: $%.2f%n",
+                getTotalSpent(), getRemainingBudget());
+        System.out.println(LINE);
+    }
+
+
+
     private static double parseAmount(String raw) {
         String cleaned = raw.trim().replace("$", "").replace(",", "");
         try {

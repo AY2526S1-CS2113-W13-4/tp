@@ -58,6 +58,9 @@ public class BusyBreak {
         case "budget":
             handleBudget(userInput);
             break;
+        case "breakdown":
+            budgetPlan.listByCategory();
+            break;
         case "clear":
             Clear.handleClearCommand(userInput);
             break;
