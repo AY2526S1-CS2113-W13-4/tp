@@ -1,1 +1,4 @@
-BUDGET|0.0
+BUDGET|500.0
+EXPENSE|Visit Shrine|4.5|Activity
+EXPENSE|Snacks|3.2|Food
+EXPENSE|Snacks|3.2|Uncategorized

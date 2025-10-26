@@ -58,6 +58,9 @@ public class BusyBreak {
         case "budget":
             handleBudget(userInput);
             break;
+        case "breakdown":
+            budgetPlan.listByCategory();
+            break;
         case "clear":
             Clear.handleClearCommand(userInput);
             break;
@@ -230,6 +233,7 @@ public class BusyBreak {
                     return;
                 }
                 budgetPlan.addExpense(name, cost, category);
+
                 storage.saveBudgets();
                 break;
 
