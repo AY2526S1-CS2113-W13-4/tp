@@ -1,5 +1,7 @@
 package seedu.busybreak;
 
+import seedu.busybreak.parser.Time;
+
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
