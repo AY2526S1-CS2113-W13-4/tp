@@ -72,23 +72,6 @@ public class BusyBreak {
         return parsedCommand.userInput();
     }
 
-    private static void setByTime() {
-        if (list.isEmpty()) {
-            System.out.println(LINE);
-            System.out.println("Itinerary is Empty! Nothing to sort.");
-            System.out.println(LINE);
-            return;
-        }
-
-        list.sort(Comparator.comparing(a -> a.getDateTimeObject().getDateTime()));
-
-        System.out.println(LINE);
-        System.out.println("Your Activities are sorted by time now!");
-        List.listItems();
-
-        storage.saveActivities();
-    }
-
     private static void view(String[] userInputArray) {
         assert userInputArray != null : "Input cannot be null";
         if (userInputArray.length != 2) {
