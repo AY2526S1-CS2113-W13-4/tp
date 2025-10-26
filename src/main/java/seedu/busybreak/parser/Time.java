@@ -1,4 +1,4 @@
-package seedu.busybreak;
+package seedu.busybreak.parser;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

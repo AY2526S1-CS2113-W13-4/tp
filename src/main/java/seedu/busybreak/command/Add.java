@@ -12,8 +12,12 @@ public class Add {
             return;
         }
 
-        BusyBreak.list.add(new Activity(activityData.date(), activityData.time(),
-                activityData.description(), activityData.cost()));
+        Activity a = new Activity(activityData.date(), activityData.time(),
+                activityData.description(), activityData.cost());
+        BusyBreak.list.add(a);
+        BusyBreak.budgetPlan.addExpense(a.getDescription(), a.getCost(), "Activity");
+        BusyBreak.getStorage().saveBudgets();
+
         Ui.printAddedItem(activityData);
         BusyBreak.getStorage().saveActivities();
     }

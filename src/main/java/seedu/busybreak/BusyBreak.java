@@ -2,6 +2,7 @@ package seedu.busybreak;
 
 import seedu.busybreak.command.Add;
 import seedu.busybreak.command.List;
+import seedu.busybreak.command.Schedule;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
 import seedu.busybreak.command.Clear;
@@ -9,7 +10,6 @@ import seedu.busybreak.command.Delete;
 import seedu.busybreak.command.Edit;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -46,7 +46,7 @@ public class BusyBreak {
             Add.addActivityDataToList(userInput);
             break;
         case "schedule":
-            setByTime();
+            Schedule.setByTime();
             break;
         case "view":
             view(userInput);
@@ -59,6 +59,9 @@ public class BusyBreak {
             break;
         case "budget":
             handleBudget(userInput);
+            break;
+        case "breakdown":
+            budgetPlan.listByCategory();
             break;
         case "clear":
             Clear.handleClearCommand(userInput);
@@ -165,6 +168,7 @@ public class BusyBreak {
                     return;
                 }
                 budgetPlan.addExpense(name, cost, category);
+
                 storage.saveBudgets();
                 break;
 

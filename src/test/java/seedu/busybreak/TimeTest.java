@@ -1,5 +1,7 @@
 package seedu.busybreak;
 
+import seedu.busybreak.command.Schedule;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +48,7 @@ public class TimeTest {
         list.add(a2);
         list.add(a3);
 
-        var method = BusyBreak.class.getDeclaredMethod("setByTime");
+        var method = Schedule.class.getDeclaredMethod("setByTime");
         method.setAccessible(true);
         method.invoke(null);
 
@@ -70,7 +72,7 @@ public class TimeTest {
         ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
         list.clear();
 
-        var method = BusyBreak.class.getDeclaredMethod("setByTime");
+        var method = Schedule.class.getDeclaredMethod("setByTime");
         method.setAccessible(true);
         method.invoke(null);
 
