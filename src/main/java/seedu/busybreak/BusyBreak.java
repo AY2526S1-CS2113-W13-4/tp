@@ -2,12 +2,12 @@ package seedu.busybreak;
 
 import seedu.busybreak.command.Add;
 import seedu.busybreak.command.List;
+import seedu.busybreak.command.Schedule;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
 import seedu.busybreak.command.Clear;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -44,7 +44,7 @@ public class BusyBreak {
             Add.addActivityDataToList(userInput);
             break;
         case "schedule":
-            setByTime();
+            Schedule.setByTime();
             break;
         case "view":
             view(userInput);
@@ -151,22 +151,22 @@ public class BusyBreak {
         }
     }
 
-    private static void setByTime() {
-        if (list.isEmpty()) {
-            System.out.println(LINE);
-            System.out.println("Itinerary is Empty! Nothing to sort.");
-            System.out.println(LINE);
-            return;
-        }
-
-        list.sort(Comparator.comparing(a -> a.getDateTimeObject().getDateTime()));
-
-        System.out.println(LINE);
-        System.out.println("Your Activities are sorted by time now!");
-        List.listItems();
-
-        storage.saveActivities();
-    }
+//    private static void setByTime() {
+//        if (list.isEmpty()) {
+//            System.out.println(LINE);
+//            System.out.println("Itinerary is Empty! Nothing to sort.");
+//            System.out.println(LINE);
+//            return;
+//        }
+//
+//        list.sort(Comparator.comparing(a -> a.getDateTimeObject().getDateTime()));
+//
+//        System.out.println(LINE);
+//        System.out.println("Your Activities are sorted by time now!");
+//        List.listItems();
+//
+//        storage.saveActivities();
+//    }
 
     private static void view(String[] userInputArray) {
         assert userInputArray != null : "Input cannot be null";
