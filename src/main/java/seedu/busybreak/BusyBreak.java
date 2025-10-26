@@ -247,6 +247,7 @@ public class BusyBreak {
                     return;
                 }
                 budgetPlan.addExpense(name, cost, category);
+
                 storage.saveBudgets();
                 break;
 
