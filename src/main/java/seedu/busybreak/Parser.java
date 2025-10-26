@@ -29,6 +29,50 @@ public class Parser {
         return in;
     }
 
+    public static int parseActivityIndex(String activityIndexString){
+        return Integer.parseInt(activityIndexString) - 1;
+    }
+
+    public static ParseEditDetails parseEditActivityDetails(String[] userInputArray){
+        String[] inputDetailsArray = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
+        String inputDetails = String.join(" ", inputDetailsArray).trim();
+        String[] editDetails = inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
+
+        String date = null;
+        String time = null;
+        String description = null;
+        String cost = null;
+        boolean hasInvalidDetail = false;
+
+        for (String editDetail : editDetails) {
+            int slash = editDetail.trim().indexOf("/");
+            String detailName = editDetail.trim().substring(0, slash);
+            String detailValue = editDetail.trim().substring(slash + 1);
+
+            switch (detailName) {
+            case "c":
+                cost = detailValue;
+                break;
+            case "desc":
+                description = detailValue;
+                break;
+            case "t":
+                time = detailValue;
+                break;
+            case "d":
+                date = detailValue;
+                break;
+            default:
+                hasInvalidDetail = true;
+            }
+        }
+
+        return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
+    }
+
+    public record ParseEditDetails(String date, String time, String description, String cost,
+                                   boolean hasInvalidDetail){}
+
     public static ParseActivityData getParseActivityData(String[] userInputArray) {
 
         try {

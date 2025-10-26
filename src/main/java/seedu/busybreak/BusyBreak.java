@@ -5,6 +5,8 @@ import seedu.busybreak.command.List;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
 import seedu.busybreak.command.Clear;
+import seedu.busybreak.command.Delete;
+import seedu.busybreak.command.Edit;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -50,10 +52,10 @@ public class BusyBreak {
             view(userInput);
             break;
         case "delete":
-            deleteActivityDataFromList(userInput); //i need my lines
+            Delete.deleteActivityDataFromList(userInput);
             break;
         case "edit":
-            editActivityDataInList(userInput); //i need my lines
+            Edit.editActivityDataInList(userInput);
             break;
         case "budget":
             handleBudget(userInput);
@@ -65,105 +67,6 @@ public class BusyBreak {
             Ui.invalidInput();
         }
         return parsedCommand.userInput();
-    }
-
-    private static void editActivityDataInList(String[] userInputArray) {
-        try {
-            logger.log(Level.INFO, "Editing Activity " +  userInputArray[1]);
-            int index = Integer.parseInt(userInputArray[1]) - 1;
-            assert index >= 0 && index < list.size() : "Index out of bounds";
-            Activity editedActivity = list.get(index);
-
-            if (index < 0 || index >= list.size()) {
-                System.out.println(LINE);
-                System.out.println("Invalid index. Please provide a valid activity number.");
-                System.out.println(LINE);
-                return;
-            }
-
-            String[] inputDetailsArray = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
-            String inputDetails = String.join(" ", inputDetailsArray).trim();
-            String[] editDetails = inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
-            for (int i = 0; i < editDetails.length; i++) {
-                int slash = editDetails[i].trim().indexOf("/");
-                String detailName =  editDetails[i].trim().substring(0, slash);
-                String detailValue =  editDetails[i].trim().substring(slash + 1);
-                switch (detailName) {
-                    case "c":
-                        editedActivity.setCost(detailValue);
-                        assert editedActivity.getCost().equals(detailValue) : "Cost must match edited cost";
-                        break;
-                    case "desc":
-                        editedActivity.setDescription(detailValue);
-                        assert editedActivity.getDescription().equals(detailValue) : "Description " +
-                                "must match edited description";
-                        break;
-                    case "t":
-                        editedActivity.setTime(detailValue);
-                        assert editedActivity.getTime().equals(detailValue) : "Time must match edited time";
-                        break;
-                    case "d":
-                        editedActivity.setDate(detailValue);
-                        assert editedActivity.getDate().equals(detailValue) : "Date must match edited date";
-                        break;
-                    default:
-                        System.out.println(LINE);
-                        System.out.println("Invalid detail detected");
-                }
-            }
-
-            System.out.println(LINE);
-            System.out.println("Activity " + userInputArray[1].trim() + " has been edited " +
-                    "with the following details:");
-            System.out.print("Date: " + editedActivity.getDate() + " | ");
-            System.out.print("Time: " + editedActivity.getTime() + " | ");
-            System.out.print("Description: " + editedActivity.getDescription() + " | ");
-            System.out.println("Cost: $" + editedActivity.getCost());
-            System.out.println(LINE);
-
-            storage.saveActivities();
-
-        } catch (NumberFormatException e) {
-            System.out.println(LINE);
-            System.out.println("Invalid index format. Please provide a valid number.");
-            System.out.println(LINE);
-        }
-    }
-
-    private static void deleteActivityDataFromList(String[] userInputArray) {
-        assert userInputArray.length >= 2 : "User input array must have at least 2 elements";
-
-        try {
-            int index = Integer.parseInt(userInputArray[1]) - 1;
-            logger.log(Level.INFO, "Deleting Activity " + userInputArray[1] + " from the list.");
-            assert index >= 0 && index < list.size() : "Index out of bounds";
-
-            if (index < 0 || index >= list.size()) {
-                System.out.println(LINE);
-                System.out.println("Invalid index. Please provide a valid activity number.");
-                System.out.println(LINE);
-                return;
-            }
-
-            Activity deletedActivity = list.get(index);
-            assert deletedActivity != null : "Activity " + userInputArray[1] + " cannot be null";
-
-            int originalSize = list.size();
-            list.remove(index);
-            assert list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
-
-            System.out.println(LINE);
-            System.out.println("Deleted activity from Itinerary: ");
-            System.out.println((index + 1) + ". " + deletedActivity.getDescription());
-            System.out.println(LINE);
-
-            storage.saveActivities();
-
-        } catch (NumberFormatException e) {
-            System.out.println(LINE);
-            System.out.println("Invalid index format. Please provide a valid number.");
-            System.out.println(LINE);
-        }
     }
 
     private static void setByTime() {
