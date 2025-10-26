@@ -88,12 +88,50 @@ public class BudgetPlan {
     }
 
 
+    public void setExpenseCategory(int oneBasedIndex, String newCategory) {
+        assert oneBasedIndex > 0 : "Index must be positive";
+        int idx = oneBasedIndex - 1;
+
+        if (idx < 0 || idx >= names.size()) {
+            printBox("Invalid index. No category updated.");
+            return;
+        }
+
+        String oldCat = categories.get(idx);
+        String cat = normalizeCategory(newCategory);
+
+        categories.set(idx, cat);
+
+        logger.log(Level.INFO, "Updated category for \"{0}\": {1} -> {2}",
+                new Object[]{names.get(idx), oldCat, cat});
+
+        printBox(String.format(Locale.US,
+                "Updated category for \"%s\": %s -> %s",
+                names.get(idx), oldCat, cat));
+    }
+
     private String normalizeCategory(String category) {
         if (category == null || category.isBlank()) {
             return "Uncategorized";
         }
-        String c = category.trim();
-        return Character.toUpperCase(c.charAt(0)) + c.substring(1);
+        String c = category.trim().toLowerCase();
+
+        if (c.equals("meal") || c.equals("meals") || c.equals("snack") || c.equals("snacks")
+                || c.equals("breakfast") || c.equals("lunch") || c.equals("dinner")) {
+            return "Food";
+        }
+        if (c.equals("taxi") || c.equals("uber") || c.equals("grab") || c.equals("bus") || c.equals("train")) {
+            return "Transport";
+        }
+        if (c.equals("hotel") || c.equals("hostel") || c.equals("rental") || c.equals("accommodation")) {
+            return "Lodging";
+        }
+        if (c.equals("activities") || c.equals("tour") || c.equals("ticket") || c.equals("museum")) {
+            return "Activity";
+        }
+
+        String raw = category.trim();
+        return Character.toUpperCase(raw.charAt(0)) + raw.substring(1);
     }
 
     private static int findIndex(java.util.ArrayList<String> list, String target) {
