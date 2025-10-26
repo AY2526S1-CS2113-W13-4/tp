@@ -1,5 +1,6 @@
 package seedu.busybreak;
 
+import seedu.busybreak.activity.BudgetPlan;
 import seedu.busybreak.command.Add;
 import seedu.busybreak.command.Budget;
 import seedu.busybreak.command.Clear;
@@ -138,6 +139,7 @@ public class BusyBreak {
             assert deletedActivity != null : "Activity " + userInputArray[0] + " cannot be null";
 
             int originalSize = list.size();
+            budgetPlan.removeActivityExpense(deletedActivity.getDescription(), deletedActivity.getCost());
             list.remove(index);
             assert list.size() == originalSize - 1 : "The list size should decrease by 1 after deletion";
 
@@ -147,6 +149,7 @@ public class BusyBreak {
             System.out.println(LINE);
 
             storage.saveActivities();
+            storage.saveBudgets();
 
         } catch (NumberFormatException e) {
             System.out.println(LINE);
@@ -190,83 +193,6 @@ public class BusyBreak {
         ui.showItineraryFor(date, matches);
     }
 
-
-    /*private static void handleBudget(String[] userInputArray) {
-        if (userInputArray.length < 2) {
-            System.out.println(LINE);
-            System.out.println("Please specify a budget command: set / add / list / delete");
-            System.out.println(LINE);
-            return;
-        }
-
-        String sub = userInputArray[1].toLowerCase();
-        try {
-            switch (sub) {
-            case "set":
-                if (userInputArray.length < 3) {
-                    System.out.println(LINE);
-                    System.out.println("Usage: budget set <amount>");
-                    System.out.println(LINE);
-                    return;
-                }
-                budgetPlan.setBudget(Double.parseDouble(userInputArray[2]));
-                System.out.println(LINE);
-                System.out.printf("Budget set to $%.2f%n", budgetPlan.getTotalBudget());
-                System.out.println(LINE);
-                storage.saveBudgets();
-                break;
-
-            case "add":
-                // format: budget add n/<name> c/<cost> cat/<category>
-                String joined = String.join(" ",
-                        Arrays.copyOfRange(userInputArray, 2, userInputArray.length));
-                String name = joined.contains("n/") ? joined.split("n/", 2)[1]
-                        .split("c/", 2)[0].trim() : "";
-                String cost = joined.contains("c/") ? joined.split("c/", 2)[1]
-                        .split("cat/", 2)[0].trim() : "";
-                String category = joined.contains("cat/") ? joined.split("cat/", 2)[1].trim()
-                        : "Uncategorized";
-
-                if (name.isEmpty() || cost.isEmpty()) {
-                    System.out.println(LINE);
-                    System.out.println("Usage: budget add n/<name> c/<cost> cat/<category>");
-                    System.out.println(LINE);
-                    return;
-                }
-                budgetPlan.addExpense(name, cost, category);
-
-                storage.saveBudgets();
-                break;
-
-            case "list":
-                budgetPlan.listExpenses();
-                break;
-
-            case "delete":
-                if (userInputArray.length < 3) {
-                    System.out.println(LINE);
-                    System.out.println("Usage: budget delete <index>");
-                    System.out.println(LINE);
-                    return;
-                }
-                int idx = Integer.parseInt(userInputArray[2]);
-                budgetPlan.deleteExpense(idx);
-                storage.saveBudgets();
-                break;
-
-            default:
-                System.out.println(LINE);
-                System.out.println("Invalid budget command. Try: set / add / list / delete");
-                System.out.println(LINE);
-                break;
-            }
-        } catch (Exception e) {
-            System.out.println(LINE);
-            System.out.println("Error: " + e.getMessage());
-            System.out.println(LINE);
-        }
-    }
-   */
     public static void main(String[] args) {
         // Configure the log level to WARNING to output only warnings and errors
         Logger rootLogger = Logger.getLogger("");

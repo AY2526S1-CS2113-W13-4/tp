@@ -1,7 +1,6 @@
 BUDGET|500.0
-EXPENSE|Visit Shrine|4.5|Activity
-EXPENSE|Snacks|3.2|Food
-EXPENSE|Snacks|3.2|Food
-EXPENSE|Lunch|12.5|Food
-EXPENSE|Taxi|10.0|Transport
-EXPENSE|Burger|7.0|Food
+EXPENSE|Activity C|30.0|Activity
+EXPENSE|Activity B|20.0|Activity
+EXPENSE|Visit Store|4.5|Activity
+EXPENSE|Bookstore|25.0|Activity
+EXPENSE|museum|20.0|Activity

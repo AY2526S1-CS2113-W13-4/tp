@@ -2,6 +2,7 @@ package seedu.busybreak.command;
 import seedu.busybreak.BusyBreak;
 import java.util.Arrays;
 
+
 public class Budget {
     public static void handleBudget(String[] userInputArray) {
         if (userInputArray.length < 2) {
@@ -51,6 +52,15 @@ public class Budget {
             case "list":
                 BusyBreak.budgetPlan.listExpenses();
                 break;
+
+            case "sync": {
+                BusyBreak.budgetPlan.syncFromActivities(BusyBreak.list);
+                BusyBreak.getStorage().saveBudgets();
+                System.out.println(BusyBreak.LINE);
+                System.out.println("Budget synced with Activities.");
+                System.out.println(BusyBreak.LINE);
+                break;
+            }
 
             case "delete":
                 if (userInputArray.length < 3) {
