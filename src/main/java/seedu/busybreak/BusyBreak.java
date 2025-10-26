@@ -10,7 +10,6 @@ import seedu.busybreak.command.Clear;
 import seedu.busybreak.command.Delete;
 import seedu.busybreak.command.Edit;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
