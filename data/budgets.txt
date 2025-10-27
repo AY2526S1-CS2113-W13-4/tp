@@ -1,8 +1,1 @@
-BUDGET|500.0
-EXPENSE|ArtMuseum|35.0|Activity
-EXPENSE|Activity A|10.0|Activity
-EXPENSE|Water|1.5|Food
-EXPENSE|Bus|3.0|Transport
-EXPENSE|Activity C|30.0|Activity
-EXPENSE|Activity B|20.0|Activity
-EXPENSE|snacks|5.0|Food
+BUDGET|0.0
