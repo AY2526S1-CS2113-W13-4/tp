@@ -1,6 +1,6 @@
 BUDGET|500.0
-EXPENSE|Activity C|30.0|Activity
-EXPENSE|Activity B|20.0|Activity
-EXPENSE|Visit Store|4.5|Activity
-EXPENSE|Bookstore|25.0|Activity
-EXPENSE|museum|20.0|Activity
+EXPENSE|snacks|5.0|Food
+EXPENSE|bus|10.0|Travel
+EXPENSE|ArtMuseum|35.0|Activity
+EXPENSE|skate|20.0|Activity
+EXPENSE|ski|45.0|Activity

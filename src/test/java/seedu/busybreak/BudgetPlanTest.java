@@ -130,15 +130,15 @@ class BudgetPlanTest {
         BudgetPlan plan = new BudgetPlan();
         plan.setBudget(60);
 
-        plan.addExpense("Visit Shrine", "4.5", "Activity");
+        plan.addExpense("Noodles", "4.5", "Foof");
         assertEquals(55.5, plan.getRemainingBudget(), 1e-9);
 
         plan.deleteExpense(1);
-        plan.addExpense("Visit Shrine+", "5.0", "Activity");
+        plan.addExpense("Noodles+", "5.0", "Food");
 
         assertEquals(55.0, plan.getRemainingBudget(), 1e-9); // 60 - 5.0
-        assertEquals("Activity", plan.categories.get(0));
-        assertEquals("Visit Shrine+", plan.names.get(0));
+        assertEquals("Food", plan.categories.get(0));
+        assertEquals("Noodles+", plan.names.get(0));
 
         plan.deleteExpense(1);
         assertEquals(60.0, plan.getRemainingBudget(), 1e-9);
@@ -162,12 +162,12 @@ class BudgetPlanTest {
         BudgetPlan plan = new BudgetPlan();
         plan.setBudget(20);
         plan.addExpense("Water", "1.50", "Food");
-        plan.addExpense("Temple", "3", "Activity");
+        plan.addExpense("Bus", "3", "Transport");
 
         String out = capturePrint(plan::listExpenses);
 
         assertTrue(out.contains("Water"));
-        assertTrue(out.contains("Temple"));
+        assertTrue(out.contains("Bus"));
         assertTrue(out.contains("Total Spent"));
         assertTrue(out.contains("Remaining Budget"));
         assertEquals(4.50, plan.getTotalSpent(), 1e-9);

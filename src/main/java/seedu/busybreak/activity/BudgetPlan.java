@@ -40,6 +40,15 @@ public class BudgetPlan {
         return totalBudget - getTotalSpent();
     }
 
+    private boolean isActivityExpenseAt(int idx) {
+        return idx >= 0 && idx < categories.size() && "Activity".equalsIgnoreCase(categories.get(idx));
+    }
+
+    public boolean isActivityCategory(String category) {
+        return "Activity".equalsIgnoreCase(normalizeCategory(category));
+    }
+
+
     public void addActivityExpense(String description, String costString) {
         assert description != null && !description.isBlank();
         assert costString != null && !costString.isBlank();
@@ -70,11 +79,20 @@ public class BudgetPlan {
         return false;
     }
 
-    public void updateActivityExpense(String oldDesc, String oldCost, String newDesc, String newCost) {
-        boolean removed = removeActivityExpense(oldDesc, oldCost);
-        addActivityExpense(newDesc, newCost);
-        logger.log(Level.INFO, "Activity expense updated: \"{0}\" -> \"{1}\"",
-                new Object[]{oldDesc, newDesc});
+
+    public void updateActivityExpense(String oldDesc, String oldCostStr, String newDesc, String newCostStr) {
+        double oldCost = parseAmount(oldCostStr);
+        double newCost = parseAmount(newCostStr);
+
+        for (int i = 0; i < names.size(); i++) {
+            if ("Activity".equalsIgnoreCase(categories.get(i))
+                    && names.get(i).equals(oldDesc)
+                    && Math.abs(amounts.get(i) - oldCost) < 1e-9) {
+                names.set(i, newDesc);
+                amounts.set(i, newCost);
+                return;
+            }
+        }
     }
 
     public boolean hasExpense(String name, String cost, String category) {
@@ -129,6 +147,10 @@ public class BudgetPlan {
             printBox("Invalid index. No expense deleted.");
             return;
         }
+        if (isActivityExpenseAt(idx)) {
+            printBox("This expense is linked to an Activity. " + "Please edit/delete it via the Activity commands.");
+            return;
+        }
         String removedName = names.remove(idx);
         double removedAmt = amounts.remove(idx);
         String removedCat = categories.remove(idx);
@@ -161,6 +183,10 @@ public class BudgetPlan {
 
         if (idx < 0 || idx >= names.size()) {
             printBox("Invalid index. No category updated.");
+            return;
+        }
+        if (isActivityExpenseAt(idx)) {
+            printBox("Cannot change the category of an Activity-linked expense. " + "Edit the Activity instead.");
             return;
         }
 

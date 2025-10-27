@@ -29,11 +29,13 @@ public class Delete {
 
             int originalSize = BusyBreak.list.size();
             BusyBreak.list.remove(index);
+            BusyBreak.budgetPlan.removeActivityExpense(deletedActivity.getDescription(), deletedActivity.getCost());
             assert BusyBreak.list.size() == originalSize - 1: "The list size should decrease by 1 after deletion";
 
             Ui.showDeletedActivity(userInputArray[1],  deletedActivity);
 
             BusyBreak.getStorage().saveActivities();
+            BusyBreak.getStorage().saveBudgets();
 
         } catch (NumberFormatException e) {
             Ui.showInvalidIndexFormatMessage();
