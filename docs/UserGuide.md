@@ -2,7 +2,7 @@
 
 ## Introduction
 
-BusyBreak is a travel itinerary management application 
+BusyBreak is a travel itinerary management application
 that helps you **organize and track your travel activities, schedules, and costs**.
 
 ## Quick Start
@@ -19,56 +19,114 @@ The activity includes date, time, description and cost.
 ---
 
 ### Adding an activity: `add`
-Adds a new activity to your travel itinerary 
+
+Adds a new activity to your travel itinerary
 with date, time, description, and cost information.<br/>
+Each activity is automatically saved to your itinerary, which can be viewed,edited,sorted or deleted later.
+
 Format: `add d/DATE t/TIME desc/DESCRIPTION c/COST`<br/>
+
 * The `DATE` should use the format `yyyy-MM-dd`
-* The `TIME` should use the format `HH:mm`
+    * Example : `2025-01-01` for `January 1st 2025`
+
+
+* The `TIME` should use the 24 hour time format `HH:mm`
+    * Example : `16:30` for `4.30pm`
+
+
 * The unit of `COST` is the Singapore dollar.<br/>
+    * Should be a non-negative number
+    * use 0 for free activities
+    * Example : `6.70, 1000, 0`
 
 Examples:<br/>
+
 * `add d/2025-01-01 t/10:00 desc/Visit museum c/10`
+
+Expected output:
+
+```
+______________________________________________________________________
+Added Activity to Itinerary: Date: 2025-01-01 | Time: 10:00 | Description: Visit museum | Cost: $10
+______________________________________________________________________
+```
+
 * `add d/2025-10-12 t/19:00 desc/Watch the sunset c/0`
 
+Expected output:
+
+```
+______________________________________________________________________
+Added Activity to Itinerary: Date: 2025-10-12 | Time: 19:00 | Description: Watch the sunset | Cost: $0
+______________________________________________________________________
+```
 
 ### Editing an activity: `edit`
+
 Edits an existing activity in the list using its index number.<br/>
 Format: `edit INDEX d/DATE t/TIME desc/DESCRIPTION c/COST`<br/>
+
 * The `INDEX` is the integer displayed in the itinerary list.
 * The `DATE` should use the format `yyyy-MM-dd`
 * The `TIME` should use the format `HH:mm`
 * The unit of `COST` is the Singapore dollar.<br/>
 
 Examples:<br/>
+
 * `edit 1 d/2025-04-20 t/11:11 desc/Go to theme park c/67`
 * `edit 2 d/2025-09-11 t/08:46 desc/Visit historical site c/67`
 
-
 ### Listing all activities: `list`
+
 Displays all activities in the itinerary.<br/>
 Format: `list`<br/>
 
+Example: `list`
+
+Expected output:
+
+```
+______________________________________________________________________
+1. 
+Date: 2025-01-01
+Time: 10:00
+Description: Visit museum
+Cost: $10
+______________________________________________________________________
+2. 
+Date: 2025-10-12
+Time: 19:00
+Description: Watch the sunset
+Cost: $0
+______________________________________________________________________
+```
 
 ### Viewing Activities by Date: `view`
+
 Shows all activities scheduled for a specific date.
 If there is no date after `view`, the effect is the same as `list`.<br/>
 Format: `view DATE` or `view`<br/>
+
 * The `DATE` should use the format 'yyyy-HH-mm'.<br/>
 
 Example:<br/>
+
 * `view`
 * `view 2025-01-01`
 
-
 ### Deleting an activity: `delete`
+
 Removes an activity from your itinerary by its index number.<br/>
 Format: `delete INDEX`<br/>
+
 * The `INDEX` is the integer displayed in the itinerary list.<br/>
 
 Example:<br/>
+
 * `delete 1`
 
 Expected outcome:
+
 ```
 ______________________________________________________________________
 Deleted activity from Itinerary: 
@@ -90,18 +148,22 @@ Sets the total budget amount for your trip.<br/>
 This represents the **maximum amount** you plan to spend across all expenses.<br/>
 
 Format: `budget set AMOUNT`<br/>
+
 * The **AMOUNT** should be a positive number.<br/>
 * The unit of **AMOUNT** is the Singapore dollar (SGD).<br/>
 
 Examples:<br/>
+
 * `budget set 500`<br/>
 
 Expected output:<br/>
+
 ```
 ----------------------------------------------------------------------
 Budget set to $500.00
 ----------------------------------------------------------------------
 ```
+
 If a new value is set, the remaining budget will be recalculated automatically.<br/>
 
 ---
@@ -116,6 +178,7 @@ Format: `budget add n/NAME c/COST cat/CATEGORY`<br/>
 * The **CATEGORY** is optional — if omitted, it defaults to `Uncategorized`.<br/>
 
 Examples:<br/>
+
 * `budget add n/Snacks c/5 cat/Food`<br/>
 * `budget add n/Taxi c/12.50 cat/Transport`<br/>
 * `budget add n/Souvenirs c/20`<br/>
@@ -124,9 +187,11 @@ Examples:<br/>
 
 ### ⚠ Activity Expense Restriction
 
-Expenses in the **Activity** category **must be created via Activity commands**, because activities require a date and time.<br/>
+Expenses in the **Activity** category **must be created via Activity commands**, because activities require a date and
+time.<br/>
 
-If the user tries to add an Activity expense through `budget add`, the system blocks it and suggests the correct format.<br/>
+If the user tries to add an Activity expense through `budget add`, the system blocks it and suggests the correct
+format.<br/>
 
 ---
 
@@ -147,16 +212,16 @@ Format: `budget delete INDEX`<br/>
 * The **INDEX** is the number shown in `budget list`.<br/>
 
 Example:<br/>
-* `budget delete 2`
 
+* `budget delete 2`
 
 ### 🛑 Restricting Edits to Activity-Linked Expenses
 
 Expenses in the **Activity** category are *linked to activities in your itinerary*.<br/>
-Because these expenses depend on **date**, **time**, and **description** stored in the activity list, 
+Because these expenses depend on **date**, **time**, and **description** stored in the activity list,
 they **cannot be edited directly through `budget` commands**.<br/>
 
-If the user attempts to **delete** an Activity-linked expense through `'budget delete'`, 
+If the user attempts to **delete** an Activity-linked expense through `'budget delete'`,
 the system blocks it and suggests the correct command:<br/>
 ---
 
@@ -166,6 +231,7 @@ Updates the category of an existing expense.<br/>
 Format: `budget setcat INDEX NEW_CATEGORY`<br/>
 
 Example:<br/>
+
 * `budget setcat 1 Travel`<br/>
 
 **Note:** If the expense was created from an Activity, its category **cannot** be changed here.
@@ -179,6 +245,7 @@ Ensures that new activities are automatically reflected in the budget.<br/>
 Format: `budget sync`<br/>
 
 Example:<br/>
+
 * `budget sync`<br/>
 
 ---
@@ -216,6 +283,7 @@ Spending by category:
 Total Spent: $246.00 | Remaining Budget: $154.00
 ----------------------------------------------------------------------
 ```
+
 *Categories are automatically normalized.*  
 For example, `snacks`, `meal`, and `dinner` are grouped as **Food**,  
 and `taxi`, `bus`, and `train` are grouped as **Transport**.<br/>
@@ -315,6 +383,7 @@ Examples:
 * `clear before 2025-01-01`
 
 ### Exiting the program: `exit`
+
 Exits the application.<br/>
 Format: `exit`<br/>
 
