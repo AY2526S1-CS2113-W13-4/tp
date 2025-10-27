@@ -1,9 +1,12 @@
 package seedu.busybreak;
 
 import seedu.busybreak.activity.Activity;
+import seedu.busybreak.command.Find;
 import seedu.busybreak.parser.Parser;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+
 public class Ui {
 
     private static final String LINE = "______________________________________________________________________";
@@ -27,7 +30,7 @@ public class Ui {
         }
     }
 
-    private static void printItems(int index) {
+    public static void printItems(int index) {
         System.out.println((index + 1) + ". ");
         System.out.println("Date: " + BusyBreak.list.get(index).getDate());
         System.out.println("Time: " + BusyBreak.list.get(index).getTime());
@@ -48,6 +51,23 @@ public class Ui {
 
     public static void showLine() {
         System.out.println(LINE);
+    }
+
+    public static void printFindHeaderMessage() {
+        showLine();
+        System.out.println("Here are the activities matching your keyword");
+        showLine();
+    }
+
+    public static void printNoItemsFound() {
+        System.out.println("No items found!");
+        showLine();
+    }
+
+    public static void printItineraryEmpty() {
+        showLine();
+        System.out.println("Your itinerary is empty!");
+        showLine();
     }
 
     public void showWelcome() {

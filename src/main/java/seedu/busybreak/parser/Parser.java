@@ -4,6 +4,7 @@ import seedu.busybreak.Ui;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Parser {
     public static GetCommand parseUserInput() {
@@ -71,6 +72,11 @@ public class Parser {
 
         return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
     }
+
+    public static String parseFindInput(String[] userInput) {
+        return Arrays.stream(userInput, 1, userInput.length).collect(Collectors.joining(" "));
+    }
+
 
     public record ParseEditDetails(String date, String time, String description, String cost,
                                    boolean hasInvalidDetail) {
