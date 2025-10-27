@@ -2,6 +2,7 @@ package seedu.busybreak;
 
 import seedu.busybreak.activity.Activity;
 import seedu.busybreak.activity.Trip;
+import seedu.busybreak.command.Find;
 import seedu.busybreak.command.TripCommand;
 import seedu.busybreak.activity.BudgetPlan;
 import seedu.busybreak.command.Add;
@@ -82,6 +83,9 @@ public class BusyBreak {
             break;
         case "check":
             Check.handleCheckCommand(userInput);
+            break;
+        case "find":
+            Find.searchByKeyword(userInput);
             break;
         default:
             Ui.invalidInput();

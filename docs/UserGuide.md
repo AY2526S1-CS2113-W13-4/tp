@@ -9,8 +9,8 @@ that helps you **organize and track your travel activities, schedules, and costs
 
 1. Ensure that you have Java 17 or above installed.
 2. Download the latest BusyBreak.jar file from the releases page.
-3. Open a command terminal and navigate to the folder containing the jar file, 
-run `java -jar busybreak.jar` to start the application.
+3. Open a command terminal and navigate to the folder containing the jar file,
+   run `java -jar BusyBreak.jar` to start the application.
 
 ## Features
 ## Managing Activities
@@ -58,6 +58,33 @@ Expected output:
 ```
 ______________________________________________________________________
 Added Activity to Itinerary: Date: 2025-10-12 | Time: 19:00 | Description: Watch the sunset | Cost: $0
+______________________________________________________________________
+```
+
+### Finding an activity: `find`
+
+Searches for an activity by keyword.
+
+Format: `find KEYWORD`
+
+* the keyword is not case-sensitive
+* not providing a keyword functions the same as `list`
+
+Examples:
+
+* `find sightsee`
+
+Expected output:
+
+```
+______________________________________________________________________
+Here are the activities matching your keyword
+______________________________________________________________________
+2. 
+Date: 2025-10-11
+Time: 23:59
+Description: sightsee
+Cost: $67
 ______________________________________________________________________
 ```
 
@@ -326,6 +353,11 @@ Format: `trip delete INDEX`
 
 ## Other Commands
 ### Sorting Activities by Time: `schedule`
+
+Sorts all activities by time and display them.<br/>
+Format: `schedule`<br/>
+Expected outcome:
+
 Sorts all activities or trips by time and display them.<br/>
 For trips, if there are time conflicts between trips
 (a trip starts before another ends), sorting is blocked with a warning.<br/>
@@ -357,6 +389,7 @@ Description: d
 Cost: $3
 ______________________________________________________________________
 ```
+
 
 ### Checking activities and trips between two dates: `check`
 Displays all activities and trips scheduled between two specified dates (inclusive).
