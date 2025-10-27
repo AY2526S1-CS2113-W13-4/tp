@@ -10,6 +10,7 @@ import seedu.busybreak.command.Schedule;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
 import seedu.busybreak.command.Clear;
+import seedu.busybreak.command.Check;
 import seedu.busybreak.command.Delete;
 import seedu.busybreak.command.Edit;
 
@@ -76,6 +77,9 @@ public class BusyBreak {
             break;
         case "clear":
             Clear.handleClearCommand(userInput);
+            break;
+        case "check":
+            Check.handleCheckCommand(userInput);
             break;
         default:
             Ui.invalidInput();
