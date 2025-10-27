@@ -47,8 +47,7 @@ public class Budget {
                 }
                 if (BusyBreak.budgetPlan.isActivityCategory(category)) {
                     System.out.println(BusyBreak.LINE);
-                    System.out.println("Activity expenses must be created via Activity commands 
-                                       ,they require date/time.");
+                    System.out.println("Activity expenses must be created via Activity commands");
                     System.out.println("Try: add d/<yyyy-mm-dd> t/<hh:mm> desc/<...> c/<cost>");
                     System.out.println(BusyBreak.LINE);
                     return;
