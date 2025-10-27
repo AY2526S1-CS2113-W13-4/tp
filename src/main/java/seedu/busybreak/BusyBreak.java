@@ -121,6 +121,8 @@ public class BusyBreak {
         Load loader = new Load();
         loader.loadActivities();
         loader.loadBudgets();
+        budgetPlan.syncFromActivities(list);
+        storage.saveBudgets();
         while (true) {
             String userInput = handleUserInput();
             //detect EOF

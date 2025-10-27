@@ -47,13 +47,19 @@ public class Budget {
                 }
                 if (BusyBreak.budgetPlan.isActivityCategory(category)) {
                     System.out.println(BusyBreak.LINE);
-                    System.out.println("Activity expenses must be created via Activity commands (they require date/time).");
+                    System.out.println("Activity expenses must be created via Activity commands");
                     System.out.println("Try: add d/<yyyy-mm-dd> t/<hh:mm> desc/<...> c/<cost>");
                     System.out.println(BusyBreak.LINE);
                     return;
                 }
 
                 BusyBreak.budgetPlan.addExpense(name, cost, category);
+                int last = BusyBreak.budgetPlan.names.size() - 1;
+                System.out.println(BusyBreak.LINE);
+                System.out.printf(java.util.Locale.US, "Added Expense: %s | Cost: $%.2f | Category: %s%n",
+                        BusyBreak.budgetPlan.names.get(last), BusyBreak.budgetPlan.amounts.get(last),
+                        BusyBreak.budgetPlan.categories.get(last));
+                System.out.println(BusyBreak.LINE);
                 BusyBreak.getStorage().saveBudgets();
                 break;
 
