@@ -1,5 +1,7 @@
 package seedu.busybreak;
 
+import seedu.busybreak.activity.Trip;
+import seedu.busybreak.command.TripCommand;
 import seedu.busybreak.activity.BudgetPlan;
 import seedu.busybreak.command.Add;
 import seedu.busybreak.command.Budget;
@@ -20,6 +22,7 @@ public class BusyBreak {
 
     public static final String LINE = "______________________________________________________________________";
     public static ArrayList<Activity> list = new ArrayList<>();
+    public static ArrayList<Trip> trips = new ArrayList<>();
     public static BudgetPlan budgetPlan = new BudgetPlan();
     public static Ui ui = new Ui();
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
@@ -47,7 +50,11 @@ public class BusyBreak {
             Add.addActivityDataToList(userInput);
             break;
         case "schedule":
-            Schedule.setByTime();
+            if (userInput.length > 1 && "trip".equals(userInput[1].toLowerCase())) {
+                Schedule.sortTrips();
+            } else {
+                Schedule.setByTime();
+            }
             break;
         case "view":
             view(userInput);
@@ -63,6 +70,9 @@ public class BusyBreak {
             break;
         case "breakdown":
             budgetPlan.listByCategory();
+            break;
+        case "trip":
+            TripCommand.handleTripCommand(userInput);
             break;
         case "clear":
             Clear.handleClearCommand(userInput);
@@ -123,6 +133,7 @@ public class BusyBreak {
         loader.loadBudgets();
         budgetPlan.syncFromActivities(list);
         storage.saveBudgets();
+        loader.loadTrips();
         while (true) {
             String userInput = handleUserInput();
             //detect EOF
