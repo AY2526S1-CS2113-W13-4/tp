@@ -10,9 +10,14 @@ that helps you **organize and track your travel activities, schedules, and costs
 1. Ensure that you have Java 17 or above installed.
 2. Download the latest BusyBreak.jar file from the releases page.
 3. Open a command terminal and navigate to the folder containing the jar file, 
-run `java -jar BusyBreak.jar` to start the application.
+run `java -jar busybreak.jar` to start the application.
 
 ## Features
+## Managing Activities
+The activity includes date, time, description and cost.
+
+---
+
 ### Adding an activity: `add`
 Adds a new activity to your travel itinerary 
 with date, time, description, and cost information.<br/>
@@ -70,6 +75,8 @@ Deleted activity from Itinerary:
 1. a
 ______________________________________________________________________
 ```
+
+---
 
 ## Managing Budget
 
@@ -214,11 +221,51 @@ For example, `snacks`, `meal`, and `dinner` are grouped as **Food**,
 and `taxi`, `bus`, and `train` are grouped as **Transport**.<br/>
 
 ---
+## Managing Trips
+The **Trip feature** allows you to track travel trips 
+with start/end time and transport information.
 
+### Adding a trip: `trip add`
+Adds a new trip to the trip list.<br/>
+Format: `trip add sd/START_DATE st/START_TIME ed/END_DATE et/END_TIME by/TRANSPORT`
+* The `START_DATE` and `END_DATE` should use the format `yyyy-MM-dd`
+* The `START_TIME` and `END_TIME` should use the format `HH:mm`
+* TRANSPORT specifies the transport mode for the trip (e.g., plane, train, car).<br/>
+
+Examples:<br/>
+* `trip add sd/2025-01-01 st/15:00 ed/2025-01-01 et/20:00 by/plane`
+* `trip add sd/2025-02-10 st/17:30 ed/2025-02-11 et/08:00 by/train`
+
+
+### Listing all trips: `trip list`
+Displays all recorded trips.<br/>
+Format: `trip list`
+
+
+### Deleting a trip: `trip delete`
+Removes a trip from the trip list by its index number.<br/>
+Format: `trip delete INDEX`
+* `INDEX` is the integer displayed in the trip list (from trip list)
+
+### Trip Command Summary
+| Command           | Format                                                                  |
+|-------------------|-------------------------------------------------------------------------|
+| Adding a trip     | `trip add sd/yyyy-MM-dd st/HH:mm ed/yyyy-MM-dd et/HH:mm by/TRANSPORT`   |
+| Listing all trips | `trip list`                                                             |
+| Deleting a trip   | `trip delete INDEX`                                                     |
+
+---
+
+## Other Commands
 ### Sorting Activities by Time: `schedule`
-Sorts all activities by time and display them.<br/>
-Format: `schedule`<br/>
-Expected outcome:
+Sorts all activities or trips by time and display them.<br/>
+For trips, if there are time conflicts between trips
+(a trip starts before another ends), sorting is blocked with a warning.<br/>
+Formats: 
+* Use `schedule` for activities
+* Use `schedule trip` for trips
+
+Expected outcome for `schedule`:
 ```
 ______________________________________________________________________
 Your Activities are sorted by time now!
@@ -243,6 +290,29 @@ Cost: $3
 ______________________________________________________________________
 ```
 
+### Checking activities and trips between two dates: `check`
+Displays all activities and trips scheduled between two specified dates (inclusive).
+For trips, it counts the trip's start date.
+If the two date are the same, it will output items on that day.<br/>
+Format: `check from/START_DATE to/END_DATE`
+* `START_DATE` and `END_DATE` must use the format `yyyy-MM-dd`
+* `START_DATE` cannot be later than `END_DATE`<br/>
+
+Examples:
+* `check from/2025-01-01 to/2025-01-01`
+* `check from/2024-12-30 to/2025-01-30`
+
+### Clearing Data: `clear`
+Removes data based on the specified scope.<br/>
+Formats:
+* `clear`: Clears all activities in the itinerary
+* `clear budget`: Clears all budget entries
+* `clear trip`: Clears all trips
+* `clear all`: Clears all activities, budget entries, and trips
+* `clear before yyyy-MM-dd`: Clears activities and trips scheduled on or before the specified date<br/>
+
+Examples:
+* `clear before 2025-01-01`
 
 ### Exiting the program: `exit`
 Exits the application.<br/>
@@ -250,14 +320,24 @@ Format: `exit`<br/>
 
 ## Command summary
 
-| Command                      | Format                                                    |
-|------------------------------|-----------------------------------------------------------|
-| Adding activities            | `add d/yyyy-MM-dd t/HH:mm desc/DESCRIPTION c/COST`        |
-| Editing activities           | `edit INDEX d/yyyy-MM-dd t/HH:mm desc/DESCRIPTION c/COST` |
-| Listing activities           | `list`                                                    |
-| Viewing activities by date   | `view` or `view yyyy-MM-dd`                               |
-| Deleting activities          | `delete INDEX`                                            |
-| Sorting activities by time   | `schedule`                                                |
-| Display spending by category | `breakdown`                                               |
-| Exiting the program          | `exit`                                                    |
+| Command                                                 | Format                                                                |
+|---------------------------------------------------------|-----------------------------------------------------------------------|
+| Adding activities                                       | `add d/yyyy-MM-dd t/HH:mm desc/DESCRIPTION c/COST`                    |
+| Editing activities                                      | `edit INDEX d/yyyy-MM-dd t/HH:mm desc/DESCRIPTION c/COST`             |
+| Listing activities                                      | `list`                                                                |
+| Viewing activities by date                              | `view` or `view yyyy-MM-dd`                                           |
+| Deleting activities                                     | `delete INDEX`                                                        |
+| Sorting activities by time                              | `schedule`                                                            |
+| Sorting trips by time                                   | `schedule trip`                                                       |
+| Adding a trip                                           | `trip add sd/yyyy-MM-dd st/HH:mm ed/yyyy-MM-dd et/HH:mm by/TRANSPORT` |
+| Listing all trips                                       | `trip list`                                                           |
+| Deleting a trip                                         | `trip delete INDEX`                                                   |
+| Checking activities and trips between two dates         | `check from/yyyy-MM-dd to/yyyy-MM-dd`                                 |
+| Clearing all activities                                 | `clear`                                                               |
+| Clearing all budget                                     | `clear budget`                                                        | 
+| Clearing all trips                                      | `clear trip`                                                          | 
+| Clearing all activities, budget and trips               | `clear all`                                                           |
+| Clearing all activities and trips on or before the date | `clear before yyyy-MM-dd`                                             |
+| Display spending by category                            | `breakdown`                                                           |
+| Exiting the program                                     | `exit`                                                                |
 
