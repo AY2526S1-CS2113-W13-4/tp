@@ -1,11 +1,9 @@
 package seedu.busybreak;
 
 import seedu.busybreak.activity.Activity;
-import seedu.busybreak.command.Find;
 import seedu.busybreak.parser.Parser;
-
 import java.util.ArrayList;
-import java.util.logging.Level;
+
 
 public class Ui {
 
