@@ -1,6 +1,7 @@
 package seedu.busybreak;
 
 import org.junit.jupiter.api.Test;
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.activity.BudgetPlan;
 
 import java.io.ByteArrayOutputStream;

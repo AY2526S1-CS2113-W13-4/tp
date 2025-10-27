@@ -1,5 +1,8 @@
 package seedu.busybreak;
 
+import seedu.busybreak.activity.Activity;
+import seedu.busybreak.parser.Parser;
+
 import java.util.ArrayList;
 public class Ui {
 

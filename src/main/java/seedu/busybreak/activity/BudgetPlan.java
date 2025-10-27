@@ -1,5 +1,4 @@
 package seedu.busybreak.activity;
-import seedu.busybreak.Activity;
 
 import java.util.ArrayList;
 import java.util.Locale;

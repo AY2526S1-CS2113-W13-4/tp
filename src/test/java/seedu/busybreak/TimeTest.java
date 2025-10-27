@@ -1,5 +1,6 @@
 package seedu.busybreak;
 
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.command.Schedule;
 
 import org.junit.jupiter.api.AfterEach;

@@ -1,8 +1,8 @@
 package seedu.busybreak.command;
 
-import seedu.busybreak.Activity;
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.BusyBreak;
-import seedu.busybreak.Parser;
+import seedu.busybreak.parser.Parser;
 import seedu.busybreak.Ui;
 
 import java.util.logging.Level;
