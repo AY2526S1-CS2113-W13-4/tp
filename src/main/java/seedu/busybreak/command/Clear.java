@@ -12,18 +12,22 @@ public class Clear {
     private static final String CORRECT_FORMAT = "Invalid clear command. Please use:\n"
             + "clear - Clear all activities\n"
             + "clear budget - Clear all budget entries\n"
-            + "clear all - Clear all activities and budget\n"
+            + "clear trip - Clear all trips\n"
+            + "clear all - Clear all activities, budget and trips\n"
             + "clear before yyyy-MM-dd - Clear activities before the specified date (inclusive)";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final Storage storage = BusyBreak.getStorage();
 
     public static void handleClearCommand(String[] userInputArray) {
         if (userInputArray.length == 1) {
-            clearActivities();
+            clearActivities(true);
         } else if (userInputArray.length == 2) {
             switch (userInputArray[1].toLowerCase()) {
             case "budget":
-                clearBudget();
+                clearBudget(true);
+                break;
+            case "trip":
+                clearTrips(true);
                 break;
             case "all":
                 clearAll();
@@ -38,48 +42,72 @@ public class Clear {
         }
     }
 
-    private static void clearActivities() {
+    private static void clearActivities(boolean printMessage) {
         BusyBreak.list.clear();
         storage.saveActivities();
-        System.out.println(LINE);
-        System.out.println("All activities have been cleared.");
-        System.out.println(LINE);
+        if (printMessage) {
+            System.out.println(LINE);
+            System.out.println("All activities have been cleared.");
+            System.out.println(LINE);
+        }
     }
 
-    private static void clearBudget() {
+    private static void clearBudget(boolean printMessage) {
         BusyBreak.budgetPlan.names.clear();
         BusyBreak.budgetPlan.amounts.clear();
         BusyBreak.budgetPlan.categories.clear();
         BusyBreak.budgetPlan.setBudget(0);
         storage.saveBudgets();
-        System.out.println(LINE);
-        System.out.println("All budget entries have been cleared.");
-        System.out.println(LINE);
+        if (printMessage) {
+            System.out.println(LINE);
+            System.out.println("All budget entries have been cleared.");
+            System.out.println(LINE);
+        }
+    }
+
+    private static void clearTrips(boolean printMessage) {
+        BusyBreak.trips.clear();
+        storage.saveTrips();
+        if (printMessage) {
+            System.out.println(LINE);
+            System.out.println("All trips have been cleared.");
+            System.out.println(LINE);
+        }
     }
 
     private static void clearAll() {
-        clearActivities();
-        clearBudget();
+        clearActivities(false);
+        clearBudget(false);
+        clearTrips(false);
         System.out.println(LINE);
-        System.out.println("All activities and budget entries have been cleared.");
+        System.out.println("All activities, budget entries and trips have been cleared.");
         System.out.println(LINE);
     }
 
     private static void clearBeforeDate(String dateStr) {
         try {
             LocalDate targetDate = LocalDate.parse(dateStr, DATE_FORMATTER);
-            int initialSize = BusyBreak.list.size();
+            int initialActivitySize = BusyBreak.list.size();
+            int initialTripSize = BusyBreak.trips.size();
 
             BusyBreak.list.removeIf(activity -> {
                 LocalDate activityDate = activity.getDateTimeObject().getDate();
                 return !activityDate.isAfter(targetDate);
             });
 
-            int removedCount = initialSize - BusyBreak.list.size();
+            BusyBreak.trips.removeIf(trip -> {
+                LocalDate tripStartDate = trip.getStartDateTime().getDate();
+                return !tripStartDate.isAfter(targetDate);
+            });
+
+            int removedActivities = initialActivitySize - BusyBreak.list.size();
+            int removedTrips = initialTripSize - BusyBreak.trips.size();
             storage.saveActivities();
+            storage.saveTrips();
 
             System.out.println(LINE);
-            System.out.printf("Cleared %d activities before or on %s.%n", removedCount, dateStr);
+            System.out.printf("Cleared %d activities and %d trips before or on %s.%n",
+                    removedActivities, removedTrips, dateStr);
             System.out.println(LINE);
         } catch (DateTimeParseException e) {
             System.out.println(LINE);
