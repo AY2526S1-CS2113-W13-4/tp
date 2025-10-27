@@ -20,23 +20,23 @@ public class TripCommand {
 
         String subCommand = userInputArray[1].toLowerCase();
         switch (subCommand) {
-            case "add":
-                addTrip(Arrays.copyOfRange(userInputArray, 2, userInputArray.length));
-                break;
-            case "list":
-                listTrips();
-                break;
-            case "delete":
-                if (userInputArray.length >= 3) {
-                    deleteTrip(userInputArray[2]);
-                } else {
-                    System.out.println(LINE);
-                    System.out.println("Please specify an index to delete");
-                    System.out.println(LINE);
-                }
-                break;
-            default:
-                printInvalidFormat();
+        case "add":
+            addTrip(Arrays.copyOfRange(userInputArray, 2, userInputArray.length));
+            break;
+        case "list":
+            listTrips();
+            break;
+        case "delete":
+            if (userInputArray.length >= 3) {
+                deleteTrip(userInputArray[2]);
+            } else {
+                System.out.println(LINE);
+                System.out.println("Please specify an index to delete");
+                System.out.println(LINE);
+            }
+            break;
+        default:
+            printInvalidFormat();
         }
     }
 
