@@ -1,6 +1,6 @@
 package seedu.busybreak.command;
 
-import seedu.busybreak.Activity;
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.BusyBreak;
 import seedu.busybreak.activity.Trip;
 import java.time.LocalDate;
