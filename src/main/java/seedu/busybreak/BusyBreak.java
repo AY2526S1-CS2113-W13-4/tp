@@ -131,6 +131,8 @@ public class BusyBreak {
         Load loader = new Load();
         loader.loadActivities();
         loader.loadBudgets();
+        budgetPlan.syncFromActivities(list);
+        storage.saveBudgets();
         loader.loadTrips();
         while (true) {
             String userInput = handleUserInput();

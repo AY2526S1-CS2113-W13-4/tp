@@ -54,6 +54,12 @@ public class Budget {
                 }
 
                 BusyBreak.budgetPlan.addExpense(name, cost, category);
+                int last = BusyBreak.budgetPlan.names.size() - 1;
+                System.out.println(BusyBreak.LINE);
+                System.out.printf(java.util.Locale.US, "Added Expense: %s | Cost: $%.2f | Category: %s%n",
+                        BusyBreak.budgetPlan.names.get(last), BusyBreak.budgetPlan.amounts.get(last),
+                        BusyBreak.budgetPlan.categories.get(last));
+                System.out.println(BusyBreak.LINE);
                 BusyBreak.getStorage().saveBudgets();
                 break;
 
