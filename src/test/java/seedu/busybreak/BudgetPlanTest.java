@@ -1,5 +1,7 @@
 package seedu.busybreak;
 import org.junit.jupiter.api.Test;
+import seedu.busybreak.activity.BudgetPlan;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -89,5 +91,88 @@ class BudgetPlanTest {
         assertTrue(caught,
                 "Assertions should be enabled (-ea) so in-code assert statements are tested.");
     }
+
+    @Test
+    void setExpenseCategory_updatesCategory_only() {
+        BudgetPlan plan = new BudgetPlan();
+        plan.setBudget(100);
+        plan.addExpense("Burger", "10", "Food");
+
+        double spentBefore = plan.getTotalSpent();
+        double remainingBefore = plan.getRemainingBudget();
+
+        plan.setExpenseCategory(1, "Transport");
+
+        assertEquals("Transport", plan.categories.get(0));
+        assertEquals(spentBefore, plan.getTotalSpent(), 1e-9);
+        assertEquals(remainingBefore, plan.getRemainingBudget(), 1e-9);
+    }
+
+    @Test
+    void setExpenseCategory_invalidIndex_doesNothing() {
+        BudgetPlan plan = new BudgetPlan();
+        plan.setBudget(50);
+        plan.addExpense("Snack", "5", "Food");
+
+        double spentBefore = plan.getTotalSpent();
+        double remainingBefore = plan.getRemainingBudget();
+        String catBefore = plan.categories.get(0);
+
+        plan.setExpenseCategory(2, "Transport");
+
+        assertEquals(catBefore, plan.categories.get(0));
+        assertEquals(spentBefore, plan.getTotalSpent(), 1e-9);
+        assertEquals(remainingBefore, plan.getRemainingBudget(), 1e-9);
+    }
+
+    @Test
+    void activityFlow_addEditDelete_affectsMathCorrectly() {
+        BudgetPlan plan = new BudgetPlan();
+        plan.setBudget(60);
+
+        plan.addExpense("Noodles", "4.5", "Foof");
+        assertEquals(55.5, plan.getRemainingBudget(), 1e-9);
+
+        plan.deleteExpense(1);
+        plan.addExpense("Noodles+", "5.0", "Food");
+
+        assertEquals(55.0, plan.getRemainingBudget(), 1e-9); // 60 - 5.0
+        assertEquals("Food", plan.categories.get(0));
+        assertEquals("Noodles+", plan.names.get(0));
+
+        plan.deleteExpense(1);
+        assertEquals(60.0, plan.getRemainingBudget(), 1e-9);
+        assertTrue(plan.names.isEmpty());
+    }
+
+    private static String capturePrint(Runnable r) {
+        java.io.PrintStream old = System.out;
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(baos));
+        try {
+            r.run();
+        } finally {
+            System.setOut(old);
+        }
+        return baos.toString();
+    }
+
+    @Test
+    void listExpenses_printsItemsAndTotals() {
+        BudgetPlan plan = new BudgetPlan();
+        plan.setBudget(20);
+        plan.addExpense("Water", "1.50", "Food");
+        plan.addExpense("Bus", "3", "Transport");
+
+        String out = capturePrint(plan::listExpenses);
+
+        assertTrue(out.contains("Water"));
+        assertTrue(out.contains("Bus"));
+        assertTrue(out.contains("Total Spent"));
+        assertTrue(out.contains("Remaining Budget"));
+        assertEquals(4.50, plan.getTotalSpent(), 1e-9);
+        assertEquals(15.50, plan.getRemainingBudget(), 1e-9);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package seedu.busybreak.command;
 import seedu.busybreak.BusyBreak;
 import java.util.Arrays;
 
+
 public class Budget {
     public static void handleBudget(String[] userInputArray) {
         if (userInputArray.length < 2) {
@@ -44,6 +45,14 @@ public class Budget {
                     System.out.println(BusyBreak.LINE);
                     return;
                 }
+                if (BusyBreak.budgetPlan.isActivityCategory(category)) {
+                    System.out.println(BusyBreak.LINE);
+                    System.out.println("Activity expenses must be created via Activity commands");
+                    System.out.println("Try: add d/<yyyy-mm-dd> t/<hh:mm> desc/<...> c/<cost>");
+                    System.out.println(BusyBreak.LINE);
+                    return;
+                }
+
                 BusyBreak.budgetPlan.addExpense(name, cost, category);
                 BusyBreak.getStorage().saveBudgets();
                 break;
@@ -51,6 +60,15 @@ public class Budget {
             case "list":
                 BusyBreak.budgetPlan.listExpenses();
                 break;
+
+            case "sync": {
+                BusyBreak.budgetPlan.syncFromActivities(BusyBreak.list);
+                BusyBreak.getStorage().saveBudgets();
+                System.out.println(BusyBreak.LINE);
+                System.out.println("Budget synced with Activities.");
+                System.out.println(BusyBreak.LINE);
+                break;
+            }
 
             case "delete":
                 if (userInputArray.length < 3) {
@@ -85,7 +103,7 @@ public class Budget {
 
             default:
                 System.out.println(BusyBreak.LINE);
-                System.out.println("Invalid budget command. Try: set / add / list / delete / setcat");
+                System.out.println("Invalid budget command. Try: set / add / list / delete / setcat /sync");
                 System.out.println(BusyBreak.LINE);
                 break;
             }

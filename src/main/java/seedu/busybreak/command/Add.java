@@ -15,7 +15,7 @@ public class Add {
         Activity a = new Activity(activityData.date(), activityData.time(),
                 activityData.description(), activityData.cost());
         BusyBreak.list.add(a);
-        BusyBreak.budgetPlan.addExpense(a.getDescription(), a.getCost(), "Activity");
+        BusyBreak.budgetPlan.addActivityExpense(a.getDescription(), a.getCost());
         BusyBreak.getStorage().saveBudgets();
 
         Ui.printAddedItem(activityData);

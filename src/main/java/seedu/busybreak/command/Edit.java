@@ -30,10 +30,16 @@ public class Edit {
                 return;
             }
 
+            String oldDesc = editedActivity.getDescription();
+            String oldCost = editedActivity.getCost();
+
             applyEditsToActivity(editedActivity, editDetails);
             Ui.showEditedActivity(userInputArray[1],  editedActivity);
+            BusyBreak.budgetPlan.updateActivityExpense(oldDesc, oldCost, editedActivity.getDescription(),
+                    editedActivity.getCost());
 
             BusyBreak.getStorage().saveActivities();
+            BusyBreak.getStorage().saveBudgets();
 
         } catch (NumberFormatException e) {
             Ui.showInvalidIndexFormatMessage();
