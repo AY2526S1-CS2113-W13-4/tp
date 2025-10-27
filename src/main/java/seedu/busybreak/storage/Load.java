@@ -1,6 +1,6 @@
 package seedu.busybreak.storage;
 
-import seedu.busybreak.Activity;
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.BusyBreak;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package seedu.busybreak;
+package seedu.busybreak.activity;
 
 import seedu.busybreak.parser.Time;
 

@@ -1,5 +1,6 @@
 package seedu.busybreak;
 
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.activity.Trip;
 import seedu.busybreak.command.TripCommand;
 import seedu.busybreak.activity.BudgetPlan;
@@ -7,6 +8,7 @@ import seedu.busybreak.command.Add;
 import seedu.busybreak.command.Budget;
 import seedu.busybreak.command.List;
 import seedu.busybreak.command.Schedule;
+import seedu.busybreak.parser.Parser;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
 import seedu.busybreak.command.Clear;
