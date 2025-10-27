@@ -64,8 +64,6 @@ which stores the total budget and records each expense added by the user.
 It validates inputs to prevent negative or invalid budget values and uses assertions to ensure data integrity.
 
 ---
-
-
 ### Feature: Adding to list
 
 #### Design
