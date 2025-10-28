@@ -164,4 +164,28 @@ public class Ui {
         showLine();
     }
 
+    // undo function
+    public static void showInvalidUndoFormat() {
+        showLine();
+        System.out.println("Invalid command format. Usage: undo");
+        showLine();
+    }
+
+    public static void showNothingToUndo() {
+        showLine();
+        System.out.println("Nothing to undo.");
+        showLine();
+    }
+
+    public static void showUndoSuccess() {
+        showLine();
+        System.out.println("Undid the last change.");
+        showLine();
+    }
+
+    public static void showError(String msg) {
+        showLine();
+        System.out.println(msg);
+        showLine();
+    }
 }
