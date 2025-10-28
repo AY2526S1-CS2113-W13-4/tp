@@ -80,21 +80,8 @@ public class Ui {
         showLine();
     }
 
-    // list function
-    public void showItineraryList(ArrayList<Activity> list) {
-        showLine();
-        for (int index = 0; index < list.size(); index++) {
-            System.out.println((index + 1) + ". ");
-            System.out.println("Date: " + list.get(index).getDate());
-            System.out.println("Time: " + list.get(index).getTime());
-            System.out.println("Description: " + list.get(index).getDescription());
-            System.out.println("Cost: $" + list.get(index).getCost());
-            System.out.println(LINE);
-        }
-    }
-
     // view function
-    public void showInvalidDate(String date) {
+    public static void showInvalidDate(String date) {
         showLine();
         System.out.println("Invalid date: \"" + date + "\"");
         System.out.println("Please use the command in the following format: view YYYY-MM-DD");
@@ -102,14 +89,14 @@ public class Ui {
     }
 
     // view function
-    public void showEmptyItinerary() {
+    public static void showEmptyItinerary() {
         showLine();
         System.out.println("Itinerary is Empty!");
         showLine();
     }
 
     // view function
-    public void showInvalidViewFormat() {
+    public static void showInvalidViewFormat() {
         showLine();
         System.out.println("Invalid command format.");
         System.out.println("Please use the command in the following format: view YYYY-MM-DD");
@@ -117,7 +104,7 @@ public class Ui {
     }
 
     // view function
-    public void showNoActivitiesFor(String date) {
+    public static void showNoActivitiesFor(String date) {
         showLine();
         System.out.println("No activities found for " + date + ".");
         showLine();
@@ -125,7 +112,7 @@ public class Ui {
     }
 
     // view function
-    public void showItineraryFor(String date, ArrayList<Activity> matches) {
+    public static void showItineraryFor(String date, ArrayList<Activity> matches) {
         showLine();
         System.out.println("Itinerary for " + date + ":");
         for (int i = 0; i < matches.size(); i++) {
