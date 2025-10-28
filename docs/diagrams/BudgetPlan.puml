@@ -1,0 +1,72 @@
+@startuml
+title BudgetPlan
+skinparam classAttributeIconSize 0
+hide circle
+
+' === Core Classes ===
+class BudgetPlan {
+  -- Fields --
+  {static} - logger : Logger
+  {static} - LINE : String
+  + names : ArrayList<String>
+  + amounts : ArrayList<Double>
+  + categories : ArrayList<String>
+  - totalBudget : double
+
+  -- Public API --
+  + setBudget(amount: double) : void
+  + getTotalBudget() : double
+  + getTotalSpent() : double
+  + getRemainingBudget() : double
+  + isActivityCategory(category: String) : boolean
+
+  + addActivityExpense(description: String, costString: String) : void
+  + removeActivityExpense(description: String, costString: String) : boolean
+  + updateActivityExpense(oldDesc: String, oldCostStr: String,
+                          newDesc: String, newCostStr: String) : void
+
+  + hasExpense(name: String, cost: String, category: String) : boolean
+  + syncFromActivities(activities: List<Activity>) : void
+
+  + addExpense(name: String, cost: String, category: String) : void
+  + deleteExpense(oneBasedIndex: int) : void
+  + listExpenses() : void
+  + setExpenseCategory(oneBasedIndex: int, newCategory: String) : void
+  + listByCategory() : void
+
+  -- Private helpers --
+  - isActivityExpenseAt(idx: int) : boolean
+  - normalizeCategory(category: String) : String
+  {static} - findIndex(list: ArrayList<String>, target: String) : int
+  - buildCategoryTotals(cats: ArrayList<String>, totals: ArrayList<Double>) : void
+  {static} - sortByTotalsDesc(cats: ArrayList<String>, totals: ArrayList<Double>) : void
+  {static} - parseAmount(raw: String) : double
+  {static} - printBox(msg: String) : void
+}
+
+class Activity {
+  + getDescription() : String
+  + getCost() : String
+}
+
+class BudgetCommand {
+  + handleBudget(userInputArray: String[]) : void
+}
+
+class BusyBreak {
+  + budgetPlan : BudgetPlan
+  + getStorage() : Storage
+}
+
+class Storage {
+  + saveBudgets() : void
+  + loadBudgets() : BudgetPlan
+}
+
+' === Relationships ===
+BudgetPlan ..> Activity : uses (syncFromActivities)
+BudgetCommand --> BudgetPlan : calls (set/add/list/delete/sync)
+BusyBreak --> BudgetPlan : owns instance
+BusyBreak --> Storage : uses to persist budgets
+Storage --> BudgetPlan : returns data (loadBudgets)
+@enduml

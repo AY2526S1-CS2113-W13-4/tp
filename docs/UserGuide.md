@@ -280,19 +280,6 @@ Example:<br/>
 
 ---
 
-### Budget Command Summary
-
-| Command                     | Format                                  |
-|-----------------------------|-----------------------------------------|
-| Set budget                  | `budget set AMOUNT`                     |
-| Add an expense              | `budget add n/NAME c/COST cat/CATEGORY` |
-| List expenses               | `budget list`                           |
-| Delete an expense           | `budget delete INDEX`                   |
-| Change expense category     | `budget setcat INDEX NEW_CATEGORY`      |
-| Sync budget with activities | `budget sync`                           |
-
----
-
 ### Viewing Spending by Category: `breakdown`
 
 Displays your expenses grouped by category, along with total amount spent in each category.  
@@ -446,5 +433,10 @@ Format: `exit`<br/>
 | Display spending by category                            | `breakdown`                                                           |
 | Finding an item via keyword                             | `find KEYWORD`                                                        |
 | Exiting the program                                     | `exit`                                                                |
-
+| Set budget                                              | `budget set AMOUNT`                     |
+| Add an expense                                          | `budget add n/NAME c/COST cat/CATEGORY` |
+| List expenses                                           | `budget list`                           |
+| Delete an expense                                       | `budget delete INDEX`                   |
+| Change expense category                                 | `budget setcat INDEX NEW_CATEGORY`      |
+| Sync budget with activities                             | `budget sync`                           |
 
