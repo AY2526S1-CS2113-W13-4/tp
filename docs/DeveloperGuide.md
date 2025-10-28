@@ -174,20 +174,32 @@ performs operations, and saves results.
 
 
 ---
+### Feature: Budget Command
 
-### Feature: Budget Management
+This feature enables users to manage their budgets through commands such as  
+`budget set`, `budget add`, `budget delete`, `budget list`, `budget setcat`, and `budget sync`.  
+It allows users to plan expenses, categorize them, and ensure their budgets remain up to date with activity costs.
 
-#### Design
+---
 
-The budget feature enables users to set a total budget and track spending during trip planning.
-It helps monitor total expenses and remaining funds as activities are added or removed.
+### Design
 
-#### Implementation
+The `BudgetCommand` class acts as the central controller for all budget-related operations in BusyBreak.  
+It interprets the user input, validates parameters, and delegates logic to the `BudgetPlan` and `Storage` classes.
 
-The feature is implemented in the BudgetPlan class,
-which stores the total budget and records each expense added by the user.
-It validates inputs to prevent negative or invalid budget values and uses assertions to ensure data integrity.
+The design follows a **command-controller pattern**, keeping the CLI interface (`handleBudget`) separate from data logic (`BudgetPlan`) and storage handling (`Storage`).
 
+---
+
+### Implementation
+
+The main method in this class is:
+```
+public static void handleBudget(String[] userInputArray)
+```
+### Class Diagram
+
+![Class Diagram](diagrams/BudgetCommandClass-Budget_Feature___Class_Diagram.png)
 ---
 
 ### Feature: Adding to list

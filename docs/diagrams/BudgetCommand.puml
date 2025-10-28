@@ -1,0 +1,90 @@
+@startuml
+title Budget.handleBudget(userInputArray)
+
+actor User
+participant "BudgetCommand" as Budget
+participant "BudgetPlan" as Plan
+participant "Storage" as Store
+
+User -> Budget: budget <sub> …
+
+alt args < 2
+  Budget -> User: prints "Please specify: set / add / list / delete / setcat / sync"
+  return
+else sub == "set"
+  alt missing amount
+    Budget -> User: prints "Usage: budget set <amount>"
+    return
+  else
+    Budget -> Plan: setBudget(parseDouble(arg[2]))
+    Plan --> Budget
+    Budget -> Store: saveBudgets()
+    Store --> Budget
+    Budget -> User: prints "Budget set to $%.2f"
+  end
+
+else sub == "add"
+  note right of Budget
+    Parses joined args:
+    n/<name>, c/<cost>, cat/<category>
+    Defaults category to "Uncategorized"
+  end note
+
+  alt name or cost missing
+    Budget -> User: prints "Usage: budget add n/<name> c/<cost> cat/<category>"
+    return
+  else category == "Activity"
+    Budget -> User: prints "Activity expenses must be created via Activity commands"
+    return
+  else
+    Budget -> Plan: addExpense(name, cost, category)
+    Plan --> Budget
+    Budget -> User: prints "Added Expense: <name> | Cost: $<cost> | Category: <category>"
+    Budget -> Store: saveBudgets()
+    Store --> Budget
+  end
+
+else sub == "list"
+  Budget -> Plan: listExpenses()
+  Plan --> User: prints items & totals
+
+else sub == "sync"
+  Budget -> Plan: syncFromActivities(BusyBreak.list)
+  Plan --> Budget
+  Budget -> Store: saveBudgets()
+  Store --> Budget
+  Budget -> User: prints "Budget synced with Activities."
+
+else sub == "delete"
+  alt missing index
+    Budget -> User: prints "Usage: budget delete <index>"
+    return
+  else
+    Budget -> Plan: deleteExpense(index)
+    Plan --> Budget
+    Budget -> Store: saveBudgets()
+    Store --> Budget
+    Budget -> User: prints "Expense deleted"
+  end
+
+else sub == "setcat"
+  alt missing args
+    Budget -> User: prints "Usage: budget setcat <index> cat/<newCategory>"
+    return
+  else
+    Budget -> Plan: setExpenseCategory(index, newCategory)
+    Plan --> Budget
+    Budget -> Store: saveBudgets()
+    Store --> Budget
+    Budget -> User: prints "Category updated"
+  end
+
+else invalid subcommand
+  Budget -> User: prints "Invalid budget command"
+end
+
+alt exception thrown
+  Budget -> User: prints "Error: " + e.message
+end
+
+@enduml
