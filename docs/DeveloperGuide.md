@@ -11,15 +11,16 @@
 ---
 ### Feature: Time and Schedule Management
 #### Design
-Each activity contains date and time information, 
+Each activity and trip contains date and time information, 
 this feature enables the application to store, sort, and manage trip schedules based on time.  
 
 #### Implementation
 It uses Java's built-in `java.time.LocalDateTime` library and other related libraries
 to store time-related variables, to facilitate the standardization of time format and subsequent operations.
-It also introduces a `schedule` command to compare the order of all activities and sort the output in chronological order
+It also introduces a `schedule` command to compare the order of all activities and sort the output in chronological order,
+and use `schedule trip` command to sort trips.
 
-#### Code
+#### Code Snippet
 Time-related libraries used:
 ```
 import java.time.LocalDate;
@@ -34,9 +35,71 @@ The core code of the `schedule` command:
 list.sort(Comparator.comparing(a -> a.getDateTimeObject().getDateTime()));
 ```
 ---
+
+### Feature: Trip Management
+#### Design
+This feature allows users to add, list, and delete trips, each with start/end dates, start/end times, and a transport mode.
+Trips are validated to ensure valid time ranges (start before end).
+#### Implementation
+The TripCommand class handles these related commands:
+* `trip add sd/START_DATE st/START_TIME ed/END_DATE et/END_TIME by/TRANSPORT`: 
+Parses input fields, creates a Trip object, and adds it to `BusyBreak.trips`.
+* `trip list`: Displays all trips with their details using `TripCommand.listTrips()`.
+* `trip delete INDEX`: Removes the trip at the specified index from `BusyBreak.trips`.<br/>
+
+All trip operations are persisted via `Storage.saveTrips()`.
+
+---
+
+### Feature: Data Range Check
+#### Design
+This feature enables users to query activities and trips within a specified date range (inclusive),
+helping users review plans for a specific period.
+#### Implementation
+The Check class processes the `check from/yyyy-MM-dd to/yyyy-MM-dd` command:
+* Parses the fromDate and toDate dates using `LocalDate`.
+* Validates fromDate is not after toDate (can be the same).
+* Filters activities: Includes activities where the activity date is between fromDate and toDate.
+* Filters trips: Includes trips where the start date is between fromDate and toDate.
+* Displays filtered results.
+
+---
+
+### Feature: Data Clearing
+#### Design
+This feature allows users to clear data (activities, budgets, trips) 
+selectively or entirely, or clear entries before a specified date.
+#### Implementation
+The Clear class handles commands like:
+* `clear`: Clears all activities.
+* `clear budget`: Clears all budget entries.
+* `clear trip`: Clears all trips.
+* `clear all`: Clears all activities, budgets, and trips.
+* `clear before yyyy-MM-dd`: Removes activities and trips before or on target date.
+
+All operations update the respective data structures and persist changes via `Storage`.
+
+#### Code Snippet
+Clearing items before or on a date:
+```
+BusyBreak.list.removeIf(activity -> {
+    LocalDate activityDate = activity.getDateTimeObject().getDate();
+    return !activityDate.isAfter(targetDate);
+});
+
+BusyBreak.trips.removeIf(trip -> {
+    LocalDate tripStartDate = trip.getStartDateTime().getDate();
+    return !tripStartDate.isAfter(targetDate);
+});
+  
+storage.saveActivities();
+storage.saveTrips();
+```
+---
+
 ### Feature: Data Storage and Loading
 #### Design
-This feature is responsible for storing activity and budget data, 
+This feature is responsible for storing activity, budget and trip data, 
 as well as loading previously saved data when the application starts.
 It ensures that user data is retained between application sessions
 by saving to files and retrieving from them.
@@ -44,8 +107,13 @@ by saving to files and retrieving from them.
 #### Implementation
 It uses Java's I/O libraries to handle file operations, 
 including creating necessary directories, writing data to files, and reading data from files.
-The Storage class handles saving activities and budget data into text files in a structured format (using "|" as a delimiter), 
+The Storage class handles saving data into text files in a structured format (using "|" as a delimiter), 
 while the Load class handles parsing these text files and reconstructing the application's data structures with validation for data integrity.
+
+The Storage class saves data to text files:
+* Activities: data/activities.txt (format: `date|time|description|cost`).
+* Budgets: data/budgets.txt (format: `BUDGET|total` and `EXPENSE|name|amount|category`).
+* Trips: data/trips.txt (format: `startDate|startTime|endDate|endTime|transport`).
 
 ---
 
