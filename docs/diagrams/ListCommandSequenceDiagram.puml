@@ -1,0 +1,74 @@
+@startuml ListCommandSequenceDiagram
+
+actor User
+participant ":BusyBreak" as BusyBreak
+participant ":List" as List
+participant ":Ui" as Ui
+participant "activity:\nActivity" as Activity
+
+User -> BusyBreak: list
+activate BusyBreak
+
+BusyBreak -> List: listItems()
+activate List
+
+List -> Ui: printListItems()
+activate Ui
+
+Ui -> BusyBreak: list.isEmpty()
+activate BusyBreak
+BusyBreak --> Ui: false
+deactivate BusyBreak
+
+alt list is empty
+    Ui -> Ui: showLine()
+    Ui --> User: "Itinerary is Empty!"
+else list is not empty
+    Ui -> Ui: showLine()
+
+    loop for each index from 0 to list.size()-1
+        Ui -> Ui: printItems(index)
+        activate Ui
+
+        Ui -> BusyBreak: list.get(index)
+        activate BusyBreak
+        BusyBreak --> Ui: activity
+        deactivate BusyBreak
+
+        Ui -> Activity: getDate()
+        activate Activity
+        Activity --> Ui: date
+        deactivate Activity
+
+        Ui -> Activity: getTime()
+        activate Activity
+        Activity --> Ui: time
+        deactivate Activity
+
+        Ui -> Activity: getDescription()
+        activate Activity
+        Activity --> Ui: description
+        deactivate Activity
+
+        Ui -> Activity: getCost()
+        activate Activity
+        Activity --> Ui: cost
+        deactivate Activity
+
+        Ui --> User: Display activity details
+        Ui -> Ui: showLine()
+
+        deactivate Ui
+    end
+end
+
+Ui --> List
+deactivate Ui
+
+List --> BusyBreak
+deactivate List
+
+BusyBreak --> User
+deactivate BusyBreak
+
+@enduml

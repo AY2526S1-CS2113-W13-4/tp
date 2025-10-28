@@ -441,5 +441,7 @@ Format: `exit`<br/>
 | Clearing all activities, budget and trips               | `clear all`                                                           |
 | Clearing all activities and trips on or before the date | `clear before yyyy-MM-dd`                                             |
 | Display spending by category                            | `breakdown`                                                           |
+| Finding an item via keyword                             | `find KEYWORD`                                                        |
 | Exiting the program                                     | `exit`                                                                |
+
 

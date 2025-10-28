@@ -1,0 +1,53 @@
+@startuml FindCommandActivityDiagram
+
+start
+
+:User enters find command\nwith keyword;
+
+:Assert user input is not null;
+
+if (Is BusyBreak.list empty?) then (yes)
+
+
+  :Display "Your itinerary\nis empty!";
+
+  stop
+else (no)
+  :Initialize itemsFound = false;
+
+  :Display "Here are the activities\nmatching your keyword";
+
+  :Parse keyword from user input\nvia Parser.parseFindInput();
+
+  :Convert keyword to lowercase;
+
+  :Initialize index = 0;
+
+  while (index < list.size()?) is (yes)
+    :Get activity at index;
+
+    :Get activity description;
+
+    :Convert description to lowercase;
+
+    if (Does description\ncontain keyword?) then (yes)
+      :Display activity details\nvia Ui.printItems(index);
+
+      :Set itemsFound = true;
+    else (no)
+    endif
+
+    :Increment index;
+  endwhile (no)
+
+  if (itemsFound == false?) then (yes)
+
+
+    :Display "No items found!";
+  else (no)
+  endif
+
+  stop
+endif
+
+@enduml
