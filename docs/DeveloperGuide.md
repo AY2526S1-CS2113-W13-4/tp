@@ -55,6 +55,9 @@ Parses input fields, creates a Trip object, and adds it to `BusyBreak.trips`.
 * `trip delete INDEX`: Removes the trip at the specified index from `BusyBreak.trips`.<br/>
 
 All trip operations are persisted via `Storage.saveTrips()`.
+#### Class Diagram
+This diagram illustrates the `trip add` command.
+![Class Diagram](diagrams/AddTripClassDiagram.png)
 
 ---
 
@@ -69,6 +72,11 @@ The Check class processes the `check from/yyyy-MM-dd to/yyyy-MM-dd` command:
 * Filters activities: Includes activities where the activity date is between fromDate and toDate.
 * Filters trips: Includes trips where the start date is between fromDate and toDate.
 * Displays filtered results.
+
+#### Activity Diagram
+This activity diagram shows the logical flow of processing the `check` command,
+including input validation and filtering.
+![Activity Diagram](diagrams/CheckActivityDiagram.png)
 
 ---
 
@@ -102,6 +110,12 @@ BusyBreak.trips.removeIf(trip -> {
 storage.saveActivities();
 storage.saveTrips();
 ```
+
+#### Activity Diagram
+This activity diagram describes how the system handles
+the `clear` command with different input.
+![Activity Diagram](diagrams/ClearActivityDiagram.png)
+
 ---
 
 ### Feature: Data Storage and Loading
@@ -123,6 +137,12 @@ The Storage class saves data to text files:
 * Activities: data/activities.txt (format: `date|time|description|cost`).
 * Budgets: data/budgets.txt (format: `BUDGET|total` and `EXPENSE|name|amount|category`).
 * Trips: data/trips.txt (format: `startDate|startTime|endDate|endTime|transport`).
+
+#### Sequence Diagram
+This sequence diagram depicts how the BusyBreak application loads data,
+performs operations, and saves results.
+![Sequence Diagram](diagrams/StoreAndLoadSequenceDiagram.png)
+
 
 ---
 
