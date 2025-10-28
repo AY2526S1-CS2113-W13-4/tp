@@ -293,10 +293,43 @@ This feature allows the user to see all the activities scheduled on a specific d
 YYYY-MM-DD format. It prints each activity with its date, time, description, and cost
 in a clean list.
 
+#### Design
+
+Allows a user to view all activities that are scheduled on a specific date (YYYY-MM-DD).
+It validates input, filters the itinerary by date and displays only matching activities.
+
 #### Implementation
 
-It is implemented through the view method in the BusyBreak class. It processes the command
-view {date}, where the date must follow the YYYY-MM-DD format.
+The feature is implemented via viewInput(String[] userInputArray) in the View class. 
+This method validates the format of the command and date string, gathers relevant matches 
+and sends results to Ui.showItineraryFor(date, matches).
+
+#### Class Diagram
+
+The diagram below illustrates the View command class diagram.
+
+![ViewCommandClassDiagram.png](diagrams/ViewCommandClassDiagram.png)
+
+viewInput() logic:
+
+- Ensures that exactly 2 parts are passed: ["view", "<date>"]
+- Trim and validate <date> using the correct format YYYY-MM-DD
+- If BusyBreak.list is empty, Ui.showEmptyItinerary() is called
+- Otherwise, iterate through BusyBreak.list:
+  - For each Activity, compare activity.getDate() with <date>
+  - Collate matches
+- If there are no matches in the list, Ui.showNoActivitiesFor(date) is called
+- Otherwise, Ui.showItineraryFor(date, matches) is called
+
+#### Workflow
+
+1. User enters view <YYYY-MM-DD>
+2. View.viewInput() validates the command length and date format
+3. If the input is invalid, Ui.showInvalidViewFormat() is called
+4. If itinerary is empty, Ui.showEmptyItinerary() is called
+5. Otherwise, filter the activities where getDate() == date
+6. If there are no match in the itinerary, Ui.showNoActivitiesFor(date) is called
+7. Otherwise, Ui.showItineraryFor(date, matches) to display all activities on that date
 
 
 ---

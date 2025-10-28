@@ -1,0 +1,42 @@
+@startuml ViewCommandClassDiagram
+
+!define LIGHTYELLOW #FFFACD
+!define LIGHTBLUE #E6F3FF
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor LIGHTYELLOW
+    BorderColor Black
+    ArrowColor Black
+}
+
+class View LIGHTBLUE {
+    + {static} viewInput(userInputArray: String[]): void
+}
+
+class Ui {
+    + {static} showInvalidViewFormat(): void
+    + {static} showInvalidDate(date: String): void
+    + {static} showEmptyItinerary(): void
+    + {static} showNoActivitiesFor(date: String): void
+    + {static} showItineraryFor(date: String, matches: ArrayList<Activity>): void
+}
+
+class BusyBreak {
+    + {static} list: ArrayList<Activity>
+}
+
+class Activity {
+    + getDate(): String
+    + getTime(): String
+    + getDescription(): String
+    + getCost(): String
+}
+
+' Relationships
+View ..> Ui : uses
+View ..> BusyBreak : reads
+View ..> Activity : filters
+BusyBreak "1" o-- "0..*" Activity : contains
+
+@enduml
