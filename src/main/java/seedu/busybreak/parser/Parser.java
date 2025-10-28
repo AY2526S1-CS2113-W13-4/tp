@@ -1,10 +1,13 @@
-package seedu.busybreak;
+package seedu.busybreak.parser;
+
+import seedu.busybreak.Ui;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Parser {
-    static GetCommand parseUserInput() {
+    public static GetCommand parseUserInput() {
         Scanner in = getScanner();
         if (in == null) {
             return null;
@@ -29,11 +32,11 @@ public class Parser {
         return in;
     }
 
-    public static int parseActivityIndex(String activityIndexString){
+    public static int parseActivityIndex(String activityIndexString) {
         return Integer.parseInt(activityIndexString) - 1;
     }
 
-    public static ParseEditDetails parseEditActivityDetails(String[] userInputArray){
+    public static ParseEditDetails parseEditActivityDetails(String[] userInputArray) {
         String[] inputDetailsArray = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
         String inputDetails = String.join(" ", inputDetailsArray).trim();
         String[] editDetails = inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
@@ -70,8 +73,14 @@ public class Parser {
         return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
     }
 
+    public static String parseFindInput(String[] userInput) {
+        return Arrays.stream(userInput, 1, userInput.length).collect(Collectors.joining(" "));
+    }
+
+
     public record ParseEditDetails(String date, String time, String description, String cost,
-                                   boolean hasInvalidDetail){}
+                                   boolean hasInvalidDetail) {
+    }
 
     public static ParseActivityData getParseActivityData(String[] userInputArray) {
 
@@ -149,6 +158,6 @@ public class Parser {
     public record ParseActivityData(String date, String time, String description, String cost) {
     }
 
-    record GetCommand(String userInput, String[] userInputArray, String command) {
+    public record GetCommand(String userInput, String[] userInputArray, String command) {
     }
 }

@@ -1,6 +1,6 @@
 package seedu.busybreak.storage;
 
-import seedu.busybreak.Activity;
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.BusyBreak;
 
 import java.io.FileWriter;
@@ -17,6 +17,7 @@ public class Storage {
     private static final String DATA_FOLDER = "data";
     private static final String ACTIVITIES_FILE = DATA_FOLDER + "/activities.txt";
     private static final String BUDGETS_FILE = DATA_FOLDER + "/budgets.txt";
+    private static final String TRIPS_FILE = DATA_FOLDER + "/trips.txt";
 
     public Storage() {
         try {
@@ -61,6 +62,23 @@ public class Storage {
             logger.log(Level.INFO, "Saved budget and expenses");
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to save budgets", e);
+        }
+    }
+
+    public void saveTrips() {
+        try (FileWriter writer = new FileWriter(TRIPS_FILE)) {
+            for (seedu.busybreak.activity.Trip trip : BusyBreak.trips) {
+                String line = String.join("|",
+                        trip.getStartDate(),
+                        trip.getStartTime(),
+                        trip.getEndDate(),
+                        trip.getEndTime(),
+                        trip.getTransport());
+                writer.write(line + System.lineSeparator());
+            }
+            logger.log(Level.INFO, "Saved " + BusyBreak.trips.size() + " trips");
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to save trips", e);
         }
     }
 }

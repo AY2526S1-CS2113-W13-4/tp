@@ -1,0 +1,31 @@
+@startuml AddCommandActivityDiagram
+
+start
+
+:User enters add command with\ndate, time, description, cost;
+
+:Parse user input via\nParser.getParseActivityData();
+
+if (Parsing successful?) then (no)
+  :Display error message;
+  stop
+else (yes)
+  :Extract date, time,\ndescription, cost;
+
+  :Create new Activity object;
+
+  :Add Activity to BusyBreak.list;
+
+  :Add expense to BudgetPlan\nusing addActivityExpense();
+
+
+  :Save budgets to storage\nvia Storage.saveBudgets();
+
+  :Display confirmation message\nvia Ui.printAddedItem();
+
+  :Save activities to storage\nvia Storage.saveActivities();
+
+  stop
+endif
+
+@enduml

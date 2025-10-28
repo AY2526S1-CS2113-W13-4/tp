@@ -1,0 +1,81 @@
+@startuml AddCommandSequenceDiagram
+
+actor User
+participant ":BusyBreak" as BusyBreak
+participant ":Add" as Add
+participant ":Parser" as Parser
+participant "activityData:\nParseActivityData" as ParseData
+participant "activity:\nActivity" as Activity
+participant ":BudgetPlan" as Budget
+participant ":Storage" as Storage
+participant ":Ui" as Ui
+
+User -> BusyBreak: add d/2024-12-25 t/14:00\ndesc/Visit Museum c/20
+activate BusyBreak
+
+BusyBreak -> Add: addActivityDataToList(userInputArray)
+activate Add
+
+Add -> Parser: getParseActivityData(userInputArray)
+activate Parser
+
+Parser --> Add: activityData
+deactivate Parser
+
+alt activityData == null
+    Add --> BusyBreak: return
+    deactivate Add
+    BusyBreak --> User: Error message displayed
+    deactivate BusyBreak
+else activityData != null
+
+    Add -> Activity**: new Activity(activityData.date(),\nactivityData.time(),\nactivityData.description(),\nactivityData.cost())
+
+    Add -> BusyBreak: list.add(activity)
+    activate BusyBreak
+    BusyBreak --> Add
+    deactivate BusyBreak
+
+    Add -> BusyBreak: budgetPlan
+    activate BusyBreak
+    BusyBreak --> Add: budgetPlan
+    deactivate BusyBreak
+
+    Add -> Budget: addActivityExpense(activity.getDescription(),\nactivity.getCost())
+    activate Budget
+    Budget --> Add
+    deactivate Budget
+
+    Add -> BusyBreak: getStorage()
+    activate BusyBreak
+    BusyBreak --> Add: storage
+    deactivate BusyBreak
+
+    Add -> Storage: saveBudgets()
+    activate Storage
+    Storage --> Add
+    deactivate Storage
+
+    Add -> Ui: printAddedItem(activityData)
+    activate Ui
+    Ui --> Add
+    deactivate Ui
+
+    Add -> BusyBreak: getStorage()
+    activate BusyBreak
+    BusyBreak --> Add: storage
+    deactivate BusyBreak
+
+    Add -> Storage: saveActivities()
+    activate Storage
+    Storage --> Add
+    deactivate Storage
+
+    Add --> BusyBreak
+    deactivate Add
+
+    BusyBreak --> User: Activity added successfully
+    deactivate BusyBreak
+end
+
+@enduml

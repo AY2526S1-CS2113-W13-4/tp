@@ -1,0 +1,37 @@
+@startuml
+start
+:Receive user input for clear command;
+if (Input length is 1?) then (yes)
+  :Clear all activities;
+  :Save changes;
+  :Show confirmation message;
+elseif (Input length is 2?) then (yes)
+  switch (Second parameter)
+    case ("budget")
+      :Clear all budget entries;
+      :Save changes;
+      :Show confirmation message;
+    case ("trip")
+      :Clear all trips;
+      :Save changes;
+      :Show confirmation message;
+    case ("all")
+      :Clear all activities, budgets and trips;
+      :Save changes;
+      :Show confirmation message;
+  endswitch
+elseif (Input length is 3 and second parameter is "before"?) then (yes)
+  :Parse date from third parameter;
+  if (Date is valid?) then (yes)
+    :Clear activities before specified date;
+    :Clear trips before specified date;
+    :Save changes;
+    :Show count of cleared items;
+  else (no)
+    :Show error: Invalid date format;
+  endif
+else (no)
+  :Show invalid command format;
+endif
+stop
+@enduml

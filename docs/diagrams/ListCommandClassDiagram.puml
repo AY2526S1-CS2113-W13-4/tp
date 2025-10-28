@@ -1,0 +1,44 @@
+@startuml ListCommandClassDiagram
+
+!define LIGHTYELLOW #FFFACD
+!define LIGHTBLUE #E6F3FF
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor LIGHTYELLOW
+    BorderColor Black
+    ArrowColor Black
+}
+
+class List LIGHTBLUE {
+    + {static} listItems(): void
+}
+
+class Ui {
+    + {static} printListItems(): void
+    + {static} printItems(index: int): void
+    + {static} showLine(): void
+}
+
+class BusyBreak {
+    + {static} list: ArrayList<Activity>
+}
+
+class Activity {
+    + getDate(): String
+    + getTime(): String
+    + getDescription(): String
+    + getCost(): String
+}
+
+' Relationships
+List ..> Ui : uses
+
+Ui ..> BusyBreak : accesses
+
+BusyBreak "1" o-- "0..*" Activity : contains
+
+
+
+
+@enduml

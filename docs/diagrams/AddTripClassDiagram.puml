@@ -1,0 +1,56 @@
+@startuml
+left to right direction
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor LIGHTYELLOW
+    BorderColor Black
+    ArrowColor Black
+}
+
+class BusyBreak {
+  + trips: ArrayList<Trip>
+  + getStorage(): Storage
+}
+
+class TripCommand {
+  + handleTripCommand(String[]): void
+  - addTrip(String[]): void
+  - extractField(String, String): String
+}
+
+class Trip {
+  - startDateTime: Time
+  - endDateTime: Time
+  - transport: String
+  + Trip(String, String, String, String, String)
+  + getStartDate(): String
+  + getStartTime(): String
+  + getEndDate(): String
+  + getEndTime(): String
+  + getTransport(): String
+}
+
+class Time {
+  + Time(String, String)
+  + getDateString(): String
+  + getTimeString(): String
+  + getDateTime(): LocalDateTime
+}
+
+class Storage {
+  + saveTrips(): void
+}
+
+class Parser {
+  + parseUserInput(): GetCommand
+}
+
+BusyBreak --> Trip : contains
+BusyBreak --> Storage
+TripCommand --> BusyBreak : uses
+TripCommand --> Trip : creates
+Trip --> Time : has
+Parser --> TripCommand : provides input
+Storage --> Trip : saves
+@enduml

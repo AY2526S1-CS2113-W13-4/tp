@@ -1,0 +1,36 @@
+@startuml ListCommandActivityDiagram
+
+start
+
+:User enters list command;
+
+:Call Ui.printListItems();
+
+if (Is BusyBreak.list empty?) then (yes)
+  :Display "Itinerary is Empty!";
+  stop
+else (no)
+  :Display line separator;
+
+  :Initialize index = 0;
+
+  while (index < list.size()?) is (yes)
+    :Get activity at index;
+
+    :Retrieve activity details:
+    - Date
+    - Time
+    - Description
+    - Cost;
+
+    :Display activity with index number;
+
+    :Display line separator;
+
+    :Increment index;
+  endwhile (no)
+
+  stop
+endif
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml FindCommandClassDiagram
+
+!define LIGHTYELLOW #FFFACD
+!define LIGHTBLUE #E6F3FF
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor LIGHTYELLOW
+    BorderColor Black
+    ArrowColor Black
+}
+
+class Find  LIGHTBLUE {
+    + {static} searchByKeyword(userInput: String[]): void
+    + {static} isItemsFound(userInput: String[], itemsFound: boolean): boolean
+}
+
+class Parser {
+    + {static} parseFindInput(userInput: String[]): String
+}
+
+class BusyBreak {
+    + {static} list: ArrayList<Activity>
+}
+
+class Activity {
+    + getDescription(): String
+}
+
+class Ui {
+    + {static} printFindHeaderMessage(): void
+    + {static} printNoItemsFound(): void
+    + {static} printItineraryEmpty(): void
+    + {static} printItems(index: int): void
+}
+
+
+' Relationships
+Find ..> Parser : uses
+Find ..> BusyBreak : accesses
+Find ..> Ui : uses
+
+
+BusyBreak "1" o-- "0..*" Activity : contains
+
+
+@enduml

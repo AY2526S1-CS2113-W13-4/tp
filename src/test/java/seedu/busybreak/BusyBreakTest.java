@@ -3,6 +3,7 @@ package seedu.busybreak;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
+import seedu.busybreak.activity.Activity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

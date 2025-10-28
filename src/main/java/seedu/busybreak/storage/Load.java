@@ -1,6 +1,6 @@
 package seedu.busybreak.storage;
 
-import seedu.busybreak.Activity;
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.BusyBreak;
 
 import java.io.File;
@@ -16,8 +16,10 @@ public class Load {
     private static final Logger logger = Logger.getLogger(Load.class.getName());
     private static final String ACTIVITIES_FILE = "data/activities.txt";
     private static final String BUDGETS_FILE = "data/budgets.txt";
+    private static final String TRIPS_FILE = "data/trips.txt";
     private int invalidActivityCount = 0;
     private int invalidBudgetCount = 0;
+    private int invalidTripCount = 0;
 
     public void loadActivities() {
         File file = new File(ACTIVITIES_FILE);
@@ -92,6 +94,42 @@ public class Load {
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to load budgets", e);
+        }
+    }
+
+    public void loadTrips() {
+        File file = new File(TRIPS_FILE);
+        if (!file.exists()) {
+            logger.log(Level.INFO, "No trips file found, starting with empty trips list");
+            return;
+        }
+
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(TRIPS_FILE));
+            for (String line : lines) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] parts = line.split("\\|", -1);
+                if (parts.length != 5) {
+                    invalidTripCount++;
+                    continue;
+                }
+
+                try {
+                    BusyBreak.trips.add(new seedu.busybreak.activity.Trip(
+                            parts[0], parts[1], parts[2], parts[3], parts[4]));
+                } catch (Exception e) {
+                    invalidTripCount++;
+                }
+            }
+            logger.log(Level.INFO, "Loaded " + BusyBreak.trips.size() + " trips");
+            if (invalidTripCount > 0) {
+                System.out.println("Warning: Removed " + invalidTripCount + " invalid trips");
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to load trips", e);
         }
     }
 }
