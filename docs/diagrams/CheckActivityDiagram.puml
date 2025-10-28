@@ -1,0 +1,25 @@
+@startuml
+start
+:Receive user input for check command;
+if (Input length is 3?) then (yes)
+  :Extract fromDate and toDate using "from/" and "to/" prefixes;
+  if (Dates are extracted successfully?) then (yes)
+    if (Dates are in valid format (yyyy-MM-dd)?) then (yes)
+      if (fromDate is not after toDate?) then (yes)
+        :Filter activities within date range;
+        :Filter trips within date range;
+        :Display filtered activities and trips;
+      else (no)
+        :Show error: Start date cannot be later than end date;
+      endif
+    else (no)
+      :Show error: Invalid date format;
+    endif
+  else (no)
+    :Show invalid command format;
+  endif
+else (no)
+  :Show invalid command format;
+endif
+stop
+@enduml

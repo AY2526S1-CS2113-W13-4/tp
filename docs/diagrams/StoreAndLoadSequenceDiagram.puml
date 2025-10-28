@@ -1,0 +1,62 @@
+@startuml
+actor User
+participant "BusyBreak" as BB
+participant "Load" as L
+participant "Storage" as S
+participant "File System" as FS
+
+User -> BB: Start application
+activate BB
+BB -> L: loadActivities()
+activate L
+L -> FS: Read activities.txt
+activate FS
+FS --> L: File content
+deactivate FS
+L -> BB: Add valid activities to list
+deactivate L
+
+BB -> L: loadBudgets()
+activate L
+L -> FS: Read budgets.txt
+activate FS
+FS --> L: File content
+deactivate FS
+L -> BB: Update budgetPlan with loaded data
+deactivate L
+
+BB -> L: loadTrips()
+activate L
+L -> FS: Read trips.txt
+activate FS
+FS --> L: File content
+deactivate FS
+L -> BB: Add valid trips to trips list
+deactivate L
+
+User -> BB: Perform operations (add/edit/delete)
+BB -> S: saveActivities()
+activate S
+S -> FS: Write to activities.txt
+activate FS
+FS --> S: Confirmation
+deactivate FS
+deactivate S
+
+BB -> S: saveBudgets()
+activate S
+S -> FS: Write to budgets.txt
+activate FS
+FS --> S: Confirmation
+deactivate FS
+deactivate S
+
+BB -> S: saveTrips()
+activate S
+S -> FS: Write to trips.txt
+activate FS
+FS --> S: Confirmation
+deactivate FS
+deactivate S
+deactivate BB
+@enduml
