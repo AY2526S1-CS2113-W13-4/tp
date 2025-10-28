@@ -2,6 +2,7 @@ package seedu.busybreak.command;
 
 import seedu.busybreak.BusyBreak;
 import seedu.busybreak.activity.Trip;
+import seedu.busybreak.storage.History;
 import java.util.Arrays;
 
 //@@author msc-123456
@@ -18,14 +19,18 @@ public class TripCommand {
             return;
         }
 
-        String subCommand = userInputArray[1].toLowerCase();
-        switch (subCommand) {
+        String action = userInputArray[1].toLowerCase();
+
+        switch (action) {
         case "add":
-            addTrip(Arrays.copyOfRange(userInputArray, 2, userInputArray.length));
+            String[] parts = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
+            addTrip(parts);
             break;
+
         case "list":
             listTrips();
             break;
+
         case "delete":
             if (userInputArray.length >= 3) {
                 deleteTrip(userInputArray[2]);
@@ -35,6 +40,7 @@ public class TripCommand {
                 System.out.println(LINE);
             }
             break;
+
         default:
             printInvalidFormat();
         }
@@ -42,8 +48,9 @@ public class TripCommand {
 
     private static void addTrip(String[] parts) {
         try {
-            String input = String.join(" ", parts);
+            History.checkpointWithSave(BusyBreak.getStorage());
 
+            String input = String.join(" ", parts);
             String startDate = extractField(input, "sd/");
             String startTime = extractField(input, "st/");
             String endDate = extractField(input, "ed/");
@@ -61,23 +68,22 @@ public class TripCommand {
             System.out.println(LINE);
             System.out.println("Added Trip:");
             System.out.printf("Start: %s %s | End: %s %s | Transport: %s%n",
-                    startDate, startTime, endDate, endTime, transport);
+                    trip.getStartDate(), trip.getStartTime(), trip.getEndDate(), trip.getEndTime(),
+                    trip.getTransport());
             System.out.println(LINE);
-
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             System.out.println(LINE);
-            System.out.println("Error adding trip: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             System.out.println(LINE);
         }
     }
 
     private static String extractField(String input, String prefix) {
-        if (input.contains(prefix)) {
-            String part = input.split(prefix, 2)[1];
-            if (part.contains(" ")) {
-                return part.split(" ", 2)[0];
+        String[] tokens = input.split("\\s+");
+        for (String token : tokens) {
+            if (token.startsWith(prefix)) {
+                return token.substring(prefix.length());
             }
-            return part;
         }
         return null;
     }
@@ -91,10 +97,8 @@ public class TripCommand {
                 Trip trip = BusyBreak.trips.get(i);
                 System.out.printf("%d. Start: %s %s | End: %s %s | Transport: %s%n",
                         i + 1,
-                        trip.getStartDate(),
-                        trip.getStartTime(),
-                        trip.getEndDate(),
-                        trip.getEndTime(),
+                        trip.getStartDate(), trip.getStartTime(),
+                        trip.getEndDate(), trip.getEndTime(),
                         trip.getTransport());
             }
         }
@@ -103,6 +107,8 @@ public class TripCommand {
 
     private static void deleteTrip(String indexStr) {
         try {
+            History.checkpointWithSave(BusyBreak.getStorage());
+
             int index = Integer.parseInt(indexStr) - 1;
             if (index < 0 || index >= BusyBreak.trips.size()) {
                 System.out.println(LINE);
@@ -115,11 +121,10 @@ public class TripCommand {
             BusyBreak.getStorage().saveTrips();
 
             System.out.println(LINE);
-            System.out.printf("Deleted Trip: Start: %s %s | End: %s %s | Transport: %s%n",
-                    removed.getStartDate(),
-                    removed.getStartTime(),
-                    removed.getEndDate(),
-                    removed.getEndTime(),
+            System.out.println("Deleted Trip:");
+            System.out.printf("Start: %s %s | End: %s %s | Transport: %s%n",
+                    removed.getStartDate(), removed.getStartTime(),
+                    removed.getEndDate(), removed.getEndTime(),
                     removed.getTransport());
             System.out.println(LINE);
 
@@ -136,3 +141,4 @@ public class TripCommand {
         System.out.println(LINE);
     }
 }
+

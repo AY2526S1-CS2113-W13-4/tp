@@ -12,11 +12,13 @@ import seedu.busybreak.command.Schedule;
 import seedu.busybreak.parser.Parser;
 import seedu.busybreak.storage.Storage;
 import seedu.busybreak.storage.Load;
+import seedu.busybreak.storage.History;
 import seedu.busybreak.command.Clear;
 import seedu.busybreak.command.Check;
 import seedu.busybreak.command.Delete;
 import seedu.busybreak.command.Edit;
-import seedu.busybreak.command.View; 
+import seedu.busybreak.command.View;
+import seedu.busybreak.command.Undo;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -52,6 +54,7 @@ public class BusyBreak {
             List.listItems();
             break;
         case "add": //add itinerary entry
+            History.checkpointWithSave(storage);
             Add.addActivityDataToList(userInput);
             break;
         case "schedule":
@@ -65,21 +68,26 @@ public class BusyBreak {
             View.viewInput(userInput);
             break;
         case "delete":
+            History.checkpointWithSave(storage);
             Delete.deleteActivityDataFromList(userInput);
             break;
         case "edit":
+            History.checkpointWithSave(storage);
             Edit.editActivityDataInList(userInput);
             break;
         case "budget":
+            //History.checkpointWithSave(storage);
             Budget.handleBudget(userInput);
             break;
         case "breakdown":
             budgetPlan.listByCategory();
             break;
         case "trip":
+            //History.checkpointWithSave(storage);
             TripCommand.handleTripCommand(userInput);
             break;
         case "clear":
+            History.checkpointWithSave(storage);
             Clear.handleClearCommand(userInput);
             break;
         case "check":
@@ -87,6 +95,9 @@ public class BusyBreak {
             break;
         case "find":
             Find.searchByKeyword(userInput);
+            break;
+        case "undo":
+            Undo.undoInput(userInput);
             break;
         default:
             Ui.invalidInput();
