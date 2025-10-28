@@ -1,0 +1,69 @@
+@startuml AddCommandClassDiagram
+
+!define LIGHTYELLOW #FFFACD
+!define LIGHTBLUE #E6F3FF
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor LIGHTYELLOW
+    BorderColor Black
+    ArrowColor Black
+}
+
+class Add LIGHTBLUE {
+    + {static} addActivityDataToList(userInputArray: String[]): void
+}
+
+class Parser {
+    + {static} getParseActivityData(userInputArray: String[]): ParseActivityData
+}
+
+class "Parser.ParseActivityData" as ParseActivityData {
+    + date(): String
+    + time(): String
+    + description(): String
+    + cost(): String
+}
+
+class Activity {
+    + Activity(date: String, time: String, description: String, cost: String)
+    + getDescription(): String
+    + getCost(): String
+}
+
+class BusyBreak {
+    + {static} list: ArrayList<Activity>
+    + {static} budgetPlan: BudgetPlan
+    + {static} getStorage(): Storage
+}
+
+class BudgetPlan {
+    + addActivityExpense(description: String, cost: String): void
+}
+
+class Storage {
+    + saveActivities(): void
+    + saveBudgets(): void
+}
+
+class Ui {
+    + {static} printAddedItem(activityData: ParseActivityData): void
+}
+
+' Relationships
+Add ..> Parser : uses
+Add ..> Activity : creates
+Add ..> BusyBreak : accesses
+Add ..> Ui : uses
+
+Parser ..> ParseActivityData : returns
+
+BusyBreak "1" o-- "0..*" Activity : contains
+BusyBreak "1" *-- "1" BudgetPlan : has
+BusyBreak "1" *-- "1" Storage : has
+
+Add ..> BudgetPlan : uses
+Add ..> Storage : uses
+
+
+@enduml
