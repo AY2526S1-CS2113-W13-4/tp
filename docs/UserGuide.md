@@ -98,10 +98,13 @@ Format: `edit INDEX d/DATE t/TIME desc/DESCRIPTION c/COST`<br/>
 * The `TIME` should use the format `HH:mm`
 * The unit of `COST` is the Singapore dollar.<br/>
 
+At least one field (d/DATE, t/TIME, desc/DESCRIPTION, c/COST) must be provided.<br/>
+If inputting more than one field, they can be in any order.<br/>
+
 Examples:<br/>
 
-* `edit 1 d/2025-04-20 t/11:11 desc/Go to theme park c/67`
-* `edit 2 d/2025-09-11 t/08:46 desc/Visit historical site c/67`
+* `edit 1 d/2025-04-20 c/67`
+* `edit 2 t/08:46 desc/Visit historical site d/2025-09-11`
 
 ### Listing all activities: `list`
 
