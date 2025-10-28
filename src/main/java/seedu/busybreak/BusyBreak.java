@@ -16,6 +16,7 @@ import seedu.busybreak.command.Clear;
 import seedu.busybreak.command.Check;
 import seedu.busybreak.command.Delete;
 import seedu.busybreak.command.Edit;
+import seedu.busybreak.command.View; 
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -61,7 +62,7 @@ public class BusyBreak {
             }
             break;
         case "view":
-            view(userInput);
+            View.viewInput(userInput);
             break;
         case "delete":
             Delete.deleteActivityDataFromList(userInput);
@@ -93,41 +94,6 @@ public class BusyBreak {
         return parsedCommand.userInput();
     }
 
-
-    private static void view(String[] userInputArray) {
-        assert userInputArray != null : "Input cannot be null";
-        if (userInputArray.length != 2) {
-            logger.log(Level.WARNING, "Invalid command format for view");
-            ui.showInvalidViewFormat();
-            return;
-        }
-        String date = userInputArray[1].trim();
-        assert !date.isEmpty() : "Date cannot be empty";
-        logger.log(Level.INFO, "Date: " + date);
-
-        if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
-            logger.log(Level.WARNING, "Invalid date: " + date);
-            ui.showInvalidDate(date);
-            return;
-        }
-        if (list.isEmpty()) {
-            logger.log(Level.INFO, "Itinerary is currently empty");
-            ui.showEmptyItinerary();
-            return;
-        }
-        ArrayList<Activity> matches = new ArrayList<>();
-        for (Activity a : list) {
-            if (date.equals(a.getDate())) {
-                matches.add(a);
-            }
-        }
-        if (matches.isEmpty()) {
-            logger.log(Level.INFO, "No activities for " + date);
-            ui.showNoActivitiesFor(date);
-            return;
-        }
-        ui.showItineraryFor(date, matches);
-    }
 
     public static void main(String[] args) {
         // Configure the log level to WARNING to output only warnings and errors
