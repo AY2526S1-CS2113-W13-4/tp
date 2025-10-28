@@ -14,17 +14,20 @@ original source as well}
 ### Feature: Time and Schedule Management
 
 #### Design
-Each activity and trip contains date and time information, 
-this feature enables the application to store, sort, and manage trip schedules based on time.  
+
+Each activity and trip contains date and time information,
+this feature enables the application to store, sort, and manage trip schedules based on time.
 
 #### Implementation
 
 It uses Java's built-in `java.time.LocalDateTime` library and other related libraries
 to store time-related variables, to facilitate the standardization of time format and subsequent operations.
-It also introduces a `schedule` command to compare the order of all activities and sort the output in chronological order,
+It also introduces a `schedule` command to compare the order of all activities and sort the output in chronological
+order,
 and use `schedule trip` command to sort trips.
 
 #### Code Snippet
+
 Time-related libraries used:
 
 ```
@@ -44,29 +47,42 @@ list.sort(Comparator.comparing(a -> a.getDateTimeObject().getDateTime()));
 ---
 
 ### Feature: Trip Management
+
 #### Design
-This feature allows users to add, list, and delete trips, each with start/end dates, start/end times, and a transport mode.
+
+This feature allows users to add, list, and delete trips, each with start/end dates, start/end times, and a transport
+mode.
 Trips are validated to ensure valid time ranges (start before end).
+
 #### Implementation
+
 The TripCommand class handles these related commands:
-* `trip add sd/START_DATE st/START_TIME ed/END_DATE et/END_TIME by/TRANSPORT`: 
-Parses input fields, creates a Trip object, and adds it to `BusyBreak.trips`.
+
+* `trip add sd/START_DATE st/START_TIME ed/END_DATE et/END_TIME by/TRANSPORT`:
+  Parses input fields, creates a Trip object, and adds it to `BusyBreak.trips`.
 * `trip list`: Displays all trips with their details using `TripCommand.listTrips()`.
 * `trip delete INDEX`: Removes the trip at the specified index from `BusyBreak.trips`.<br/>
 
 All trip operations are persisted via `Storage.saveTrips()`.
+
 #### Class Diagram
+
 This diagram illustrates the `trip add` command.
 ![Class Diagram](diagrams/AddTripClassDiagram.png)
 
 ---
 
 ### Feature: Data Range Check
+
 #### Design
+
 This feature enables users to query activities and trips within a specified date range (inclusive),
 helping users review plans for a specific period.
+
 #### Implementation
+
 The Check class processes the `check from/yyyy-MM-dd to/yyyy-MM-dd` command:
+
 * Parses the fromDate and toDate dates using `LocalDate`.
 * Validates fromDate is not after toDate (can be the same).
 * Filters activities: Includes activities where the activity date is between fromDate and toDate.
@@ -74,6 +90,7 @@ The Check class processes the `check from/yyyy-MM-dd to/yyyy-MM-dd` command:
 * Displays filtered results.
 
 #### Activity Diagram
+
 This activity diagram shows the logical flow of processing the `check` command,
 including input validation and filtering.
 ![Activity Diagram](diagrams/CheckActivityDiagram.png)
@@ -81,11 +98,16 @@ including input validation and filtering.
 ---
 
 ### Feature: Data Clearing
+
 #### Design
-This feature allows users to clear data (activities, budgets, trips) 
+
+This feature allows users to clear data (activities, budgets, trips)
 selectively or entirely, or clear entries before a specified date.
+
 #### Implementation
+
 The Clear class handles commands like:
+
 * `clear`: Clears all activities.
 * `clear budget`: Clears all budget entries.
 * `clear trip`: Clears all trips.
@@ -95,7 +117,9 @@ The Clear class handles commands like:
 All operations update the respective data structures and persist changes via `Storage`.
 
 #### Code Snippet
+
 Clearing items before or on a date:
+
 ```
 BusyBreak.list.removeIf(activity -> {
     LocalDate activityDate = activity.getDateTimeObject().getDate();
@@ -112,6 +136,7 @@ storage.saveTrips();
 ```
 
 #### Activity Diagram
+
 This activity diagram describes how the system handles
 the `clear` command with different input.
 ![Activity Diagram](diagrams/ClearActivityDiagram.png)
@@ -121,7 +146,8 @@ the `clear` command with different input.
 ### Feature: Data Storage and Loading
 
 #### Design
-This feature is responsible for storing activity, budget and trip data, 
+
+This feature is responsible for storing activity, budget and trip data,
 as well as loading previously saved data when the application starts.
 It ensures that user data is retained between application sessions
 by saving to files and retrieving from them.
@@ -130,15 +156,18 @@ by saving to files and retrieving from them.
 
 It uses Java's I/O libraries to handle file operations,
 including creating necessary directories, writing data to files, and reading data from files.
-The Storage class handles saving data into text files in a structured format (using "|" as a delimiter), 
-while the Load class handles parsing these text files and reconstructing the application's data structures with validation for data integrity.
+The Storage class handles saving data into text files in a structured format (using "|" as a delimiter),
+while the Load class handles parsing these text files and reconstructing the application's data structures with
+validation for data integrity.
 
 The Storage class saves data to text files:
+
 * Activities: data/activities.txt (format: `date|time|description|cost`).
 * Budgets: data/budgets.txt (format: `BUDGET|total` and `EXPENSE|name|amount|category`).
 * Trips: data/trips.txt (format: `startDate|startTime|endDate|endTime|transport`).
 
 #### Sequence Diagram
+
 This sequence diagram depicts how the BusyBreak application loads data,
 performs operations, and saves results.
 ![Sequence Diagram](diagrams/StoreAndLoadSequenceDiagram.png)
@@ -177,21 +206,21 @@ This then creates an Activity object which is stored in an ArrayList.
 
 #### Class Diagram
 
-The diagram below illustrates the Add command class diagram.
+The diagram below illustrates the Add command class diagram:
 
 ![AddCommandClassDiagram.png](diagrams/AddCommandClassDiagram.png)
 
 #### Workflow
 
-1. Call Parser.getParseActivityData() to parse user input
-2. If parsing fails (returns null), return early
-3. Create new Activity object with parsed data
-   (date, time, description, cost)
-4. Add Activity to BusyBreak.list
-5. Add expense to BudgetPlan using addActivityExpense()
-6. Save budgets to storage file
-7. Display confirmation via Ui.printAddedItem()
-8. Save activities to storage file
+The diagram below illustrates the Add command workflow:
+
+![AddCommandActivityDiagram.png](diagrams/AddCommandActivityDiagram.png)
+
+#### Sequence diagram
+
+The following sequence diagram illustrates how an item is added in BusyBreak:
+
+![AddCommandSequenceDiagram.png](diagrams/AddCommandSequenceDiagram.png)
 
 ---
 
@@ -222,11 +251,15 @@ printListItems() logic:
 
 #### Workflow
 
-1. Call Ui.printListItems()
-2. Ui checks if BusyBreak.list is empty
-3. If empty, show "Itinerary is Empty!"
-4. Otherwise, iterate through list
-5. Print each activity's details
+The following illustrates the workflow of the list command :
+
+![ListCommandActivityDiagram.png](diagrams/ListCommandActivityDiagram.png)
+
+#### Sequence diagram
+
+The following sequence diagram illustrates how listing items in BusyBreak functions:
+
+![ListCommandSequenceDiagram.png](diagrams/ListCommandSequenceDiagram.png)
 
 ---
 
@@ -244,7 +277,7 @@ Found items are then printed to the user through printItems in the Ui class.
 
 #### Class Diagram
 
-The diagram below illustrates the Find command execution flow and its class diagram.
+The diagram below illustrates the Find command class diagram.
 
 ![FindCommandClassDiagram.png](diagrams/FindCommandClassDiagram.png)
 
@@ -258,15 +291,15 @@ isItemsFound Search Logic:
 
 #### Workflow
 
-1. Assert user input is not null
-2. Check if BusyBreak.list is empty
-3. If empty, show empty message and return
-4. Parse user input to get keyword
-5. Search through all activities
-6. Match keyword with activity descriptions
-   (case-insensitive)
-7. Display matching activities
-8. If no matches found, show no items message
+The following illustrates the workflow of finding of items via a keyword:
+
+![FindCommandActivityDiagram.png](diagrams/FindCommandActivityDiagram.png)
+
+#### Sequence diagram
+
+The sequence diagram illustrates how items can be found via keyword in BusyBreak:
+
+![FindCommandSequenceDiagram.png](diagrams/FindCommandSequenceDiagram.png)
 
 ---
 
@@ -300,8 +333,8 @@ It validates input, filters the itinerary by date and displays only matching act
 
 #### Implementation
 
-The feature is implemented via viewInput(String[] userInputArray) in the View class. 
-This method validates the format of the command and date string, gathers relevant matches 
+The feature is implemented via viewInput(String[] userInputArray) in the View class.
+This method validates the format of the command and date string, gathers relevant matches
 and sends results to Ui.showItineraryFor(date, matches).
 
 #### Class Diagram
@@ -316,8 +349,8 @@ viewInput() logic:
 - Trim and validate <date> using the correct format YYYY-MM-DD
 - If BusyBreak.list is empty, Ui.showEmptyItinerary() is called
 - Otherwise, iterate through BusyBreak.list:
-  - For each Activity, compare activity.getDate() with <date>
-  - Collate matches
+    - For each Activity, compare activity.getDate() with <date>
+    - Collate matches
 - If there are no matches in the list, Ui.showNoActivitiesFor(date) is called
 - Otherwise, Ui.showItineraryFor(date, matches) is called
 
@@ -330,7 +363,6 @@ viewInput() logic:
 5. Otherwise, filter the activities where getDate() == date
 6. If there are no match in the itinerary, Ui.showNoActivitiesFor(date) is called
 7. Otherwise, Ui.showItineraryFor(date, matches) to display all activities on that date
-
 
 ---
 

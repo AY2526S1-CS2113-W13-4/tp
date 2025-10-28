@@ -1,0 +1,80 @@
+@startuml FindCommandSequenceDiagram
+
+actor User
+participant ":BusyBreak" as BusyBreak
+participant ":Find" as Find
+participant ":Ui" as Ui
+participant ":Parser" as Parser
+participant "activity:\nActivity" as Activity
+
+User -> BusyBreak: find museum
+activate BusyBreak
+
+BusyBreak -> Find: searchByKeyword(userInput)
+activate Find
+
+Find -> BusyBreak: list.isEmpty()
+activate BusyBreak
+BusyBreak --> Find: false
+deactivate BusyBreak
+
+alt list is empty
+    Find -> Ui: printItineraryEmpty()
+    activate Ui
+    Ui --> User: "Your itinerary is empty!"
+    deactivate Ui
+    Find --> BusyBreak
+else list is not empty
+
+    Find -> Ui: printFindHeaderMessage()
+    activate Ui
+    Ui --> User: "Here are the activities\nmatching your keyword"
+    deactivate Ui
+
+    Find -> Find: isItemsFound(userInput, false)
+    activate Find
+
+    Find -> Parser: parseFindInput(userInput)
+    activate Parser
+    Parser --> Find: parsedKeyword
+    deactivate Parser
+
+    loop for each index from 0 to list.size()-1
+        Find -> BusyBreak: list.get(index)
+        activate BusyBreak
+        BusyBreak --> Find: activity
+        deactivate BusyBreak
+
+        Find -> Activity: getDescription()
+        activate Activity
+        Activity --> Find: description
+        deactivate Activity
+
+        alt description contains keyword (case-insensitive)
+            Find -> Ui: printItems(index)
+            activate Ui
+            Ui --> User: Display matching activity
+            deactivate Ui
+            note right: itemsFound = true
+        end
+    end
+
+    Find --> Find: itemsFound
+    deactivate Find
+
+    alt itemsFound == false
+        Find -> Ui: printNoItemsFound()
+        activate Ui
+        Ui --> User: "No items found!"
+        deactivate Ui
+    end
+
+end
+
+Find --> BusyBreak
+deactivate Find
+
+BusyBreak --> User
+deactivate BusyBreak
+
+@enduml
