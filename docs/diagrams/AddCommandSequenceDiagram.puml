@@ -10,6 +10,7 @@ participant ":BudgetPlan" as Budget
 participant ":Storage" as Storage
 participant ":Ui" as Ui
 
+
 User -> BusyBreak: add d/2024-12-25 t/14:00\ndesc/Visit Museum c/20
 activate BusyBreak
 
@@ -30,6 +31,9 @@ alt activityData == null
 else activityData != null
 
     Add -> Activity**: new Activity(activityData.date(),\nactivityData.time(),\nactivityData.description(),\nactivityData.cost())
+    activate Activity
+    Activity --> Add
+    deactivate Activity
 
     Add -> BusyBreak: list.add(activity)
     activate BusyBreak
