@@ -222,11 +222,11 @@ It maintains three parallel ArrayLists — names, amounts, and categories — th
 This design simplifies list traversal and maintains consistent indexing between expense attributes.
 
 The `BudgetPlan` class is invoked by:
--  BudgetCommand : to execute user commands (budget set, budget add, budget delete, budget list, budget setcat, budget sync)
+-  BudgetCommand : to execute user commands (budget set, budget add, budget delete, budget list, budget setcat, budget sync, breakdown)
 - BusyBreak : to initialize the budget system and pass activity data for synchronization 
 - Storage : to save and load persistent budget data
 
-The component ensures Activity–Budget is cross-compatable :
+The component makes sure that Activity–Budget is cross-compatible :
 -	Expenses linked to Activity entries cannot be added, edited, or deleted through Budget commands.
 -	Synchronization ensures Activity-linked costs remain up to date automatically.
 -	Non-Activity expenses can be freely added, categorized, or removed.

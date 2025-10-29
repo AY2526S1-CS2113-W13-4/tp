@@ -18,7 +18,7 @@ Activity module to ensure accurate expense tracking and prevent data inconsisten
 
 ### **New feature: `Budget` Command**
 * **What it does**: Implemented the `Budget.java` command handler, enabling user interaction through commands such 
-as `budget set`, `budget add`, `budget delete`, `budget list`, `budget setcat`, and `budget sync`.
+as `budget set`, `budget add`, `budget delete`, `budget list`, `budget setcat`, `budget sync` and `breakdown`.
 * **Highlights**: Offers a structured CLI interface for managing budgets with detailed user feedback and validation for
 every command.
 
