@@ -463,6 +463,74 @@ viewInput() logic:
 6. If there are no match in the itinerary, Ui.showNoActivitiesFor(date) is called
 7. Otherwise, Ui.showItineraryFor(date, matches) to display all activities on that date
 
+#### Sequence diagram
+
+The sequence diagram illustrates how the user can view all the activities scheduled on a specific day
+
+![ViewCommandSequenceDiagram.png](diagrams/ViewCommandSequenceDiagram.png)
+
+
+---
+
+#### Feature: Undo
+
+This feature allows the user to revert the application state to the most recent
+checkpoint created before a mutating command
+
+#### Design
+
+Uses a folder-based snapshot system (History) that saves activities, budgets, and trips before each mutating command. 
+On undo, it restores the latest snapshot, resets in-memory state, reloads via Load, and reports status via Ui.
+
+#### Implementation
+
+The feature is implemented via undoInput(String[] args) in the Undo class.
+This method validates the command format, consults History for a snapshot,
+restores files if available, resets in-memory state, reloads via Load, and
+notifies the user via Ui.
+
+#### Class Diagram
+
+The diagram below illustrates the Undo command class diagram.
+
+![UndoCommandClassDiagram.png](diagrams/UndoCommandClassDiagram.png)
+
+
+undoInput() logic:
+
+- Ensures exactly one token is passed: "undo"
+- Check History.hasSnapshots():
+  - If false, calls Ui.showNothingToUndo() and return
+- Call History.restoreLatest():
+  - If empty, calls Ui.showNothingToUndo() and return
+- Reset in-memory state:
+  - BusyBreak.list.clear()
+  - BusyBreak.trips.clear()
+  - BusyBreak.budgetPlan = new BudgetPlan()
+- Reload from restored files:
+  - Load.loadActivities()
+  - Load.loadBudgets()
+  - BusyBreak.budgetPlan.syncFromActivities(BusyBreak.list)
+  - Load.loadTrips()
+- Call Ui.showUndoSuccess()
+
+#### Workflow
+
+1. User types in "undo"
+2. Undo.undoInput() validates format (must be a single token)
+3. History.hasSnapshots() is checked 
+4. If none, Ui.showNothingToUndo() and return 
+5. History.restoreLatest() copies the latest snapshot’s files back into data 
+6. In-memory state is reset (list, trips, budgetPlan)
+7. Load reloads activities, budgets, and trips from restored files 
+8. budgetPlan.syncFromActivities(list) ensures Activity-linked expenses are aligned 
+9. Ui.showUndoSuccess() notifies completion
+
+#### Sequence Diagram
+The following sequence diagram illustrates how you can undo an action in BusyBreak:
+
+![UndoCommandSequenceDiagram.png](diagrams/UndoCommandSequenceDiagram.png)
+
 ---
 
 ## Product scope

@@ -1,0 +1,70 @@
+@startuml UndoCommandSequenceDiagram
+
+actor User
+participant ":BusyBreak" as BusyBreak
+participant ":Undo" as Undo
+participant ":Ui" as Ui
+participant ":History" as History
+participant ":Load" as Load
+participant "bp:\nBudgetPlan" as BudgetPlan
+
+User -> BusyBreak: undo
+activate BusyBreak
+
+BusyBreak -> Undo: undoInput(args)
+activate Undo
+
+alt invalid format (args.length != 1)
+    Undo -> Ui: showInvalidUndoFormat()
+    deactivate Undo
+    BusyBreak --> User
+    deactivate BusyBreak
+    return
+else valid format
+    Undo -> History: hasSnapshots()
+    activate History
+    History --> Undo: boolean
+    deactivate History
+
+    alt no snapshots
+        Undo -> Ui: showNothingToUndo()
+        deactivate Undo
+        BusyBreak --> User
+        deactivate BusyBreak
+        return
+    else snapshots exist
+        Undo -> History: restoreLatest()
+        activate History
+        History --> Undo: Optional<Path>
+        deactivate History
+
+        alt restore failed / empty
+            Undo -> Ui: showNothingToUndo()
+            deactivate Undo
+            BusyBreak --> User
+            deactivate BusyBreak
+            return
+        else restore succeeded
+            Undo -> BusyBreak: list.clear(), trips.clear()
+            Undo -> BusyBreak: budgetPlan = new BudgetPlan()
+            activate BudgetPlan
+            deactivate BudgetPlan
+
+            Undo -> Load ++: new Load()
+            Undo -> Load: loadActivities()
+            Load --> Undo
+            Undo -> Load: loadBudgets()
+            Load --> Undo
+            Undo -> BudgetPlan: syncFromActivities(BusyBreak.list)
+            Undo -> Load: loadTrips()
+            Load --> Undo --
+            Undo -> Ui: showUndoSuccess()
+        end
+    end
+end
+
+deactivate Undo
+BusyBreak --> User
+deactivate BusyBreak
+
+@enduml
