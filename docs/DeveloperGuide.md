@@ -387,6 +387,35 @@ It uses Java's ArrayList implementation to handle the deletion of items, as well
 as sets the variables of the Activity item at the relevant index when the user wants
 to edit that item.
 
+#### Class Diagram
+
+The diagram below illustrates the Edit command class diagram.
+
+![EditCommandClassDiagram.png](docs/diagrams/EditCommandClassDiagram.png)
+
+The diagram below illustrates the Delete command class diagram.
+
+![DeleteCommandClassDiagram.png](docs/diagrams/DeleteCommandClassDiagram.png)
+
+#### Workflow
+
+The diagram below illustrates the Edit command workflow:
+
+![](docs/diagrams/EditCommandActivityDiagram.png)
+
+The diagram below illustrates the Delete command workflow:
+
+![](docs/diagrams/DeleteCommandActivityDiagram.png)
+
+#### Sequence diagram
+
+The following sequence diagram illustrates how an item is edited in BusyBreak:
+
+![](docs/diagrams/EditCommandSequenceDiagram.png)
+
+The following sequence diagram illustrates how an item is deleted in BusyBreak:
+
+![](docs/diagrams/DeleteCommandSequenceDiagram.png)
 
 ---
 
