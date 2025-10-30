@@ -554,30 +554,32 @@ being CLI based.
 
 ## User Stories
 
-| Version | As a ...              | I want to ...                                                    | So that I can ...                                                 |
-|---------|-----------------------|------------------------------------------------------------------|-------------------------------------------------------------------|
-| v1.0    | new user              | see usage instructions                                           | refer to them when I forget how to use the application            |
-| v1.0    | planner               | add daily itinerary items                                        | know what activities I have planned                               |
-| v1.0    | traveller             | delete daily itinerary items                                     | have my list remain uncluttered                                   |
-| v1.0    | planner               | set an overall or daily budget for the trip                      | control my total spending                                         |
-| v1.0    | traveller             | edit my daily itinerary items                                    | easily change my activity details                                 |
-| v1.0    | traveller             | view my entire itinerary timeline                                | have an overview of the things I will be doing for the trip       |
-| v1.0    | traveller             | view my itinerary for a specific day                             | have an overview of the things I will be doing for the day        |
-| v1.0    | traveller             | sort activities in my itinerary by time                          | I know the order of my activities                                 |
-| v2.0    | traveller             | save and load all my items                                       | not key them in every time I restart the application              |
-| v2.0    | traveller             | add transport details                                            | plan how to get from place to place                               |
-| v2.0    | planner               | check activities and trips in a certain period                   | know if I can easily alter my schedule in that period             |
-| v2.0    | frequent traveller    | clear all my list items                                          | start a new itinerary from scratch                                |
-| v2.0    | frequent traveller    | clear all my transport details and budget                        | re-use my  itinerary for different countries easily               |
-| v2.0    | traveller             | clear activities and trips scheduled on or before a certain date | remove past or cancelled plans without affecting future ones      |
-| v2.0    | traveller             | sort transport by time                                           | see my transports in chronological order along side my activities |
-| v2.0    | traveller             | edit individual activity fields                                  | update specific details without reentering the entire item        |
-| v2.0    | planner               | undo the last change                                             | recover from accidental changes easily                            |
-| v2.0    | user with a long list | find a item by name                                              | locate an activity without having to go through the entire list   |
+| Version | As a ...                 | I want to ...                                                    | So that I can ...                                                 |
+|---------|--------------------------|------------------------------------------------------------------|-------------------------------------------------------------------|
+| v1.0    | planner                  | add daily itinerary items                                        | know what activities I have planned                               |
+| v1.0    | traveller                | delete daily itinerary items                                     | have my list remain uncluttered                                   |
+| v1.0    | budget-conscious planner | set an overall or daily budget for the trip                      | control my total spending                                         |
+| v1.0    | traveller                | edit my daily itinerary items                                    | easily change my activity details                                 |
+| v1.0    | traveller                | view my entire itinerary timeline                                | have an overview of the things I will be doing for the trip       |
+| v1.0    | traveller                | view my itinerary for a specific day                             | have an overview of the things I will be doing for the day        |
+| v1.0    | traveller                | sort activities in my itinerary by time                          | I know the order of my activities                                 |
+| v2.0    | traveller                | save and load all my items                                       | not key them in every time I restart the application              |
+| v2.0    | traveller                | add transport details                                            | plan how to get from place to place                               |
+| v2.0    | planner                  | check activities and trips in a certain period                   | know if I can easily alter my schedule in that period             |
+| v2.0    | frequent traveller       | clear all my list items                                          | start a new itinerary from scratch                                |
+| v2.0    | frequent traveller       | clear all my transport details and budget                        | re-use my  itinerary for different countries easily               |
+| v2.0    | traveller                | clear activities and trips scheduled on or before a certain date | remove past or cancelled plans without affecting future ones      |
+| v2.0    | traveller                | sort transport by time                                           | see my transports in chronological order along side my activities |
+| v2.0    | traveller                | edit individual activity fields                                  | update specific details without reentering the entire item        |
+| v2.0    | planner                  | undo the last change                                             | recover from accidental changes easily                            |
+| v2.0    | user with a long list    | find a item by name                                              | locate an activity without having to go through the entire list   |
+| v2.0    | budget-conscious planner | manually add expenses                                            | track non-activity costs                                          |
+| v2.0    | budget-conscious planner | categorise expenses and view the breakdown                       | understand where my money is going                                |
+| v2.0    | budget-conscious planner | automatically add activity costs into the budget                 | keep the budget accurate without double entries                   |
 
 ## Non-Functional Requirements
 
- 
+1. Should work on Windows/MacOS/Linux provided it has Java 17 installed.
 
 ## Glossary
 
@@ -585,4 +587,3 @@ being CLI based.
 
 ## Instructions for manual testing
 
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
