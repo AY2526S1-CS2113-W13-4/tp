@@ -583,7 +583,77 @@ being CLI based.
 
 ## Glossary
 
-* *glossary item* - Definition
+* *CLI* - Command Line Interface. The only means of interacting with BusyBreak
+* *Snapshot* - A timestamp of the data directory created before mutating each entry with `undo`.
 
 ## Instructions for manual testing
+
+### Launch and Shutdown
+
+1. Initial launch </br>
+a. Download the jar file in an empty folder.</br>
+b. Open a terminal and cd into the folder that the jar file was saved in.
+c. Run `java -jar busybreak.jar`
+
+2. Shutdown</br>
+a. Input the`exit` command into BusyBreak, and the program will exit by itself.
+
+### Adding activities
+* `add d/2025-01-01 t/10:00 desc/Visit Museum c/20`
+* `list` to verify that the activity has been added with the correct details.
+
+### Editing activities
+* After adding an activity
+* `edit 1 d/2025-02-02 t/11:11 desc/Go to water park c/100` or any other permutation
+of the order of the fields (including leaving some out).
+* `list` to verify the activity has been updated with the correct details.
+
+### Listing activities
+* `list`
+* Shows all the activities in the list.
+
+### Viewing activities
+* `view 2025-02-02`
+* Shows the activities on that day
+
+### Deleting activities
+* `delete 1` 
+* Shows the task that has been deleted
+* `list` should not show that activity
+
+### Sorting activities and trips
+* `schedule` to sort activities by time
+* `schedule trip` to sort trips by time
+
+### Managing trips
+* Adding a trip	`trip add sd/2025-01-01 st/00:01 ed/2025-01-01 et/12:00 by/plane`
+* Listing all trips	`trip list`
+* Deleting a trip `trip delete 1`
+
+### Checking activities and trips in date range
+* `check from/2025-01-01 to/2025-02-02`
+
+### Clearing data
+* Clearing all activities `clear`
+* Clearing all budget `clear budget`
+* Clearing all trips `clear trip`
+* Clearing all activities, budget and trips	`clear all`
+* Clearing all activities and trips on or before the date `clear before 2025-01-02`
+
+### Budget management
+* Display spending by category	`breakdown`
+* Set budget `budget set AMOUNT`
+* Add an expense `budget add n/Souvenier c/100 cat/Shopping`
+* List expenses	`budget list`
+* Delete an expense	`budget delete 1`
+* Change expense category `budget setcat 1 Food`
+* Sync budget with activities `budget sync`
+
+### Finding an item
+* `find visit`
+* Shows all activities with the keyword
+
+### Exiting the program	
+* `exit`
+* Program will terminate
 
