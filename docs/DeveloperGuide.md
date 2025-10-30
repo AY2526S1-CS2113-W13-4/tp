@@ -2,12 +2,20 @@
 
 ## Acknowledgements
 
-{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the
-original source as well}
+BusyBreak uses the following tools in the Developer Guide, User Guide, and main code:
+
+* [PlantUML](https://plantuml.com/) 
+  * For creating UML diagrams
+* [AddressBook-Level3 (AB3)](https://se-education.org/addressbook-level3/)
+  * For the general structure of the User and Developer Guides
+* [CS2113 Website](https://nus-cs2113-ay2526s1.github.io/website/index.html)
+  * For the software expectations of BusyBreak
+* [JUnit](https://junit.org/) 
+  * For unit testing
+* [Gradle](https://gradle.org/)
+  * For the automating of builds
 
 ## Design & implementation
-
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
 ---
 
