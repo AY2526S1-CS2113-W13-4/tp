@@ -333,6 +333,7 @@ Format: `trip delete INDEX`
 * `INDEX` is the integer displayed in the trip list (from trip list)
 
 ### Trip Command Summary
+
 | Command           | Format                                                                  |
 |-------------------|-------------------------------------------------------------------------|
 | Adding a trip     | `trip add sd/yyyy-MM-dd st/HH:mm ed/yyyy-MM-dd et/HH:mm by/TRANSPORT`   |
