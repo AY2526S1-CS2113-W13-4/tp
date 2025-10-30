@@ -598,12 +598,12 @@ being CLI based.
 
 ### Launch and Shutdown
 
-1. Initial launch </br>
-a. Download the jar file in an empty folder.</br>
+1. Initial launch <br/>
+a. Download the jar file in an empty folder.<br/>
 b. Open a terminal and cd into the folder that the jar file was saved in.
 c. Run `java -jar busybreak.jar`
 
-2. Shutdown</br>
+2. Shutdown<br/>
 a. Input the`exit` command into BusyBreak, and the program will exit by itself.
 
 ### Adding activities
