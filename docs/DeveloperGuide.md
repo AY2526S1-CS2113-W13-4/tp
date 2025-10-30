@@ -537,11 +537,20 @@ The following sequence diagram illustrates how you can undo an action in BusyBre
 
 ### Target user profile
 
-{Describe the target user profile}
+BusyBreak is designed for travelers who:
+* Can type fast 
+* Are comfortable using CLI based applications
+* Want to organize detailed itineraries
+* Need to quickly search,edit and reorganize travel plans
+* Prefer a lightweight itinerary tracker
 
 ### Value proposition
 
-{Describe the value proposition: what problem does it solve?}
+Helps travellers track their itinerary planning using a CLI based tool that contains itinerary management,
+schedule organisation and budget tracking. It is designed to be lightweight being a CLI 
+based application, and solves the issue of having fragmented travel planning 
+from using multiple apps or documents. It is also lightweight and easy to use,
+being CLI based.
 
 ## User Stories
 
