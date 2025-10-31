@@ -406,6 +406,19 @@ Formats:
 Examples:
 * `clear before 2025-01-01`
 
+### Undo an action: `undo`
+Undo an action that was done earlier.<br/>
+Format:
+* `undo`
+
+  Expected outcome for `schedule`:
+```
+undo
+______________________________________________________________________
+Undid the last change.
+______________________________________________________________________
+```
+
 ### Exiting the program: `exit`
 
 Exits the application.<br/>
@@ -434,10 +447,11 @@ Format: `exit`<br/>
 | Display spending by category                            | `breakdown`                                                           |
 | Finding an item via keyword                             | `find KEYWORD`                                                        |
 | Exiting the program                                     | `exit`                                                                |
-| Set budget                                              | `budget set AMOUNT`                     |
-| Add an expense                                          | `budget add n/NAME c/COST cat/CATEGORY` |
-| List expenses                                           | `budget list`                           |
-| Delete an expense                                       | `budget delete INDEX`                   |
-| Change expense category                                 | `budget setcat INDEX NEW_CATEGORY`      |
-| Sync budget with activities                             | `budget sync`                           |
+| Set budget                                              | `budget set AMOUNT`                                                   |
+| Add an expense                                          | `budget add n/NAME c/COST cat/CATEGORY`                               |
+| List expenses                                           | `budget list`                                                         |
+| Delete an expense                                       | `budget delete INDEX`                                                 |
+| Change expense category                                 | `budget setcat INDEX NEW_CATEGORY`                                    |
+| Sync budget with activities                             | `budget sync`                                                         |
+| Undo an action                                          | `undo`                                                                |
 
