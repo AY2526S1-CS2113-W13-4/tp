@@ -40,8 +40,9 @@ public class Time {
         } catch (DateTimeParseException e) {
             logger.log(Level.SEVERE, "DateTime parsing failed for date: " + dateStr
                     + ", and time: " + timeStr, e);
-            throw new IllegalArgumentException("Invalid date or time format."
-                    + " Use yyyy-MM-dd for date and HH:mm for time.");
+            throw new IllegalArgumentException("Invalid date or time.\n"
+                    + "Please use valid date and valid time in format:\n"
+                    + "yyyy-MM-dd for date and HH:mm for time.");
         }
     }
 

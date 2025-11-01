@@ -111,7 +111,7 @@ public class Clear {
             System.out.println(LINE);
         } catch (DateTimeParseException e) {
             System.out.println(LINE);
-            System.out.println("Invalid date format. Please use yyyy-MM-dd.");
+            System.out.println("Invalid date. Please use valid date in format yyyy-MM-dd.");
             System.out.println(LINE);
         }
     }

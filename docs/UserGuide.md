@@ -5,6 +5,37 @@
 BusyBreak is a travel itinerary management application
 that helps you **organize and track your travel activities, schedules, and costs**.
 
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Managing Activities](#managing-activities)
+  - [Adding an activity: add](#adding-an-activity-add)
+  - [Finding an activity: find](#finding-an-activity-find)
+  - [Editing an activity: edit](#editing-an-activity-edit)
+  - [Listing all activities: list](#listing-all-activities-list)
+  - [Viewing Activities by Date: view](#viewing-activities-by-date-view)
+  - [Deleting an activity: delete](#deleting-an-activity-delete)
+- [Managing Budget](#managing-budget)
+  - [Setting the Total Budget: budget set](#setting-the-total-budget-budget-set)
+  - [Adding an Expense: budget add](#adding-an-expense-budget-add)
+  - [Activity Expense Restriction](#-activity-expense-restriction)
+  - [Listing Expenses: budget list](#listing-all-activities-list)
+  - [Deleting an Expense: budget delete](#deleting-an-expense-budget-delete)
+  - [Restricting Edits to Activity-Linked Expenses](#-restricting-edits-to-activity-linked-expenses)
+  - [Changing Expense Category: budget setcat](#changing-expense-category-budget-setcat)
+  - [Syncing Expenses with Activities: budget sync](#syncing-expenses-with-activities-budget-sync)
+  - [Viewing Spending by Category: breakdown](#viewing-spending-by-category-breakdown)
+- [Managing Trips](#managing-trips)
+  - [Adding a trip: trip add](#adding-a-trip-trip-add)
+  - [Listing all trips: trip list](#listing-all-trips-trip-list)
+  - [Deleting a trip: trip delete](#deleting-a-trip-trip-delete)
+- [Other Commands](#other-commands)
+  - [Sorting Activities by Time: schedule](#sorting-activities-by-time-schedule)
+  - [Checking activities and trips between two dates: check](#checking-activities-and-trips-between-two-dates-check)
+  - [Clearing Data: clear](#clearing-data-clear)
+  - [Undo an action: undo](#undo-an-action-undo)
+  - [Exiting the program: exit](#exiting-the-program-exit)
+- [Command summary](#command-summary)
+
 ## Quick Start
 
 1. Ensure that you have Java 17 or above installed.
@@ -332,13 +363,6 @@ Removes a trip from the trip list by its index number.<br/>
 Format: `trip delete INDEX`
 * `INDEX` is the integer displayed in the trip list (from trip list)
 
-### Trip Command Summary
-
-| Command           | Format                                                                  |
-|-------------------|-------------------------------------------------------------------------|
-| Adding a trip     | `trip add sd/yyyy-MM-dd st/HH:mm ed/yyyy-MM-dd et/HH:mm by/TRANSPORT`   |
-| Listing all trips | `trip list`                                                             |
-| Deleting a trip   | `trip delete INDEX`                                                     |
 
 ---
 
@@ -398,7 +422,7 @@ Examples:
 Removes data based on the specified scope.<br/>
 Formats:
 * `clear`: Clears all activities in the itinerary
-* `clear budget`: Clears all budget entries
+* `clear budget`: Clears all budget entries and set the total budget as 0
 * `clear trip`: Clears all trips
 * `clear all`: Clears all activities, budget entries, and trips
 * `clear before yyyy-MM-dd`: Clears activities and trips scheduled on or before the specified date<br/>
