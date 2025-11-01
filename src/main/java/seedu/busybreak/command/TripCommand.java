@@ -62,7 +62,8 @@ public class TripCommand {
                     endDate == null || endDate.trim().isEmpty() ||
                     endTime == null || endTime.trim().isEmpty() ||
                     transport == null || transport.trim().isEmpty()) {
-                throw new IllegalArgumentException("Missing or empty fields. Required: sd/, st/, ed/, et/, by/ (all must have values)");
+                throw new IllegalArgumentException("Missing or empty fields. " +
+                        "Required: sd/, st/, ed/, et/, by/ (all must have values)");
             }
 
             Trip trip = new Trip(startDate, startTime, endDate, endTime, transport);
