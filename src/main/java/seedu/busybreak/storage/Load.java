@@ -49,6 +49,7 @@ public class Load {
             logger.log(Level.INFO, "Loaded " + BusyBreak.list.size() + " activities");
             if (invalid > 0) {
                 System.out.println("Warning: Removed " + invalid + " invalid activities");
+                BusyBreak.getStorage().saveActivities();
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to load activities", e);
@@ -91,6 +92,7 @@ public class Load {
             logger.log(Level.INFO, "Loaded budget and expenses");
             if (invalid > 0) {
                 System.out.println("Warning: Removed " + invalid + " invalid budget entries");
+                BusyBreak.getStorage().saveBudgets();
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to load budgets", e);
@@ -127,6 +129,7 @@ public class Load {
             logger.log(Level.INFO, "Loaded " + BusyBreak.trips.size() + " trips");
             if (invalid > 0) {
                 System.out.println("Warning: Removed " + invalid + " invalid trips");
+                BusyBreak.getStorage().saveTrips();
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to load trips", e);

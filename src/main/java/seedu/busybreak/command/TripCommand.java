@@ -57,8 +57,13 @@ public class TripCommand {
             String endTime = extractField(input, "et/");
             String transport = extractField(input, "by/");
 
-            if (startDate == null || startTime == null || endDate == null || endTime == null || transport == null) {
-                throw new IllegalArgumentException("Missing fields. Required: sd/, st/, ed/, et/, by/");
+            if (startDate == null || startDate.trim().isEmpty() ||
+                    startTime == null || startTime.trim().isEmpty() ||
+                    endDate == null || endDate.trim().isEmpty() ||
+                    endTime == null || endTime.trim().isEmpty() ||
+                    transport == null || transport.trim().isEmpty()) {
+                throw new IllegalArgumentException("Missing or empty fields. " +
+                        "Required: sd/, st/, ed/, et/, by/ (all must have values)");
             }
 
             Trip trip = new Trip(startDate, startTime, endDate, endTime, transport);

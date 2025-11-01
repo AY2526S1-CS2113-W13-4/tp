@@ -109,9 +109,9 @@ public class BusyBreak {
     public static void main(String[] args) {
         // Configure the log level to WARNING to output only warnings and errors
         Logger rootLogger = Logger.getLogger("");
-        rootLogger.setLevel(Level.WARNING);
+        rootLogger.setLevel(Level.OFF);
         for (Handler handler : rootLogger.getHandlers()) {
-            handler.setLevel(Level.WARNING);
+            handler.setLevel(Level.OFF);
         }
 
         ui.showWelcome();
