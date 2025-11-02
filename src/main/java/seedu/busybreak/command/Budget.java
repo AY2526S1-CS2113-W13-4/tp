@@ -8,7 +8,7 @@ public class Budget {
     public static void handleBudget(String[] userInputArray) {
         if (userInputArray.length < 2) {
             System.out.println(BusyBreak.LINE);
-            System.out.println("Please specify a budget command: set / add / list / delete / setcat / sync");
+            System.out.println("Please specify a budget command: set / add / list / delete / setcat ");
             System.out.println(BusyBreak.LINE);
             return;
         }
@@ -53,16 +53,17 @@ public class Budget {
                 }
 
                 History.checkpointWithSave(BusyBreak.getStorage());
-                BusyBreak.budgetPlan.addExpense(name, cost, category);
-                int last = BusyBreak.budgetPlan.names.size() - 1;
-                System.out.println(BusyBreak.LINE);
-                System.out.printf(java.util.Locale.US,
-                        "Added Expense: %s | Cost: $%.2f | Category: %s%n",
-                        BusyBreak.budgetPlan.names.get(last),
-                        BusyBreak.budgetPlan.amounts.get(last),
-                        BusyBreak.budgetPlan.categories.get(last));
-                System.out.println(BusyBreak.LINE);
-                BusyBreak.getStorage().saveBudgets();
+                if(BusyBreak.budgetPlan.addExpense(name, cost, category)) {
+                    int last = BusyBreak.budgetPlan.names.size() - 1;
+                    System.out.println(BusyBreak.LINE);
+                    System.out.printf(java.util.Locale.US,
+                            "Added Expense: %s | Cost: $%.2f | Category: %s%n",
+                            BusyBreak.budgetPlan.names.get(last),
+                            BusyBreak.budgetPlan.amounts.get(last),
+                            BusyBreak.budgetPlan.categories.get(last));
+                    System.out.println(BusyBreak.LINE);
+                    BusyBreak.getStorage().saveBudgets();
+                }
                 break;
 
             case "list":
@@ -95,7 +96,7 @@ public class Budget {
             case "setcat": {
                 if (userInputArray.length < 4) {
                     System.out.println(BusyBreak.LINE);
-                    System.out.println("Usage: budget setcat <index> cat/<newCategory>");
+                    System.out.println("Usage: budget setcat <index> <newCategory>");
                     System.out.println(BusyBreak.LINE);
                     return;
                 }
