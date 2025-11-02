@@ -102,6 +102,10 @@ public class Parser {
             String cost = parseCost[1].trim();
             checkEmptyFields(date, time, description, cost);
 
+            if (description.contains("|")) {
+                throw new IllegalArgumentException("Description cannot contain the '|' character.");
+            }
+
             assert !date.isEmpty() : "Date cannot be empty.";
             assert !time.isEmpty() : "Time cannot be empty.";
             assert !description.isEmpty() : "Description cannot be empty.";

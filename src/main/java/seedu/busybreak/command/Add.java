@@ -23,7 +23,7 @@ public class Add {
             BusyBreak.getStorage().saveActivities();
         } catch (IllegalArgumentException e) {
             Ui.showLine();
-            System.out.println("User input is invalid! " + e.getMessage());
+            System.out.println("Invalid User Input! " + e.getMessage());
             Ui.showLine();
         }
     }
