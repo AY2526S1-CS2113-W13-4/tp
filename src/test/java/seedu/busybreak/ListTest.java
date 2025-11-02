@@ -7,7 +7,6 @@ import seedu.busybreak.command.Add;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import seedu.busybreak.command.Find;
 import seedu.busybreak.command.List;
 
 import java.io.ByteArrayOutputStream;

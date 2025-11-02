@@ -79,7 +79,7 @@ public class FindTest {
     }
 
     @Test
-    public void searchByKeyword_NotCaseSensitive(){
+    public void searchByKeyword_notCaseSensitive(){
         String[] input = {"add", "d/2025-01-01", "t/13:00", "desc/eat lunch", "c/15"};
         Add.addActivityDataToList(input);
 
