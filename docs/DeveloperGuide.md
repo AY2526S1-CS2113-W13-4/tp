@@ -205,7 +205,7 @@ This method processes the subcommand specified by the user (set, add, delete, li
 
 ### Class Diagram
 
-![Class Diagram](diagrams/BudgetCommandClass-Budget_Feature___Class_Diagram.png)
+![Class Diagram](diagrams/BudgetCommand.png)
 ---
 
 ---
@@ -265,7 +265,7 @@ The component makes sure that Activity–Budget is cross-compatible :
 
 This diagram illustrates the relationships between `BudgetPlan`, `BudgetCommand`, and `BusyBreak`.
 
-![Class Diagram](diagrams/BudgetPlan-BudgetPlan.png)
+![Class Diagram](diagrams/BudgetPlan.png)
 
 
 ### Feature: Adding to list

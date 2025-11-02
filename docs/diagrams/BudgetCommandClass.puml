@@ -1,24 +1,28 @@
-@startuml
-title Budget Feature - Class Diagram
+@startuml BudgetCommand
+title Budget Command Class
+hide circle
+hide stereotype
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
 
 class BusyBreak {
-    - LINE : String
+    + LINE : String
     + budgetPlan : BudgetPlan
     + list : List<Activity>
     + getStorage() : Storage
 }
 
-class BudgetCommand {
-    + handleBudget(userInputArray : String[]) : void
-}
 
 class BudgetPlan {
-    + setBudget(amount : double) : void
-    + addExpense(name : String, cost : String, category : String) : void
-    + deleteExpense(index : int) : void
-    + listExpenses() : void
-    + setExpenseCategory(index : int, newCategory : String) : void
-    + syncFromActivities(activities : List<Activity>) : void
+    +setBudget(amount : double) : void
+    +addExpense(name : String, cost : String, category : String) : boolean
+    +deleteExpense(index : int) : void
+    +listExpenses() : void
+    +setExpenseCategory(index : int, newCategory : String) : void
+    +syncFromActivities(activities : List<Activity>) : void
+    +isActivityCategory(category : String) : boolean
+    +getTotalBudget() : double
 }
 
 class Storage {
@@ -31,9 +35,14 @@ class Activity {
     + cost : double
 }
 
+  class Budget {
+    {static} +handleBudget(userInputArray : String[]) : void
+  }
+
+
 BusyBreak *-- BudgetPlan
 BusyBreak *-- Storage
-BudgetCommand --> BudgetPlan : uses
-BudgetCommand --> Storage : saves/loads
+Budget --> BudgetPlan : uses
+Budget --> Storage : saves/loads
 BudgetPlan --> Activity : syncs with
 @enduml
