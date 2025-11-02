@@ -15,6 +15,8 @@ public class Parser {
         String userInput;
 
         userInput = in.nextLine();
+
+        userInput = userInput.trim();
         String[] userInputArray = userInput.split("\\s+");
         String command = userInputArray[0]; //read first word of input as command
         return new GetCommand(userInput, userInputArray, command);
