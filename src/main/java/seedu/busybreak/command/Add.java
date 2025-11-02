@@ -5,7 +5,21 @@ import seedu.busybreak.BusyBreak;
 import seedu.busybreak.parser.Parser;
 import seedu.busybreak.Ui;
 
+/**
+ * Handles the addition of activities to itinerary.
+ * Parses user input and validates activity data.
+ * Updates the budget plan.
+ * Saves changes to local storage.
+ */
 public class Add {
+
+    /**
+     * Adds an activity to itinerary.
+     * Parses the user input array to extract itinerary details.
+     * If parsing fails, display error message and does not add activity.
+     *
+     * @param userInputArray Array of strings containing user input
+     */
     public static void addActivityDataToList(String[] userInputArray) {
         Parser.ParseActivityData activityData = Parser.getParseActivityData(userInputArray);
         if (activityData == null) {
