@@ -15,8 +15,7 @@ public class Parser {
      * Reads a line of user input, trims trailing whitespaces.
      * Splits user input.
      *
-     * @return GetCommand record which contains userInput,userInputArray
-     * and command, or null if no input.
+     * @return GetCommand record which contains userInput,userInputArray and command, or null if no input.
      *
      */
     public static GetCommand parseUserInput() {
@@ -111,9 +110,7 @@ public class Parser {
      *
      * @param userInputArray array of strings containing the command
      *                       and the respective activity fields.
-     * @return ParseActivityData record containing date,time,description and cost
-     * or null if fields are invalid.
-     *
+     * @return ParseActivityData record containing date,time,description and cost  or null if fields are invalid.
      */
     public static ParseActivityData getParseActivityData(String[] userInputArray) {
 
