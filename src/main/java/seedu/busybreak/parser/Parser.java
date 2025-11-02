@@ -6,7 +6,19 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * Handles the parsing of user inputs.
+ */
 public class Parser {
+    /**
+     * Parse user input from the command line.
+     * Reads a line of user input, trims trailing whitespaces.
+     * Splits user input.
+     *
+     * @return GetCommand record which contains userInput,userInputArray
+     * and command, or null if no input.
+     *
+     */
     public static GetCommand parseUserInput() {
         Scanner in = getScanner();
         if (in == null) {
@@ -75,6 +87,14 @@ public class Parser {
         return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
     }
 
+    /**
+     * Parse the search keyword from user input for the find command.
+     *
+     * @param userInput Array of strings containing the command and
+     *                  search keyword.
+     * @return parsed search keyword with command truncated from input.
+     *
+     */
     public static String parseFindInput(String[] userInput) {
         return Arrays.stream(userInput, 1, userInput.length).collect(Collectors.joining(" "));
     }
@@ -84,6 +104,17 @@ public class Parser {
                                    boolean hasInvalidDetail) {
     }
 
+    /**
+     * Parse user input from the command line.
+     * Extracts date,time,description and cost fields.
+     * Ensures proper format of required fields.
+     *
+     * @param userInputArray array of strings containing the command
+     *                       and the respective activity fields.
+     * @return ParseActivityData record containing date,time,description and cost
+     * or null if fields are invalid.
+     *
+     */
     public static ParseActivityData getParseActivityData(String[] userInputArray) {
 
         try {
@@ -161,9 +192,24 @@ public class Parser {
         return parseDate;
     }
 
+    /**
+     * Contains parsed activity data.
+     *
+     * @param date        Activity date.
+     * @param time        Activity time.
+     * @param description Activity description.
+     * @param cost        Activity cost.
+     */
     public record ParseActivityData(String date, String time, String description, String cost) {
     }
 
+    /**
+     * Contains parsed command data.
+     *
+     * @param userInput      original user input.
+     * @param userInputArray Array containing split user input.
+     * @param command        the first word of the input which represents the user command.
+     */
     public record GetCommand(String userInput, String[] userInputArray, String command) {
     }
 }
