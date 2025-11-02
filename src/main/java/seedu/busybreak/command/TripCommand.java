@@ -65,8 +65,22 @@ public class TripCommand {
                 throw new IllegalArgumentException("Missing or empty fields. " +
                         "Required: sd/, st/, ed/, et/, by/ (all must have values)");
             }
+            if (transport.contains("|")) {
+                throw new IllegalArgumentException("Please don't use '|' in input" +
+                        " as it is used as a delimiter in files.");
+            }
 
             Trip trip = new Trip(startDate, startTime, endDate, endTime, transport);
+            for (Trip existingTrip : BusyBreak.trips) {
+                if (existingTrip.getStartDate().equals(trip.getStartDate()) &&
+                        existingTrip.getStartTime().equals(trip.getStartTime()) &&
+                        existingTrip.getEndDate().equals(trip.getEndDate()) &&
+                        existingTrip.getEndTime().equals(trip.getEndTime()) &&
+                        existingTrip.getTransport().equals(trip.getTransport())) {
+                    throw new IllegalArgumentException("This trip already exists.");
+                }
+            }
+
             BusyBreak.trips.add(trip);
             BusyBreak.getStorage().saveTrips();
 
