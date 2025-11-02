@@ -11,7 +11,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ScheduleTripTest {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

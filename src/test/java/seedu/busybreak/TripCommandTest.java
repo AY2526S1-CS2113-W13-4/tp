@@ -11,7 +11,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TripCommandTest {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -31,8 +31,7 @@ public class TripCommandTest {
 
     @Test
     public void handleTripCommand_addValidTrip_success() {
-        String[] input = {"trip", "add", "sd/2025-01-01",
-                "st/08:00", "ed/2025-01-02", "et/18:00", "by/flight"};
+        String[] input = {"trip", "add", "sd/2025-01-01", "st/08:00", "ed/2025-01-02", "et/18:00", "by/flight"};
         TripCommand.handleTripCommand(input);
 
         String output = outputStream.toString();
@@ -43,13 +42,11 @@ public class TripCommandTest {
 
     @Test
     public void handleTripCommand_addDuplicateTrip_failure() {
-        String[] input1 = {"trip", "add", "sd/2025-01-01",
-                "st/08:00", "ed/2025-01-02", "et/18:00", "by/flight"};
+        String[] input1 = {"trip", "add", "sd/2025-01-01", "st/08:00", "ed/2025-01-02", "et/18:00", "by/flight"};
         TripCommand.handleTripCommand(input1);
 
         outputStream.reset();
-        String[] input2 = {"trip", "add", "sd/2025-01-01",
-                "st/08:00", "ed/2025-01-02", "et/18:00", "by/flight"};
+        String[] input2 = {"trip", "add", "sd/2025-01-01", "st/08:00", "ed/2025-01-02", "et/18:00", "by/flight"};
         TripCommand.handleTripCommand(input2);
 
         assertTrue(outputStream.toString().contains("This trip already exists."));
