@@ -1,0 +1,71 @@
+@startuml UndoCommandClassDiagram
+
+!define LIGHTYELLOW #FFFACD
+!define LIGHTBLUE   #E6F3FF
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor LIGHTYELLOW
+    BorderColor Black
+    ArrowColor Black
+}
+
+class Undo LIGHTBLUE {
+    + {static} undoInput(args: String[]): void
+}
+
+class Ui {
+    + {static} showInvalidUndoFormat(): void
+    + {static} showNothingToUndo(): void
+    + {static} showUndoSuccess(): void
+    + {static} showError(msg: String): void
+}
+
+class History {
+    + {static} hasSnapshots(): boolean
+    + {static} restoreLatest(): Optional<Path>
+}
+
+class Load {
+    + loadActivities(): void
+    + loadBudgets(): void
+    + loadTrips(): void
+}
+
+class BusyBreak {
+    + {static} list: ArrayList<Activity>
+    + {static} trips: ArrayList<Trip>
+    + {static} budgetPlan: BudgetPlan
+}
+
+class Activity {
+    + getDate(): String
+    + getTime(): String
+    + getDescription(): String
+    + getCost(): String
+}
+
+class Trip {
+    + getStartDate(): String
+    + getStartTime(): String
+    + getEndDate(): String
+    + getEndTime(): String
+    + getTransport(): String
+}
+
+class BudgetPlan {
+    + syncFromActivities(activities: List<Activity>): void
+    + getTotalBudget(): double
+}
+
+' Relationships
+Undo ..> Ui : uses
+Undo ..> History : queries/restores
+Undo ..> Load : reloads state
+Undo ..> BusyBreak : resets static state
+BusyBreak "1" o-- "0..*" Activity : contains
+BusyBreak "1" o-- "0..*" Trip : contains
+BusyBreak "1" o-- "1" BudgetPlan : has
+BudgetPlan ..> Activity : reads
+
+@enduml

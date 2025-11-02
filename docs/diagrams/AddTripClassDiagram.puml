@@ -1,6 +1,6 @@
 @startuml
 left to right direction
-
+hide circle
 skinparam classAttributeIconSize 0
 skinparam class {
     BackgroundColor LIGHTYELLOW
@@ -46,11 +46,12 @@ class Parser {
   + parseUserInput(): GetCommand
 }
 
-BusyBreak --> Trip : contains
-BusyBreak --> Storage
-TripCommand --> BusyBreak : uses
-TripCommand --> Trip : creates
-Trip --> Time : has
-Parser --> TripCommand : provides input
-Storage --> Trip : saves
+BusyBreak "1" *--> "*" Trip : contains
+BusyBreak "1" --> "1" Storage : has
+TripCommand "1" ..> "1" BusyBreak : uses
+TripCommand "1" ..> "*" Trip : creates
+Trip "1" *--> "2" Time : has
+Parser "1" ..> "1" TripCommand : provides input
+Storage "1" ..> "*" Trip : saves
+
 @enduml

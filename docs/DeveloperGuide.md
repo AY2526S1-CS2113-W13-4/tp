@@ -2,12 +2,20 @@
 
 ## Acknowledgements
 
-{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the
-original source as well}
+BusyBreak uses the following tools in the Developer Guide, User Guide, and main code:
+
+* [PlantUML](https://plantuml.com/) 
+  * For creating UML diagrams
+* [AddressBook-Level3 (AB3)](https://se-education.org/addressbook-level3/)
+  * For the general structure of the User and Developer Guides
+* [CS2113 Website](https://nus-cs2113-ay2526s1.github.io/website/index.html)
+  * For the software expectations of BusyBreak
+* [JUnit](https://junit.org/) 
+  * For unit testing
+* [Gradle](https://gradle.org/)
+  * For the automating of builds
 
 ## Design & implementation
-
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
 ---
 
@@ -387,6 +395,35 @@ It uses Java's ArrayList implementation to handle the deletion of items, as well
 as sets the variables of the Activity item at the relevant index when the user wants
 to edit that item.
 
+#### Class Diagrams
+
+The diagram below illustrates the Edit command class diagram.
+
+![EditCommandClassDiagram.png](diagrams/EditCommandClassDiagram.png)
+
+The diagram below illustrates the Delete command class diagram.
+
+![DeleteCommandClassDiagram.png](diagrams/DeleteCommandClassDiagram.png)
+
+#### Workflows
+
+The diagram below illustrates the Edit command workflow:
+
+![](diagrams/EditCommandActivityDiagram.png)
+
+The diagram below illustrates the Delete command workflow:
+
+![](diagrams/DeleteCommandActivityDiagram.png)
+
+#### Sequence diagrams
+
+The following sequence diagram illustrates how an item is edited in BusyBreak:
+
+![](diagrams/EditCommandSequenceDiagram.png)
+
+The following sequence diagram illustrates how an item is deleted in BusyBreak:
+
+![](diagrams/DeleteCommandSequenceDiagram.png)
 
 ---
 
@@ -434,33 +471,197 @@ viewInput() logic:
 6. If there are no match in the itinerary, Ui.showNoActivitiesFor(date) is called
 7. Otherwise, Ui.showItineraryFor(date, matches) to display all activities on that date
 
+#### Sequence diagram
+
+The sequence diagram illustrates how the user can view all the activities scheduled on a specific day
+
+![ViewCommandSequenceDiagram.png](diagrams/ViewCommandSequenceDiagram.png)
+
+
+---
+
+#### Feature: Undo
+
+This feature allows the user to revert the application state to the most recent
+checkpoint created before a mutating command
+
+#### Design
+
+Uses a folder-based snapshot system (History) that saves activities, budgets, and trips before each mutating command. 
+On undo, it restores the latest snapshot, resets in-memory state, reloads via Load, and reports status via Ui.
+
+#### Implementation
+
+The feature is implemented via undoInput(String[] args) in the Undo class.
+This method validates the command format, consults History for a snapshot,
+restores files if available, resets in-memory state, reloads via Load, and
+notifies the user via Ui.
+
+#### Class Diagram
+
+The diagram below illustrates the Undo command class diagram.
+
+![UndoCommandClassDiagram.png](diagrams/UndoCommandClassDiagram.png)
+
+
+undoInput() logic:
+
+- Ensures exactly one token is passed: "undo"
+- Check History.hasSnapshots():
+  - If false, calls Ui.showNothingToUndo() and return
+- Call History.restoreLatest():
+  - If empty, calls Ui.showNothingToUndo() and return
+- Reset in-memory state:
+  - BusyBreak.list.clear()
+  - BusyBreak.trips.clear()
+  - BusyBreak.budgetPlan = new BudgetPlan()
+- Reload from restored files:
+  - Load.loadActivities()
+  - Load.loadBudgets()
+  - BusyBreak.budgetPlan.syncFromActivities(BusyBreak.list)
+  - Load.loadTrips()
+- Call Ui.showUndoSuccess()
+
+#### Workflow
+
+1. User types in "undo"
+2. Undo.undoInput() validates format (must be a single token)
+3. History.hasSnapshots() is checked 
+4. If none, Ui.showNothingToUndo() and return 
+5. History.restoreLatest() copies the latest snapshot’s files back into data 
+6. In-memory state is reset (list, trips, budgetPlan)
+7. Load reloads activities, budgets, and trips from restored files 
+8. budgetPlan.syncFromActivities(list) ensures Activity-linked expenses are aligned 
+9. Ui.showUndoSuccess() notifies completion
+
+#### Sequence Diagram
+The following sequence diagram illustrates how you can undo an action in BusyBreak:
+
+![UndoCommandSequenceDiagram.png](diagrams/UndoCommandSequenceDiagram.png)
+
 ---
 
 ## Product scope
 
 ### Target user profile
 
-{Describe the target user profile}
+BusyBreak is designed for travelers who:
+* Can type fast 
+* Are comfortable using CLI based applications
+* Want to organize detailed itineraries
+* Need to quickly search,edit and reorganize travel plans
+* Prefer a lightweight itinerary tracker
 
 ### Value proposition
 
-{Describe the value proposition: what problem does it solve?}
+Helps travellers track their itinerary planning using a CLI based tool that contains itinerary management,
+schedule organisation and budget tracking. It is designed to be lightweight being a CLI 
+based application, and solves the issue of having fragmented travel planning 
+from using multiple apps or documents. It is also lightweight and easy to use,
+being CLI based.
 
 ## User Stories
 
-| Version                        | As a ... | I want to ...             | So that I can ...                                           |
-|--------------------------------|----------|---------------------------|-------------------------------------------------------------|
-| seedu.busybreak.BusyBreak.v1.0 | new user | see usage instructions    | refer to them when I forget how to use the application      |
-| v2.0                           | user     | find a to-do item by name | locate a to-do without having to go through the entire list |
+| Version | As a ...                 | I want to ...                                                    | So that I can ...                                                 |
+|---------|--------------------------|------------------------------------------------------------------|-------------------------------------------------------------------|
+| v1.0    | planner                  | add daily itinerary items                                        | know what activities I have planned                               |
+| v1.0    | traveller                | delete daily itinerary items                                     | have my list remain uncluttered                                   |
+| v1.0    | budget-conscious planner | set an overall or daily budget for the trip                      | control my total spending                                         |
+| v1.0    | traveller                | edit my daily itinerary items                                    | easily change my activity details                                 |
+| v1.0    | traveller                | view my entire itinerary timeline                                | have an overview of the things I will be doing for the trip       |
+| v1.0    | traveller                | view my itinerary for a specific day                             | have an overview of the things I will be doing for the day        |
+| v1.0    | traveller                | sort activities in my itinerary by time                          | I know the order of my activities                                 |
+| v2.0    | traveller                | save and load all my items                                       | not key them in every time I restart the application              |
+| v2.0    | traveller                | add transport details                                            | plan how to get from place to place                               |
+| v2.0    | planner                  | check activities and trips in a certain period                   | know if I can easily alter my schedule in that period             |
+| v2.0    | frequent traveller       | clear all my list items                                          | start a new itinerary from scratch                                |
+| v2.0    | frequent traveller       | clear all my transport details and budget                        | re-use my  itinerary for different countries easily               |
+| v2.0    | traveller                | clear activities and trips scheduled on or before a certain date | remove past or cancelled plans without affecting future ones      |
+| v2.0    | traveller                | sort transport by time                                           | see my transports in chronological order along side my activities |
+| v2.0    | traveller                | edit individual activity fields                                  | update specific details without reentering the entire item        |
+| v2.0    | planner                  | undo the last change                                             | recover from accidental changes easily                            |
+| v2.0    | user with a long list    | find a item by name                                              | locate an activity without having to go through the entire list   |
+| v2.0    | budget-conscious planner | manually add expenses                                            | track non-activity costs                                          |
+| v2.0    | budget-conscious planner | categorise expenses and view the breakdown                       | understand where my money is going                                |
+| v2.0    | budget-conscious planner | automatically add activity costs into the budget                 | keep the budget accurate without double entries                   |
 
 ## Non-Functional Requirements
 
-{Give non-functional requirements}
+1. Should work on Windows/MacOS/Linux provided it has Java 17 installed.
 
 ## Glossary
 
-* *glossary item* - Definition
+* *CLI* - Command Line Interface. The only means of interacting with BusyBreak
+* *Snapshot* - A timestamp of the data directory created before mutating each entry with `undo`.
 
 ## Instructions for manual testing
 
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
+### Launch and Shutdown
+
+1. Initial launch <br/>
+a. Download the jar file in an empty folder.<br/>
+b. Open a terminal and cd into the folder that the jar file was saved in.
+c. Run `java -jar busybreak.jar`
+
+2. Shutdown<br/>
+a. Input the`exit` command into BusyBreak, and the program will exit by itself.
+
+### Adding activities
+* `add d/2025-01-01 t/10:00 desc/Visit Museum c/20`
+* `list` to verify that the activity has been added with the correct details.
+
+### Editing activities
+* After adding an activity
+* `edit 1 d/2025-02-02 t/11:11 desc/Go to water park c/100` or any other permutation
+of the order of the fields (including leaving some out).
+* `list` to verify the activity has been updated with the correct details.
+
+### Listing activities
+* `list`
+* Shows all the activities in the list.
+
+### Viewing activities
+* `view 2025-02-02`
+* Shows the activities on that day
+
+### Deleting activities
+* `delete 1` 
+* Shows the task that has been deleted
+* `list` should not show that activity
+
+### Sorting activities and trips
+* `schedule` to sort activities by time
+* `schedule trip` to sort trips by time
+
+### Managing trips
+* Adding a trip	`trip add sd/2025-01-01 st/00:01 ed/2025-01-01 et/12:00 by/plane`
+* Listing all trips	`trip list`
+* Deleting a trip `trip delete 1`
+
+### Checking activities and trips in date range
+* `check from/2025-01-01 to/2025-02-02`
+
+### Clearing data
+* Clearing all activities `clear`
+* Clearing all budget `clear budget`
+* Clearing all trips `clear trip`
+* Clearing all activities, budget and trips	`clear all`
+* Clearing all activities and trips on or before the date `clear before 2025-01-02`
+
+### Budget management
+* Display spending by category	`breakdown`
+* Set budget `budget set AMOUNT`
+* Add an expense `budget add n/Souvenier c/100 cat/Shopping`
+* List expenses	`budget list`
+* Delete an expense	`budget delete 1`
+* Change expense category `budget setcat 1 Food`
+* Sync budget with activities `budget sync`
+
+### Finding an item
+* `find visit`
+* Shows all activities with the keyword
+
+### Exiting the program	
+* `exit`
+* Program will terminate
+

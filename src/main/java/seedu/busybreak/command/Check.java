@@ -49,7 +49,7 @@ public class Check {
 
         } catch (DateTimeParseException e) {
             System.out.println(LINE);
-            System.out.println("Invalid date format. Please use yyyy-MM-dd.");
+            System.out.println("Invalid date. Please use a valid date in format yyyy-MM-dd.");
             System.out.println(LINE);
         }
     }

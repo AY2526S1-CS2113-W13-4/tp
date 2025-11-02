@@ -15,12 +15,12 @@ public class Edit {
         try {
             logger.log(Level.INFO, "Editing Activity " +  userInputArray[1]);
             int index = Parser.parseActivityIndex(userInputArray[1]);
-            assert index >= 0 && index < BusyBreak.list.size() : "Index out of bounds";
 
             if (index < 0 || index >= BusyBreak.list.size()) {
                 Ui.showInvalidIndexMessage();
                 return;
             }
+            assert index >= 0 && index < BusyBreak.list.size() : "Index out of bounds";
 
             Activity editedActivity = BusyBreak.list.get(index);
             Parser.ParseEditDetails editDetails = Parser.parseEditActivityDetails(userInputArray);

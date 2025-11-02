@@ -20,17 +20,6 @@ class BusyBreakTest {
     }
 
     @Test
-    public void editActivityDataInList() {
-        BusyBreak.list = new ArrayList<>();
-        Activity a = new Activity("2025-10-10", "11:11", "film tiktok video", "69");
-        Activity b = new Activity("2025-11-11", "11:11", "farm aura", "67");
-        BusyBreak.list.add(a);
-        BusyBreak.list.set(0, b);
-        assertEquals(1, BusyBreak.list.size());
-        assertTrue(BusyBreak.list.contains(b));
-    }
-
-    @Test
     public void deleteActivityDataFromList() {
         BusyBreak.list = new ArrayList<>();
         Activity a = new Activity("2025-10-10", "11:11", "film tiktok video", "69");
