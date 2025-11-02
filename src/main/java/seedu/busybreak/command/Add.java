@@ -21,7 +21,7 @@ public class Add {
             BusyBreak.list.add(a);
             Ui.printAddedItem(activityData);
             BusyBreak.getStorage().saveActivities();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | AssertionError e) {
             Ui.showLine();
             System.out.println("Invalid User Input! " + e.getMessage());
             Ui.showLine();
