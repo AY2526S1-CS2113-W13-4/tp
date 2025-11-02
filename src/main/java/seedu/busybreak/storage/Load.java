@@ -13,12 +13,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+//@@author msc-123456
+/**
+ * Loads activities, budgets, and trips from files.
+ */
 public class Load {
     private static final Logger logger = Logger.getLogger(Load.class.getName());
     private static final String ACTIVITIES_FILE = "data/activities.txt";
     private static final String BUDGETS_FILE = "data/budgets.txt";
     private static final String TRIPS_FILE = "data/trips.txt";
 
+    /**
+     * Loads activity data from activities.txt into the in-memory activity list.
+     * Ignores invalid data and records the count of invalid entries.
+     */
     public void loadActivities() {
         BusyBreak.list.clear();
         int invalid = 0;
@@ -56,6 +64,10 @@ public class Load {
         }
     }
 
+    /**
+     * Loads budget data from budgets.txt into the in-memory budget plan.
+     * Ignores invalid data and records the count of invalid entries.
+     */
     public void loadBudgets() {
         BusyBreak.budgetPlan = new BudgetPlan();
         int invalid = 0;
@@ -99,6 +111,10 @@ public class Load {
         }
     }
 
+    /**
+     * Loads trip data from trips.txt into the in-memory trip list.
+     * Ignores invalid data and records the count of invalid entries.
+     */
     public void loadTrips() {
         BusyBreak.trips.clear();
         int invalid = 0;

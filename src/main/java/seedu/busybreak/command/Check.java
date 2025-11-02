@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 //@@author msc-123456
+/**
+ * Handles date range queries to view activities and trips
+ * within a specified date range.
+ */
 public class Check {
     private static final String LINE = BusyBreak.LINE;
     private static final String CORRECT_FORMAT = "Invalid check command. Please use:\n"
@@ -17,6 +21,11 @@ public class Check {
             + "to check activities and trips between two dates (inclusive)";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /**
+     * Handles user input for date range check commands,
+     * filters and displays activities and trips within the range.
+     * @param userInputArray Split user input array.
+     */
     public static void handleCheckCommand(String[] userInputArray) {
         if (userInputArray.length != 3) {
             printInvalidFormat();

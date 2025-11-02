@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 //@@author msc-123456
+/**
+ * Saves activities, budgets, and trips to files.
+ */
 public class Storage {
     private static final Logger logger = Logger.getLogger(Storage.class.getName());
     private static final String DATA_FOLDER = "data";
@@ -19,6 +22,10 @@ public class Storage {
     private static final String BUDGETS_FILE = DATA_FOLDER + "/budgets.txt";
     private static final String TRIPS_FILE = DATA_FOLDER + "/trips.txt";
 
+    /**
+     * Initializes a Storage instance,
+     * creating the data directory if it does not exist.
+     */
     public Storage() {
         try {
             Path dataPath = Paths.get(DATA_FOLDER);
@@ -31,6 +38,9 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves all activity data to the activities.txt file.
+     */
     public void saveActivities() {
         try (FileWriter writer = new FileWriter(ACTIVITIES_FILE)) {
             for (Activity activity : BusyBreak.list) {
@@ -47,6 +57,9 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves budget data to the budgets.txt file.
+     */
     public void saveBudgets() {
         try (FileWriter writer = new FileWriter(BUDGETS_FILE)) {
             writer.write("BUDGET|" + BusyBreak.budgetPlan.getTotalBudget() + System.lineSeparator());
@@ -65,6 +78,9 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves all trip data to the trips.txt file.
+     */
     public void saveTrips() {
         try (FileWriter writer = new FileWriter(TRIPS_FILE)) {
             for (seedu.busybreak.activity.Trip trip : BusyBreak.trips) {
