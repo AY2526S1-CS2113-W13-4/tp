@@ -145,7 +145,7 @@ public class BudgetPlan {
         }
         names.add(name.trim());
         amounts.add(amount);
-        categories.add(category.trim());
+        categories.add(normalizeCategory(category.trim()));
 
         logger.log(Level.INFO, "Added expense: {0} (${1}) [{2}]",
                 new Object[]{name, String.format(Locale.US, "%.2f", amount), category});
