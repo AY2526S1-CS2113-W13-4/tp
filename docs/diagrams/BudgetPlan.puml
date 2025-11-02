@@ -1,55 +1,58 @@
-@startuml
+@startuml BudgetPlan
 title BudgetPlan
-skinparam classAttributeIconSize 0
 hide circle
+hide stereotype
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam packageTitleFontSize 14
+skinparam classFontSize 13
 
-' === Core Classes ===
-class BudgetPlan {
-  -- Fields --
-  {static} - logger : Logger
-  {static} - LINE : String
-  + names : ArrayList<String>
-  + amounts : ArrayList<Double>
-  + categories : ArrayList<String>
-  - totalBudget : double
+class BusyBreak {
+        +LINE : String
+        +budgetPlan : BudgetPlan
+        +list : List<Activity>
+        +getStorage() : Storage
+    }
 
-  -- Public API --
-  + setBudget(amount: double) : void
-  + getTotalBudget() : double
-  + getTotalSpent() : double
-  + getRemainingBudget() : double
-  + isActivityCategory(category: String) : boolean
 
-  + addActivityExpense(description: String, costString: String) : void
-  + removeActivityExpense(description: String, costString: String) : boolean
-  + updateActivityExpense(oldDesc: String, oldCostStr: String,
-                          newDesc: String, newCostStr: String) : void
+ class Activity {
+         +name : String
+         +cost : double
+         +getDescription() : String
+         +getCost() : String
+     }
 
-  + hasExpense(name: String, cost: String, category: String) : boolean
-  + syncFromActivities(activities: List<Activity>) : void
+     class BudgetPlan {
+         -logger : Logger
+         -LINE : String
+         +names : ArrayList<String>
+         +amounts : ArrayList<Double>
+         +categories : ArrayList<String>
+         -totalBudget : double
 
-  + addExpense(name: String, cost: String, category: String) : void
-  + deleteExpense(oneBasedIndex: int) : void
-  + listExpenses() : void
-  + setExpenseCategory(oneBasedIndex: int, newCategory: String) : void
-  + listByCategory() : void
+         +setBudget(amount : double) : void
+         +getTotalBudget() : double
+         +getTotalSpent() : double
+         +getRemainingBudget() : double
+         +isActivityCategory(category : String) : boolean
+         +addActivityExpense(description : String, costString : String) : boolean
+         +removeActivityExpense(description : String, costString : String) : boolean
+         +updateActivityExpense(oldDesc : String, oldCostStr : String, newDesc : String, newCostStr : String) : void
+         +hasExpense(name : String, cost : String, category : String) : boolean
+         +syncFromActivities(activities : List<Activity>) : void
+         +addExpense(name : String, cost : String, category : String) : boolean
+         +deleteExpense(oneBasedIndex : int) : void
+         +listExpenses() : void
+         +setExpenseCategory(oneBasedIndex : int, newCategory : String) : void
+         +listByCategory() : void
+         -parseAmount(raw : String) : double
+         -printBox(msg : String) : void
+     }
 
-  -- Private helpers --
-  - isActivityExpenseAt(idx: int) : boolean
-  - normalizeCategory(category: String) : String
-  {static} - findIndex(list: ArrayList<String>, target: String) : int
-  - buildCategoryTotals(cats: ArrayList<String>, totals: ArrayList<Double>) : void
-  {static} - sortByTotalsDesc(cats: ArrayList<String>, totals: ArrayList<Double>) : void
-  {static} - parseAmount(raw: String) : double
-  {static} - printBox(msg: String) : void
-}
 
-class Activity {
-  + getDescription() : String
-  + getCost() : String
-}
 
-class BudgetCommand {
+class Budget{
   + handleBudget(userInputArray: String[]) : void
 }
 
@@ -63,10 +66,16 @@ class Storage {
   + loadBudgets() : BudgetPlan
 }
 
-' === Relationships ===
-BudgetPlan ..> Activity : uses (syncFromActivities)
-BudgetCommand --> BudgetPlan : calls (set/add/list/delete/sync)
-BusyBreak --> BudgetPlan : owns instance
-BusyBreak --> Storage : uses to persist budgets
-Storage --> BudgetPlan : returns data (loadBudgets)
+BusyBreak o-- BudgetPlan
+BusyBreak o-- "list : List<Activity>" Activity
+BusyBreak o-- Storage : getStorage()
+
+Budget ..> BusyBreak : uses\nLINE, budgetPlan, list,\ngetStorage()
+Budget ..> BudgetPlan : setBudget(), addExpense(),\nlist/delete/setcat/sync
+Budget ..> Storage : saveBudgets()
+Budget ..> History : checkpointWithSave()
+
+BudgetPlan --> Activity : syncs with
+BudgetPlan ..> BusyBreak : uses for\nparseAmount logging
+
 @enduml
