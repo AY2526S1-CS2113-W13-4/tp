@@ -1,5 +1,7 @@
 package seedu.busybreak.activity;
 
+import seedu.busybreak.BusyBreak;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -48,14 +50,18 @@ public class BudgetPlan {
     }
 
 
-    public void addActivityExpense(String description, String costString) {
+    public boolean addActivityExpense(String description, String costString) {
         assert description != null && !description.isBlank();
         assert costString != null && !costString.isBlank();
         double amount = parseAmount(costString);
+        if (amount < 0) {
+            return false;
+        }
         names.add(description.trim());
         amounts.add(amount);
         categories.add("Activity");
         logger.log(Level.INFO, "Activity expense added: {0} (${1})", new Object[]{description, amount});
+        return true;
     }
 
     public boolean removeActivityExpense(String description, String costString) {
@@ -82,6 +88,9 @@ public class BudgetPlan {
     public void updateActivityExpense(String oldDesc, String oldCostStr, String newDesc, String newCostStr) {
         double oldCost = parseAmount(oldCostStr);
         double newCost = parseAmount(newCostStr);
+        if (newCost < 0) {
+            return;
+        }
 
         for (int i = 0; i < names.size(); i++) {
             if ("Activity".equalsIgnoreCase(categories.get(i))
@@ -122,21 +131,25 @@ public class BudgetPlan {
         }
     }
 
-    public void addExpense(String name, String cost, String category) {
+
+    public boolean addExpense(String name, String cost, String category) {
         assert name != null && !name.isBlank() : "Expense name cannot be empty";
         assert cost != null && !cost.isBlank() : "Expense cost cannot be empty";
-
         double amount = parseAmount(cost);
         if (category == null || category.isBlank()){
             category = "Uncategorized";
         }
 
+        if (amount < 0) {
+            return false;
+        }
         names.add(name.trim());
         amounts.add(amount);
         categories.add(category.trim());
 
         logger.log(Level.INFO, "Added expense: {0} (${1}) [{2}]",
                 new Object[]{name, String.format(Locale.US, "%.2f", amount), category});
+        return true;
     }
 
     public void deleteExpense(int oneBasedIndex) {
@@ -295,16 +308,31 @@ public class BudgetPlan {
 
     private static double parseAmount(String raw) {
         String cleaned = raw.trim().replace("$", "").replace(",", "");
+        double val;
         try {
-            double val = Double.parseDouble(cleaned);
+            val = Double.parseDouble(cleaned);
             assert val >= 0 : "Expense amount cannot be negative";
-            if (val < 0) {
-                throw new IllegalArgumentException("Expense amount cannot be negative");
-            }
-            return val;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid cost format: " + raw);
+            System.out.println(BusyBreak.LINE);
+            System.out.println("Invalid cost format: " + raw);
+            System.out.println(BusyBreak.LINE);
+            return -1;
         }
+
+        if (val < 0) {
+            System.out.println(BusyBreak.LINE);
+            System.out.println("Expense amount cannot be negative");
+            System.out.println(BusyBreak.LINE);
+            return -1;
+        }
+        final double maxAmount = 1_000_000d;
+        if (val >= maxAmount) {
+            System.out.println(BusyBreak.LINE);
+            System.out.println("Amount is too large, maybe try NOT millions?");
+            System.out.println(BusyBreak.LINE);
+            return -1;
+        }
+        return val;
     }
 
     private static void printBox(String msg) {

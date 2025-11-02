@@ -210,7 +210,7 @@ This represents the **maximum amount** you plan to spend across all expenses.<br
 
 Format: `budget set AMOUNT`<br/>
 
-* The **AMOUNT** should be a positive number.<br/>
+* The **AMOUNT** should be a non-negative number.<br/>
 * The unit of **AMOUNT** is the Singapore dollar (SGD).<br/>
 
 Examples:<br/>
@@ -235,7 +235,7 @@ Adds a new expense to the budget list.<br/>
 Format: `budget add n/NAME c/COST cat/CATEGORY`<br/>
 
 * The **NAME** is a short label for the expense.<br/>
-* The **COST** should be a positive number (in SGD).<br/>
+* The **COST** should be a non-negative number (in SGD).<br/>
 * The **CATEGORY** is optional — if omitted, it defaults to `Uncategorized`.<br/>
 
 Examples:<br/>

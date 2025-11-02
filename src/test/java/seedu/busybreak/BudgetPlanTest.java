@@ -73,14 +73,6 @@ class BudgetPlanTest {
     }
 
     @Test
-    void parseAmount_invalidFormat_throws() {
-        BudgetPlan plan = new BudgetPlan();
-        assertThrows(IllegalArgumentException.class,
-                () -> plan.addExpense("Test", "abc", "Invalid"),
-                "Non-numeric amount should throw an exception.");
-    }
-
-    @Test
     void assertions_areEnabled() {
         boolean caught = false;
         try {
