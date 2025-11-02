@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
 public class AddTest {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private PrintStream originalOut;
@@ -88,6 +89,7 @@ public class AddTest {
         String output = outputStream.toString();
         assertTrue(output.contains("Description cannot contain the '|' character"));
     }
+
     @Test
     public void addActivityDataToList_invalidDate() throws Exception {
         String[] input = {"add", "d/2021-13-32", "t/13:00", "desc/thing", "c/15"};
@@ -100,8 +102,9 @@ public class AddTest {
         String output = outputStream.toString();
         assertTrue(output.contains("Invalid date"));
     }
+
     @Test
-    public void addActivityDataToList_missingDescription() throws Exception {
+    public void addActivityDataToList_emptyDescription() throws Exception {
         String[] input = {"add", "d/2025-10-31", "t/13:00", "desc/", "c/15"};
         Add.addActivityDataToList(input);
         Field listField = BusyBreak.class.getDeclaredField("list");
@@ -111,6 +114,58 @@ public class AddTest {
         assertTrue(list.isEmpty());
         String output = outputStream.toString();
         assertTrue(output.contains("is empty"));
+    }
+
+    @Test
+    public void addActivityDataToList_missingDate() throws Exception {
+        String[] input = {"add", "t/13:00", "desc/eat lunch", "c/15"};
+        Add.addActivityDataToList(input);
+        Field listField = BusyBreak.class.getDeclaredField("list");
+        listField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
+        assertTrue(list.isEmpty());
+        String output = outputStream.toString();
+        assertTrue(output.contains("Missing date"));
+    }
+
+    @Test
+    public void addActivityDataToList_missingTime() throws Exception {
+        String[] input = {"add", "d/2025-01-01", "desc/eat lunch", "c/15"};
+        Add.addActivityDataToList(input);
+        Field listField = BusyBreak.class.getDeclaredField("list");
+        listField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
+        assertTrue(list.isEmpty());
+        String output = outputStream.toString();
+        assertTrue(output.contains("Missing time"));
+    }
+
+    @Test
+    public void addActivityDataToList_missingDescription() throws Exception {
+        String[] input = {"add", "d/2025-01-01", "t/13:00", "c/15"};
+        Add.addActivityDataToList(input);
+        Field listField = BusyBreak.class.getDeclaredField("list");
+        listField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
+        assertTrue(list.isEmpty());
+        String output = outputStream.toString();
+        assertTrue(output.contains("Missing description"));
+    }
+
+    @Test
+    public void addActivityDataToList_missingCost() throws Exception {
+        String[] input = {"add", "d/2025-01-01", "t/13:00", "desc/eat lunch"};
+        Add.addActivityDataToList(input);
+        Field listField = BusyBreak.class.getDeclaredField("list");
+        listField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
+        assertTrue(list.isEmpty());
+        String output = outputStream.toString();
+        assertTrue(output.contains("Missing cost"));
     }
 
     @AfterEach
