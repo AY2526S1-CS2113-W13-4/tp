@@ -12,14 +12,20 @@ public class Add {
             return;
         }
 
-        Activity a = new Activity(activityData.date(), activityData.time(),
-                activityData.description(), activityData.cost());
-        BusyBreak.list.add(a);
-        BusyBreak.budgetPlan.addActivityExpense(a.getDescription(), a.getCost());
-        BusyBreak.getStorage().saveBudgets();
+        try {
+            Activity a = new Activity(activityData.date(), activityData.time(),
+                    activityData.description(), activityData.cost());
 
-        Ui.printAddedItem(activityData);
-        BusyBreak.getStorage().saveActivities();
+            BusyBreak.budgetPlan.addActivityExpense(a.getDescription(), a.getCost());
+            BusyBreak.getStorage().saveBudgets();
+            BusyBreak.list.add(a);
+            Ui.printAddedItem(activityData);
+            BusyBreak.getStorage().saveActivities();
+        } catch (IllegalArgumentException e) {
+            Ui.showLine();
+            System.out.println("Invalid User Input! " + e.getMessage());
+            Ui.showLine();
+        }
     }
 
 }

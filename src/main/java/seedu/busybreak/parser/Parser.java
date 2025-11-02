@@ -15,7 +15,9 @@ public class Parser {
         String userInput;
 
         userInput = in.nextLine();
-        String[] userInputArray = userInput.split(" ");
+
+        userInput = userInput.trim();
+        String[] userInputArray = userInput.split("\\s+");
         String command = userInputArray[0]; //read first word of input as command
         return new GetCommand(userInput, userInputArray, command);
     }
@@ -101,6 +103,10 @@ public class Parser {
             String description = parseCost[0].trim();
             String cost = parseCost[1].trim();
             checkEmptyFields(date, time, description, cost);
+
+            if (description.contains("|")) {
+                throw new IllegalArgumentException("Description cannot contain the '|' character.");
+            }
 
             assert !date.isEmpty() : "Date cannot be empty.";
             assert !time.isEmpty() : "Time cannot be empty.";
