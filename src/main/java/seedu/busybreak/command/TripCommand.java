@@ -6,6 +6,10 @@ import seedu.busybreak.storage.History;
 import java.util.Arrays;
 
 //@@author msc-123456
+/**
+ * Handles user commands related to trips,
+ * supporting adding, listing, and deleting trips.
+ */
 public class TripCommand {
     private static final String LINE = BusyBreak.LINE;
     private static final String CORRECT_FORMAT = "Invalid trip command. Please use:\n"
@@ -13,6 +17,10 @@ public class TripCommand {
             + "trip list - List all trips\n"
             + "trip delete <index> - Delete trip by index";
 
+    /**
+     * Handles user input for trip commands (add, list, delete).
+     * @param userInputArray Split user input array.
+     */
     public static void handleTripCommand(String[] userInputArray) {
         if (userInputArray.length < 2) {
             printInvalidFormat();
@@ -107,6 +115,9 @@ public class TripCommand {
         return null;
     }
 
+    /**
+     * Lists all recorded trips.
+     */
     public static void listTrips() {
         System.out.println(LINE);
         if (BusyBreak.trips.isEmpty()) {
