@@ -5,18 +5,30 @@ import seedu.busybreak.parser.Time;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+/**
+ * Represents all activities in the itinerary.
+ *
+ */
 public class Activity {
     private static final Logger logger = Logger.getLogger(Activity.class.getName());
     protected Time dateTime;
     protected String description;
     protected String cost;
 
+    /**
+     * Constructs an Activity with date,description time and cost.
+     *
+     * @param date        the date of activity in YYYY-MM-DD.
+     * @param time        time of the activity in HH:MM.
+     * @param description brief description of activity.
+     * @param cost        cost of activity.
+     */
     public Activity(String date, String time, String description, String cost) {
         this.dateTime = new Time(date, time);
         this.description = description;
         this.cost = cost;
         logger.log(Level.INFO, String.format(
-                "Created Activity with Date: %s | Time: %s | Description: %s | Cost: %s",date,time,description,cost
+                "Created Activity with Date: %s | Time: %s | Description: %s | Cost: %s", date, time, description, cost
         ));
     }
 
