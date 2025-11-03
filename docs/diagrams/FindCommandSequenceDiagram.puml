@@ -15,7 +15,7 @@ activate Find
 
 Find -> BusyBreak: list.isEmpty()
 activate BusyBreak
-BusyBreak --> Find: false
+BusyBreak --> Find: false or true
 deactivate BusyBreak
 
 alt list is empty
@@ -23,7 +23,7 @@ alt list is empty
     activate Ui
     Ui --> User: "Your itinerary is empty!"
     deactivate Ui
-    Find --> BusyBreak
+
 else list is not empty
 
     Find -> Ui: printFindHeaderMessage()
