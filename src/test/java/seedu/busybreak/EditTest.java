@@ -106,7 +106,17 @@ public class EditTest {
         String[] input = {"edit", "1", "xxx/21"};
         Edit.editActivityDataInList(input);
 
-        assertTrue(output().contains("Invalid detail detected"));
+        assertTrue(output().contains("Input must contain a valid index and valid fields to be edited."));
+    }
+
+    @Test
+    void editActivity_NoFields_PrintsError() {
+        BusyBreak.list.add(new Activity("2025-01-01", "12:00", "Test", "10"));
+
+        String[] cmd = {"edit", "1"};
+        Edit.editActivityDataInList(cmd);
+
+        assertTrue(output().contains("Input must contain a valid index and valid fields to be edited."));
     }
 }
 
