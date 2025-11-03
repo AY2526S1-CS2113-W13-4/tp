@@ -33,6 +33,7 @@ else activityData != null
     Add -> Activity**: new Activity(activityData.date(),\nactivityData.time(),\nactivityData.description(),\nactivityData.cost())
     activate Activity
     Activity --> Add
+    note right: this is a bug, cannot make the box touch
     deactivate Activity
 
     Add -> BusyBreak: list.add(activity)

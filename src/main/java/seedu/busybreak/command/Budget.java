@@ -4,8 +4,45 @@ import seedu.busybreak.BusyBreak;
 import java.util.Arrays;
 import seedu.busybreak.storage.History;
 
+//@@author samika2005
+/**
+ * Handles all user commands under the {@code budget} feature.
+ *
+ * <p>This class acts as the command parser for all budget-related operations
+ * such as setting budgets, adding or deleting expenses, listing them,
+ * editing categories, and syncing with activities.</p>
+ *
+ * <p>Command format examples:</p>
+ * <ul>
+ *     <li>{@code budget set <amount>}</li>
+ *     <li>{@code budget add n/<name> c/<cost> cat/<category>}</li>
+ *     <li>{@code budget list}</li>
+ *     <li>{@code budget delete <index>}</li>
+ *     <li>{@code budget setcat <index> <newCategory>}</li>
+ *     <li>{@code budget sync}</li>
+ * </ul>
+ *
+ * <p>Each operation internally modifies the {@link seedu.busybreak.activity.BudgetPlan}
+ * and updates the persistent storage via {@link seedu.busybreak.storage.History} checkpoints.</p>
+ *
+ * <p><b>Author:</b> samika2005</p>
+ */
+
 public class Budget {
+
+    /**
+     * Interprets and executes a budget-related command from user input.
+     *
+     * <p>This method parses subcommands such as {@code set}, {@code add}, {@code list},
+     * {@code delete}, {@code setcat}, and {@code sync}, and delegates the actions
+     * to the appropriate {@link seedu.busybreak.activity.BudgetPlan} methods.</p>
+     *
+     * @param userInputArray The full tokenized user input, where
+     *                       index 0 is the command ("budget") and index 1 is the subcommand.
+     */
+
     public static void handleBudget(String[] userInputArray) {
+
         if (userInputArray.length < 2) {
             System.out.println(BusyBreak.LINE);
             System.out.println("Please specify a budget command: set / add / list / delete / setcat ");

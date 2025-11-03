@@ -17,14 +17,14 @@ activate Ui
 
 Ui -> BusyBreak: list.isEmpty()
 activate BusyBreak
-BusyBreak --> Ui: false
+BusyBreak --> Ui: false or true
 deactivate BusyBreak
 
 alt list is empty
-    Ui -> Ui: showLine()
+
     Ui --> User: "Itinerary is Empty!"
 else list is not empty
-    Ui -> Ui: showLine()
+
 
     loop for each index from 0 to list.size()-1
         Ui -> Ui: printItems(index)
@@ -56,7 +56,7 @@ else list is not empty
         deactivate Activity
 
         Ui --> User: Display activity details
-        Ui -> Ui: showLine()
+
 
         deactivate Ui
     end
