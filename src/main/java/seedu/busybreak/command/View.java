@@ -8,9 +8,19 @@ import seedu.busybreak.BusyBreak;
 import seedu.busybreak.Ui;
 import seedu.busybreak.activity.Activity;
 
+/**
+ * Handles the {@code view} command for listing activities on a date.
+ */
+
 public class View {
 
     public static Logger logger = Logger.getLogger(BusyBreak.class.getName());
+
+    /**
+     * Executes {@code view <YYYY-MM-DD>}.
+     *
+     * @param userInputArray tokens where index 1 is the date string.
+     */
 
     public static void viewInput(String[] userInputArray) {
         assert userInputArray != null : "Input cannot be null";

@@ -170,10 +170,9 @@ ______________________________________________________________________
 ### Viewing Activities by Date: `view`
 
 Shows all activities scheduled for a specific date.
-If there is no date after `view`, the effect is the same as `list`.<br/>
-Format: `view DATE` or `view`<br/>
+Format: `view DATE`<br/>
 
-* The `DATE` should use the format 'yyyy-HH-mm'.<br/>
+* The `DATE` should use the format 'YYYY-MM-DD'.<br/>
 
 Example:<br/>
 

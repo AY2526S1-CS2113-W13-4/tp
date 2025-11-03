@@ -1,70 +1,95 @@
 @startuml UndoCommandSequenceDiagram
+skinparam hyperlinkColor Black
+skinparam hyperlinkUnderline false
+skinparam maxMessageSize 120
+skinparam GroupPadding 14
+skinparam SequenceGroupFontSize 14
+skinparam ParticipantPadding 30
 
 actor User
-participant ":BusyBreak" as BusyBreak
+participant ":BusyBreak" as BB
 participant ":Undo" as Undo
 participant ":Ui" as Ui
 participant ":History" as History
 participant ":Load" as Load
-participant "bp:\nBudgetPlan" as BudgetPlan
+participant "bp:\nBudgetPlan" as BP
 
-User -> BusyBreak: undo
-activate BusyBreak
+User -> BB: undo
+activate BB
 
-BusyBreak -> Undo: undoInput(args)
+BB -> Undo: undoInput(args)
 activate Undo
 
-alt invalid format (args.length != 1)
-    Undo -> Ui: showInvalidUndoFormat()
+alt [args.length != 1]
+  Undo -> Ui: showInvalidUndoFormat()
+  activate Ui
+  Ui -> User: "Invalid command format"
+  Ui --> Undo
+  deactivate Ui
+
+  Undo --> BB
+  deactivate Undo
+  BB --> User
+  deactivate BB
+  return
+
+else [args.length == 1]
+  Undo -> History: hasSnapshots()
+  activate History
+  History --> Undo: boolean
+  deactivate History
+
+  alt [no snapshots]
+    Undo -> Ui: showNothingToUndo()
+    activate Ui
+    Ui --> Undo
+    deactivate Ui
+
+    Undo --> BB
     deactivate Undo
-    BusyBreak --> User
-    deactivate BusyBreak
+    BB --> User
+    deactivate BB
     return
-else valid format
-    Undo -> History: hasSnapshots()
+
+  else [snapshots exist]
+    Undo -> History: restoreLatest()
     activate History
-    History --> Undo: boolean
+    History --> Undo: Optional<Path>
     deactivate History
 
-    alt no snapshots
-        Undo -> Ui: showNothingToUndo()
-        deactivate Undo
-        BusyBreak --> User
-        deactivate BusyBreak
-        return
-    else snapshots exist
-        Undo -> History: restoreLatest()
-        activate History
-        History --> Undo: Optional<Path>
-        deactivate History
+    alt [failed or empty]
+      Undo -> Ui: showNothingToUndo()
+      activate Ui
+      Ui --> Undo
+      deactivate Ui
 
-        alt restore failed / empty
-            Undo -> Ui: showNothingToUndo()
-            deactivate Undo
-            BusyBreak --> User
-            deactivate BusyBreak
-            return
-        else restore succeeded
-            Undo -> BusyBreak: list.clear(), trips.clear()
-            Undo -> BusyBreak: budgetPlan = new BudgetPlan()
-            activate BudgetPlan
-            deactivate BudgetPlan
+    else [succeeded]
+      Undo -> BB: list.clear(), trips.clear()
 
-            Undo -> Load ++: new Load()
-            Undo -> Load: loadActivities()
-            Load --> Undo
-            Undo -> Load: loadBudgets()
-            Load --> Undo
-            Undo -> BudgetPlan: syncFromActivities(BusyBreak.list)
-            Undo -> Load: loadTrips()
-            Load --> Undo --
-            Undo -> Ui: showUndoSuccess()
-        end
+      Undo -> BP ++: BusyBreak.budgetPlan = new BudgetPlan()
+      BP --> Undo
+      deactivate BP
+
+      Undo -> Load ++: new Load()
+      Undo -> Load: loadActivities()
+      Load --> Undo
+      Undo -> Load: loadBudgets()
+      Load --> Undo
+      Undo -> BB: syncFromActivities(BusyBreak.list)
+      Undo -> Load: loadTrips()
+      Load --> Undo
+      deactivate Load
+
+      Undo -> Ui ++: showUndoSuccess()
+      Ui --> Undo
+      deactivate Ui
     end
+
+    Undo --> BB
+    deactivate Undo
+    BB --> User
+    deactivate BB
+  end
 end
-
-deactivate Undo
-BusyBreak --> User
-deactivate BusyBreak
-
 @enduml
+
