@@ -169,7 +169,8 @@ public class Ui {
     //edit function
     public static void showInvalidDetailMessage() {
         showLine();
-        System.out.println("Invalid detail detected");
+        System.out.println("Invalid detail detected. Please ensure that the input is in the correct format, and" +
+                " that cost is a non-negative number.");
         showLine();
     }
 

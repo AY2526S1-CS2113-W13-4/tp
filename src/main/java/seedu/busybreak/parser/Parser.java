@@ -87,6 +87,15 @@ public class Parser {
         return editDetail.trim().substring(0, slash).trim();
     }
 
+    private static boolean isNumeric(String str) {
+        try{
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
      private static ParseEditDetails processEditDetails(String[] editDetails) {
          String date = null;
          String time = null;
@@ -105,7 +114,11 @@ public class Parser {
 
              switch (detailName) {
                  case "c":
-                     cost = detailValue;
+                     if (isNumeric(detailValue) && Double.parseDouble(detailValue) >= 0) {
+                         cost = detailValue;
+                     } else {
+                         hasInvalidDetail = true;
+                     }
                      break;
                  case "desc":
                      description = detailValue;
@@ -120,7 +133,6 @@ public class Parser {
                      hasInvalidDetail = true;
              }
          }
-
          return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
      }
 
