@@ -64,7 +64,7 @@ This focus on precision ensured that user data remained reliable, correctly aggr
 
 ### **Contributions to the UG**
 * Added documentation for **Budget Management** and **Budget Commands** sections.
-* Documented `budget sync`, `budget setcat`, and `breakdown` commands.
+* Documented `budget set`, `budget add`, `budget delete`, `budget list`, `budget sync`, `budget setcat`, and `breakdown` commands.
 * Updated usage examples and output explanations for all budget commands.
 
 ---
