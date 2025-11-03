@@ -184,22 +184,32 @@ performs operations, and saves results.
 ---
 ### Feature: Budget Command
 
-This feature enables users to manage their budgets through commands such as  
-`budget set`, `budget add`, `budget delete`, `budget list`, `budget setcat`, and `budget sync`.  
-It allows users to plan expenses, categorize them, and ensure their budgets remain up to date with activity costs.
+The Budget Class is the command class that calls all budget related functions, it also prints out redirections if the 
+user were to leave a field empty for instance. This class has one function, `handleBudget`, it's purpose is to split the 
+command input and call the associated functions accordingly. This is why the command `breakdown`, despite being a budget
+function as well is not called from this class but rather called directly from the BusyBreak class.
 
 ---
 
 ### Design
 
-The `Budget` class acts as the central controller for all budget-related operations in BusyBreak.  
+The `Budget` class acts as a supplemental Budget system for the BusyBreak app. It allows for additional expenses beyond
+activity expenses to be logged, ensuring the user will be able to plan a budget accommodating all their needs.
+
 It interprets the user input, validates parameters, and delegates logic to the `BudgetPlan` and `Storage` classes.
 
-The design keeps the CLI interface (`handleBudget`) separate from data logic (`BudgetPlan`) and storage handling (`Storage`).
+The design keeps the CLI interface (`handleBudget`) separate from data logic (`BudgetPlan`) and storage handling 
+(`Storage`).
+
 
 ---
 
 ### Implementation
+
+This feature enables users to manage their budgets through commands such as  
+`budget set`, `budget add`, `budget delete`, `budget list`, `budget setcat`, and `budget sync`.  
+It allows users to set budgets, plan expenses, categorize them, and ensure their budgets remain up to date with activity 
+costs.
 
 This method processes the subcommand specified by the user (set, add, delete, list, setcat, or sync)
 
@@ -215,7 +225,8 @@ This method processes the subcommand specified by the user (set, add, delete, li
 The `BudgetPlan` component manages all budget data for BusyBreak:
 - holds expense entries (name, amount, category)
 - tracks the **total budget**, **total spent**, and **remaining budget**
-- enforces **Activity–Budget linking** rules (Activity-linked expenses cannot be added via `budget add`, nor edited/deleted via Budget commands)
+- enforces **Activity–Budget linking** rules (Activity-linked expenses cannot be added via `budget add`, 
+nor edited/deleted via Budget commands)
 - provides listing and category breakdown views
 - syncs Activity items into the Budget view
 
@@ -224,13 +235,16 @@ The `BudgetPlan` component manages all budget data for BusyBreak:
 ### Design:
 
 The BudgetPlan class serves as the core component for all budget management operations within BusyBreak.
-It acts as the data model for storing, updating, and retrieving expenses and budget information, ensuring synchronization with activities and persistence through the Storage class.
+It acts as the data model for storing, updating, and retrieving expenses and budget information, 
+ensuring synchronization with activities and persistence through the Storage class.
 
-It maintains three parallel ArrayLists — names, amounts, and categories — that collectively represent all expense entries, along with a totalBudget field that defines the user’s overall spending limit.
+It maintains three parallel ArrayLists — names, amounts, and categories — that collectively represent all expense 
+entries, along with a totalBudget field that defines the user’s overall spending limit.
 This design simplifies list traversal and maintains consistent indexing between expense attributes.
 
 The `BudgetPlan` class is invoked by:
--  BudgetCommand : to execute user commands (budget set, budget add, budget delete, budget list, budget setcat, budget sync, breakdown)
+-  BudgetCommand : to execute user commands (budget set, budget add, budget delete, budget list, budget setcat, 
+budget sync, breakdown)
 - BusyBreak : to initialize the budget system and pass activity data for synchronization 
 - Storage : to save and load persistent budget data
 
@@ -239,6 +253,25 @@ The component makes sure that Activity–Budget is cross-compatible :
 -	Synchronization ensures Activity-linked costs remain up to date automatically.
 -	Non-Activity expenses can be freely added, categorized, or removed.
 
+### Design Considerations and limitations
+
+Why are activity expenses restricted from being changed through budget commands?
+
+-While all activity expenses are a part of your budget, not all budget expenses will be activity related(snacks,hotels,
+trains,etc). Hence this system allows for more flexibility on the user's end, while also being able to cover more 
+avenues of their planning process.
+
+-Although, the main reason for adopting this system, is to maintain consistency throughout the different classes. 
+Activity objects have a date,time,description AND cost attached to it, the BudgetPlan class ignores the date and time, 
+in an effort to reduce decision fatigue on the user, and also to prevent unnecessary repetition(for example, snacks can
+be entered as a broad cost, the user might have snacks everyday, but the overall cost is the only thing that they would
+need to consider when planning their overall budget).
+- Also since no date/time is ever passed to the BudgetPlan Class, it would be unwise to allow budget functions to be 
+used normally with activity objects that do have a date/time attached to them. (Example scenario: if normal budget 
+functions were allowed and the user decides to delete an Activity cost through `budget delete`, it might work normally 
+in the BudgetPlan class itself, however, when the user tries to access the normal list function for instance, this 
+particular instance will be missing two fields, or worth case scenario might crash the app).
+
 
 ### Implementation:
 
@@ -246,15 +279,23 @@ The component makes sure that Activity–Budget is cross-compatible :
 -	getTotalBudget() – Returns the current total budget value.
 -	getTotalSpent() – Calculates and returns the total amount spent across all recorded expenses.
 -	getRemainingBudget() – Computes and returns the remaining budget (totalBudget - totalSpent).
--	addActivityExpense(String description, String costString) – Adds a new expense under the Activity category using parsed cost and description inputs.
--	removeActivityExpense(String description, String costString) – Removes an existing Activity-linked expense if it matches both name and cost.
--	updateActivityExpense(String oldDesc, String oldCostStr, String newDesc, String newCostStr) – Updates an Activity expense’s name and cost, matching entries by old values.
--	hasExpense(String name, String cost, String category) – Checks if an expense with the specified name, cost, and category exists.
--	syncFromActivities(List<Activity> activities) – Adds missing Activity-linked expenses to the budget, avoiding duplicates.
--	addExpense(String name, String cost, String category) – Adds a general expense entry after parsing cost and normalizing category.
--	deleteExpense(int oneBasedIndex) – Deletes an expense by index unless it’s linked to an Activity, printing a warning if restricted.
+-	addActivityExpense(String description, String costString) – Adds a new expense under the Activity category 
+using parsed cost and description inputs.
+-	removeActivityExpense(String description, String costString) – Removes an existing Activity-linked expense if
+it matches both name and cost.
+-	updateActivityExpense(String oldDesc, String oldCostStr, String newDesc, String newCostStr) – Updates an 
+Activity expense’s name and cost, matching entries by old values.
+-	hasExpense(String name, String cost, String category) – Checks if an expense with the specified name, cost, 
+and category exists.
+-	syncFromActivities(List<Activity> activities) – Adds missing Activity-linked expenses to the budget, avoiding 
+duplicates.
+-	addExpense(String name, String cost, String category) – Adds a general expense entry after parsing cost and 
+normalizing category.
+-	deleteExpense(int oneBasedIndex) – Deletes an expense by index unless it’s linked to an Activity, printing a 
+warning if restricted.
 -	listExpenses() – Displays all recorded expenses, total spent, and remaining budget in a formatted box.
--	setExpenseCategory(int oneBasedIndex, String newCategory) – Updates the category of an expense unless it’s Activity-linked; prints confirmation or warning.
+-	setExpenseCategory(int oneBasedIndex, String newCategory) – Updates the category of an expense unless it’s 
+Activity-linked; prints confirmation or warning.
 -	listByCategory() – Displays total spending grouped and sorted by category in descending order.
 
 
