@@ -43,6 +43,10 @@ public class Edit {
 
         } catch (NumberFormatException e) {
             Ui.showInvalidIndexFormatMessage();
+        } catch (IllegalArgumentException | AssertionError e) {
+            Ui.showLine();
+            System.out.println("Invalid user input: " + e.getMessage());
+            Ui.showLine();
         }
     }
 
@@ -53,23 +57,23 @@ public class Edit {
     }
 
     private static void applyEditsToActivity(Activity editedActivity, Parser.ParseEditDetails editDetails) {
-        if (editDetails.cost() != null){
+        if (editDetails.cost() != null) {
             editedActivity.setCost(editDetails.cost());
             assert editedActivity.getCost().equals(editDetails.cost()) : "Cost must match edited cost";
         }
 
-        if (editDetails.description() != null){
+        if (editDetails.description() != null) {
             editedActivity.setDescription(editDetails.description());
             assert editedActivity.getDescription().equals(editDetails.description()) : "Description " +
                     "must match edited description";
         }
 
-        if (editDetails.time() != null){
+        if (editDetails.time() != null) {
             editedActivity.setTime(editDetails.time());
             assert editedActivity.getTime().equals(editDetails.time()) : "Time must match edited time";
         }
 
-        if (editDetails.date() != null){
+        if (editDetails.date() != null) {
             editedActivity.setDate(editDetails.date());
             assert editedActivity.getDate().equals(editDetails.date()) : "Date must match edited date";
         }
