@@ -44,6 +44,11 @@ that helps you **organize and track your travel activities, schedules, and costs
    run `java -jar BusyBreak.jar` to start the application.
 
 ## Features
+Notes:
+* Uppercase letters in commands indicate parameters provided by the user.
+For example, `delete INDEX` means user should input something like `delete 1`
+* Please do not use the "|" symbol in your input, 
+as we use it as a separator in saved files, and using this symbol will cause confusion.
 ## Managing Activities
 The activity includes date, time, description and cost.
 

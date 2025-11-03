@@ -7,7 +7,14 @@ import seedu.busybreak.activity.Trip;
 import java.util.Comparator;
 
 //@@author msc-123456
+/**
+ * Handles sorting of activities and trips,
+ * supporting time-based sorting and time conflict checks.
+ */
 public class Schedule {
+    /**
+     * Sorts all activities by time and display them.
+     */
     public static void setByTime() {
         if (BusyBreak.list.isEmpty()) {
             System.out.println(BusyBreak.LINE);
@@ -25,6 +32,10 @@ public class Schedule {
         BusyBreak.getStorage().saveActivities();
     }
 
+    /**
+     * Sorts all trips by start time and display them.
+     * Does not sort and displays a message if there are time conflicts between trips.
+     */
     public static void sortTrips() {
         if (BusyBreak.trips.isEmpty()) {
             System.out.println(BusyBreak.LINE);

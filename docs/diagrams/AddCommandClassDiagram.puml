@@ -4,6 +4,7 @@
 !define LIGHTBLUE #E6F3FF
 
 skinparam classAttributeIconSize 0
+hide circle
 skinparam class {
     BackgroundColor LIGHTYELLOW
     BorderColor Black

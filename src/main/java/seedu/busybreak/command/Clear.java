@@ -7,6 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 //@@author msc-123456
+/**
+ * Handles data clearing commands,
+ * supporting clearing activities, budgets, trips, or by date range.
+ */
 public class Clear {
     private static final String LINE = BusyBreak.LINE;
     private static final String CORRECT_FORMAT = "Invalid clear command. Please use:\n"
@@ -18,6 +22,11 @@ public class Clear {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final Storage storage = BusyBreak.getStorage();
 
+    /**
+     * Handles user input for clear commands,
+     * executing corresponding clearing operations based on command type.
+     * @param userInputArray Split user input array
+     */
     public static void handleClearCommand(String[] userInputArray) {
         if (userInputArray.length == 1) {
             clearActivities(true);

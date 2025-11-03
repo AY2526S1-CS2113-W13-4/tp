@@ -2,6 +2,7 @@ package seedu.busybreak;
 
 import seedu.busybreak.activity.Activity;
 import seedu.busybreak.parser.Parser;
+
 import java.util.ArrayList;
 
 
@@ -9,12 +10,18 @@ public class Ui {
 
     private static final String LINE = "______________________________________________________________________";
 
+    /**
+     * Prints invalid command error message.
+     */
     static void invalidInput() {
         showLine();
         System.out.println("Invalid Command.");
         showLine();
     }
 
+    /**
+     * Prints all items in the itinerary.
+     */
     public static void printListItems() {
         if (BusyBreak.list.isEmpty()) {
             showLine();
@@ -28,6 +35,11 @@ public class Ui {
         }
     }
 
+    /**
+     * Prints a single item at specified index.
+     *
+     * @param index index to be printed
+     */
     public static void printItems(int index) {
         System.out.println((index + 1) + ". ");
         System.out.println("Date: " + BusyBreak.list.get(index).getDate());
@@ -37,6 +49,11 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays confirmation message for item to be added to itinerary.
+     *
+     * @param activityData the parsed activity data with its relevant fields information.
+     */
     public static void printAddedItem(Parser.ParseActivityData activityData) {
         showLine();
         System.out.print("Added Activity to Itinerary: ");
@@ -51,17 +68,26 @@ public class Ui {
         System.out.println(LINE);
     }
 
+    /**
+     * Prints header message before displaying results.
+     */
     public static void printFindHeaderMessage() {
         showLine();
         System.out.println("Here are the activities matching your keyword");
         showLine();
     }
 
+    /**
+     * Prints message when no items with keyword found.
+     */
     public static void printNoItemsFound() {
         System.out.println("No items found!");
         showLine();
     }
 
+    /**
+     * Prints when itinerary is empty.
+     */
     public static void printItineraryEmpty() {
         showLine();
         System.out.println("Your itinerary is empty!");
