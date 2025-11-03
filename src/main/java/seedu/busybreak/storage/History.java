@@ -10,6 +10,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Stream;
+import java.util.List;
+import java.nio.file.DirectoryNotEmptyException;
+
+/**
+ * Manages on-disk history snapshots for BusyBreak.
+ * Creates snapshots, checks for their existence, restores the latest snapshot,
+ * and trims old snapshots to a fixed limit.
+ */
 
 public final class History {
 
@@ -24,7 +32,12 @@ public final class History {
     private static final String T = "trips.txt";
     private static final int MAX_SNAPSHOTS = 50;
 
-
+    /**
+     * Saves current data files and writes a new snapshot directory under data/history.
+     * Existing snapshots may be trimmed to keep at most MAX_SNAPSHOTS.
+     *
+     * @param storage storage instance used to save current data before snapshotting
+     */
     public static void checkpointWithSave(Storage storage) {
         try {
             Files.createDirectories(DATA_DIR);
@@ -47,6 +60,11 @@ public final class History {
         }
     }
 
+    /**
+     * Checks whether at least one snapshot directory exists.
+     *
+     * @return true if there is at least one snapshot, false otherwise
+     */
     public static boolean hasSnapshots() {
         if (!Files.exists(HISTORY_ROOT)) {
             return false;
@@ -59,6 +77,11 @@ public final class History {
         }
     }
 
+    /**
+     * Restores the most recent snapshot into the data directory and deletes that snapshot folder.
+     *
+     * @return the restored snapshot folder path if successful; empty otherwise
+     */
     public static Optional<Path> restoreLatest() {
         try {
             Optional<Path> latest = latestSnapshotDir();
@@ -79,7 +102,6 @@ public final class History {
         }
     }
 
-    // ---- Helpers ----
     private static void copyIfExists(Path src, Path dst) throws IOException {
         if (Files.exists(src)) {
             Files.createDirectories(dst.getParent());
@@ -115,18 +137,28 @@ public final class History {
         }
     }
 
-    private static void deleteDirectory(Path dir) throws IOException {
+    private static void deleteDirectory(Path dir) {
         if (!Files.exists(dir)) {
             return;
         }
+
+        final List<Path> toDelete;
         try (Stream<Path> s = Files.walk(dir)) {
-            s.sorted(Comparator.reverseOrder()).forEach(p -> {
-                try {
-                    Files.deleteIfExists(p);
-                } catch (IOException e) {
-                    System.err.println("[History] Could not delete " + p + ": " + e.getMessage());
-                }
-            });
+            toDelete = s.sorted(Comparator.reverseOrder()).toList();
+        } catch (IOException e) {
+            System.err.println("[History] Could not traverse " + dir + ": " + e.getMessage());
+            return;
+        }
+
+        for (Path p : toDelete) {
+            try {
+                Files.deleteIfExists(p);
+            } catch (DirectoryNotEmptyException e) {
+                continue;
+            } catch (IOException e) {
+                System.err.println("[History] Could not delete " + p + ": " + e.getMessage());
+            }
         }
     }
+
 }

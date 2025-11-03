@@ -9,7 +9,20 @@ import seedu.busybreak.storage.Load;
 import java.nio.file.Path;
 import java.util.Optional;
 
+/**
+ * Handles the undo command.
+ * Restores the previous application state from a saved snapshot.
+ */
+
 public class Undo {
+
+    /**
+     * Validates the command format, checks that a snapshot exists,
+     * restores the latest snapshot, resets in-memory state, reloads data,
+     * and reports the outcome via Ui
+     *
+     * @param args tokenised input; must contain only {@code "undo"} (length 1)
+     */
     public static void undoInput(String[] args) {
         if (args == null || args.length != 1) {
             Ui.showInvalidUndoFormat();

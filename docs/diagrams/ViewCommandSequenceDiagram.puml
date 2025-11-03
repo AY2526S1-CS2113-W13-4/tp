@@ -1,10 +1,16 @@
 @startuml ViewCommandSequenceDiagram
+' --- styling: no link styling, wider group headers, longer labels ---
+skinparam hyperlinkColor Black
+skinparam hyperlinkUnderline false
+skinparam maxMessageSize 120
+skinparam GroupPadding 14
+skinparam SequenceGroupFontSize 14
+skinparam ParticipantPadding 30
 
 actor User
 participant ":BusyBreak" as BusyBreak
 participant ":View" as View
 participant ":Ui" as Ui
-participant "activity:\nActivity" as Activity
 
 User -> BusyBreak: view <YYYY-MM-DD>
 activate BusyBreak
@@ -12,92 +18,49 @@ activate BusyBreak
 BusyBreak -> View: viewInput(userInputArray)
 activate View
 
-alt invalid format (args.length != 2)
-    View -> Ui: showInvalidViewFormat()
-    Ui --> User: "Invalid command format"
+alt [args.length\n!= 2]
+  View -> Ui: showInvalidViewFormat()
+  activate Ui
+  Ui -> User: "Invalid command format"
+  Ui --> View
+  deactivate Ui
+  View --> BusyBreak
+  deactivate View
+  BusyBreak --> User
+  deactivate BusyBreak
+  return
+else [args.length\n== 2]
+  View -> View: validateDate(dateStr)
+
+  alt [invalid\ndate]
+    View -> Ui: showInvalidDate(dateStr)
+    activate Ui
+    Ui -> User: "Invalid date"
+    Ui --> View
+    deactivate Ui
     View --> BusyBreak
     deactivate View
     BusyBreak --> User
     deactivate BusyBreak
     return
-else valid format
-    View -> View: validate date (YYYY-MM-DD)
-    alt invalid date
-        View -> Ui: showInvalidDate(date)
-        Ui --> User: "Invalid date"
-        View --> BusyBreak
-        deactivate View
-        BusyBreak --> User
-        deactivate BusyBreak
-        return
-    else valid date
-        View -> BusyBreak: list.isEmpty()
-        activate BusyBreak
-        BusyBreak --> View: boolean
-        deactivate BusyBreak
+  else [valid\ndate]
+    View -> BusyBreak: isItineraryEmpty()
+    activate BusyBreak
+    BusyBreak --> View: boolean
+    deactivate BusyBreak
 
-        alt itinerary is empty
-            View -> Ui: showEmptyItinerary()
-            Ui --> User: "Itinerary is Empty!"
-        else itinerary not empty
-            View -> View: filter by date -> matches
+    alt [empty]
+      View -> Ui: showEmptyItinerary()
+      activate Ui
+      Ui -> User: "Itinerary is empty"
+      Ui --> View
+      deactivate Ui
+    else [not empty]
+      View -> BusyBreak: getActivitiesOn(date)
+      activate BusyBreak
+      BusyBreak --> View: matches
+      deactivate BusyBreak
 
-            loop for each index from 0 to list.size()-1
-                View -> BusyBreak: list.get(index)
-                activate BusyBreak
-                BusyBreak --> View: activity
-                deactivate BusyBreak
+      alt [matches.\nisEmpty()]
+        View -> Ui: showNoActivi
 
-                View -> Activity: getDate()
-                activate Activity
-                Activity --> View: date
-                deactivate Activity
-
-                View -> View: if date == inputDate then add to matches
-            end
-
-            alt no matches
-                View -> Ui: showNoActivitiesFor(date)
-                Ui --> User: "No activities found"
-            else matches found
-                View -> Ui: showItineraryFor(date, matches)
-                activate Ui
-
-                loop for each activity in matches
-                    Ui -> Activity: getDate()
-                    activate Activity
-                    Activity --> Ui: date
-                    deactivate Activity
-
-                    Ui -> Activity: getTime()
-                    activate Activity
-                    Activity --> Ui: time
-                    deactivate Activity
-
-                    Ui -> Activity: getDescription()
-                    activate Activity
-                    Activity --> Ui: description
-                    deactivate Activity
-
-                    Ui -> Activity: getCost()
-                    activate Activity
-                    Activity --> Ui: cost
-                    deactivate Activity
-
-                    Ui --> User: Display activity details
-                    Ui -> Ui: showLine()
-                end
-
-                deactivate Ui
-            end
-        end
-    end
-end
-
-View --> BusyBreak
-deactivate View
-
-BusyBreak --> User
-deactivate BusyBreak
-
-@enduml
