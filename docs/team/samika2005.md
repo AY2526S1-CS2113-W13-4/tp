@@ -44,6 +44,19 @@ expenses are reflected accurately in the Budget.
 
 ---
 
+### **Challenges and Accuracy Considerations**
+The main challenge was ensuring the **accuracy and consistency of financial data** across interconnected modules.  
+Because both the *Activity* and *Budget* systems could modify overlapping expense records, even small logical oversights risked data duplication or loss.
+
+To maintain accuracy, I:
+* Implemented **strict validation checks** for negative and unrealistic input values.
+* Added **category normalization** to eliminate inconsistent user inputs (e.g., “meals” vs. “lunch” → *Food*).
+* Introduced **category protection logic** to prevent cross-module data corruption.
+* Conducted repeated manual and integration testing to verify synchronization between Activity and Budget.
+
+This focus on precision ensured that user data remained reliable, correctly aggregated, and reflected the intended financial state at all times.
+
+---
 ### **Code contributed**
 [tP Code Dashboard](https://nus-cs2113-ay2526s1.github.io/tp-dashboard/?search=samika&breakdown=true&sort=groupTitle%20dsc&sortWithin=title&since=2025-09-19T00%3A00%3A00&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other&filteredFileName=)
 
