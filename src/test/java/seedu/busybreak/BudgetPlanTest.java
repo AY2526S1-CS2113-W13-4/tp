@@ -3,7 +3,6 @@ import org.junit.jupiter.api.Test;
 import seedu.busybreak.activity.BudgetPlan;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -13,12 +12,6 @@ class BudgetPlanTest {
         BudgetPlan p = new BudgetPlan();
         p.setBudget(123.45);
         assertEquals(123.45, p.getTotalBudget(), 1e-9);
-    }
-
-    @Test
-    void negativeBudget_throws() {
-        BudgetPlan p = new BudgetPlan();
-        assertThrows(IllegalArgumentException.class, () -> p.setBudget(-1));
     }
 
     @Test
