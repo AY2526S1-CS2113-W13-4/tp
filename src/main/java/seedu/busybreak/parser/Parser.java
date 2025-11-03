@@ -56,6 +56,12 @@ public class Parser {
         return false;
     }
 
+    public static void checkValidDeleteInput(String[] userInputArray) {
+        if (userInputArray.length == 1) {
+            throw new IllegalArgumentException("Input must contain a valid index to be deleted.");
+        }
+    }
+
     private static void checkValidEditInput(String[] userInputArray) {
         if (userInputArray.length == 1 || !hasAtLeastOneEditField(userInputArray)) {
             throw new IllegalArgumentException("Input must contain a valid index and valid fields to be edited.");

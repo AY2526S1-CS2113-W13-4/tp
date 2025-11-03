@@ -12,9 +12,9 @@ public class Delete {
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
 
     public static void deleteActivityDataFromList(String[] userInputArray) {
-        assert userInputArray.length >= 2 : "User input array must have at least 2 elements";
-
         try {
+            Parser.checkValidDeleteInput(userInputArray);
+            assert userInputArray.length >= 2 : "User input array must have at least 2 elements";
             int index = Parser.parseActivityIndex(userInputArray[1]);
             logger.log(Level.INFO, "Deleting Activity " + userInputArray[1] + " from the list.");
             assert index >= 0 && index < BusyBreak.list.size() : "Index out of bounds";
@@ -39,6 +39,10 @@ public class Delete {
 
         } catch (NumberFormatException e) {
             Ui.showInvalidIndexFormatMessage();
+        } catch (IllegalArgumentException e) {
+            Ui.showLine();
+            System.out.println(e.getMessage());
+            Ui.showLine();
         }
     }
 }
