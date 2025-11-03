@@ -13,7 +13,12 @@ public class Edit {
 
     public static void editActivityDataInList(String[] userInputArray) {
         try {
-            logger.log(Level.INFO, "Editing Activity " +  userInputArray[1]);
+            Parser.ParseEditDetails editDetails = Parser.parseEditActivityDetails(userInputArray);
+            if (editDetails == null || editDetails.hasInvalidDetail()) {
+                handleInvalidEditDetails(editDetails);
+                return;
+            }
+
             int index = Parser.parseActivityIndex(userInputArray[1]);
 
             if (index < 0 || index >= BusyBreak.list.size()) {
@@ -21,14 +26,9 @@ public class Edit {
                 return;
             }
             assert index >= 0 && index < BusyBreak.list.size() : "Index out of bounds";
+            logger.log(Level.INFO, "Editing Activity " +  userInputArray[1]);
 
             Activity editedActivity = BusyBreak.list.get(index);
-            Parser.ParseEditDetails editDetails = Parser.parseEditActivityDetails(userInputArray);
-
-            if (editDetails.hasInvalidDetail()){
-                Ui.showInvalidDetailMessage();
-                return;
-            }
 
             String oldDesc = editedActivity.getDescription();
             String oldCost = editedActivity.getCost();
@@ -43,6 +43,12 @@ public class Edit {
 
         } catch (NumberFormatException e) {
             Ui.showInvalidIndexFormatMessage();
+        }
+    }
+
+    private static void handleInvalidEditDetails(Parser.ParseEditDetails editDetails) {
+        if (editDetails != null && editDetails.hasInvalidDetail()) {
+            Ui.showInvalidDetailMessage();
         }
     }
 

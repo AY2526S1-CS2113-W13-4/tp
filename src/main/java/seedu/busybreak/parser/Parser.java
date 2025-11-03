@@ -45,45 +45,100 @@ public class Parser {
         return in;
     }
 
+    private static boolean hasAtLeastOneEditField(String[] userInputArray) {
+        for(int i = 2; i < userInputArray.length; i++){
+            String input = userInputArray[i].trim();
+            if (input.startsWith("d/") || input.startsWith("t/") ||
+                    input.startsWith("desc/") || input.startsWith("c/")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void checkValidEditInput(String[] userInputArray) {
+        if (userInputArray.length == 1 || !hasAtLeastOneEditField(userInputArray)) {
+            throw new IllegalArgumentException("Input must contain a valid index and valid fields to be edited.");
+        }
+    }
+
+    private static String[] getEditDetails(String[] userInputArray) {
+        String[] inputDetailsArray = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
+        String inputDetails = String.join(" ", inputDetailsArray).trim();
+        return inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
+    }
+
+    private static String extractDetailValue(String editDetail) {
+        int slash = editDetail.trim().indexOf("/");
+        if (slash <= 0) {
+            return null;
+        }
+
+        String detailValue = editDetail.trim().substring(slash + 1).trim();
+        return detailValue.isEmpty() ? null : detailValue;
+    }
+
+    private static String extractDetailName(String editDetail) {
+        int slash = editDetail.trim().indexOf("/");
+        if (slash <= 0) {
+            return null;
+        }
+
+        return editDetail.trim().substring(0, slash).trim();
+    }
+
+     private static ParseEditDetails processEditDetails(String[] editDetails) {
+         String date = null;
+         String time = null;
+         String description = null;
+         String cost = null;
+         boolean hasInvalidDetail = false;
+
+         for (String editDetail : editDetails) {
+             String detailName = extractDetailName(editDetail);
+             String detailValue = extractDetailValue(editDetail);
+
+             if (detailName == null || detailValue == null) {
+                 hasInvalidDetail = true;
+                 continue;
+             }
+
+             switch (detailName) {
+                 case "c":
+                     cost = detailValue;
+                     break;
+                 case "desc":
+                     description = detailValue;
+                     break;
+                 case "t":
+                     time = detailValue;
+                     break;
+                 case "d":
+                     date = detailValue;
+                     break;
+                 default:
+                     hasInvalidDetail = true;
+             }
+         }
+
+         return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
+     }
+
     public static int parseActivityIndex(String activityIndexString) {
         return Integer.parseInt(activityIndexString) - 1;
     }
 
     public static ParseEditDetails parseEditActivityDetails(String[] userInputArray) {
-        String[] inputDetailsArray = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
-        String inputDetails = String.join(" ", inputDetailsArray).trim();
-        String[] editDetails = inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
-
-        String date = null;
-        String time = null;
-        String description = null;
-        String cost = null;
-        boolean hasInvalidDetail = false;
-
-        for (String editDetail : editDetails) {
-            int slash = editDetail.trim().indexOf("/");
-            String detailName = editDetail.trim().substring(0, slash);
-            String detailValue = editDetail.trim().substring(slash + 1);
-
-            switch (detailName) {
-            case "c":
-                cost = detailValue;
-                break;
-            case "desc":
-                description = detailValue;
-                break;
-            case "t":
-                time = detailValue;
-                break;
-            case "d":
-                date = detailValue;
-                break;
-            default:
-                hasInvalidDetail = true;
-            }
+        try {
+            checkValidEditInput(userInputArray);
+            String[] editDetails = getEditDetails(userInputArray);
+            return processEditDetails(editDetails);
+        } catch (IllegalArgumentException e) {
+            Ui.showLine();
+            System.out.println(e.getMessage());
+            Ui.showLine();
+            return null;
         }
-
-        return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
     }
 
     /**
@@ -98,9 +153,8 @@ public class Parser {
         return Arrays.stream(userInput, 1, userInput.length).collect(Collectors.joining(" "));
     }
 
-
-    public record ParseEditDetails(String date, String time, String description, String cost,
-                                   boolean hasInvalidDetail) {
+    public record ParseEditDetails(String date, String time, String description,
+                                   String cost, boolean hasInvalidDetail) {
     }
 
     /**
