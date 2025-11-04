@@ -629,6 +629,8 @@ being CLI based.
 ## Non-Functional Requirements
 
 1. Should work on Windows/MacOS/Linux provided it has Java 17 installed.
+2. Program response time should not exceed 3 seconds for any command.
+3. A user with a good command of the keyboard should be able to do most tasks easier than using a mouse.
 
 ## Glossary
 
@@ -648,61 +650,171 @@ c. Run `java -jar busybreak.jar`
 a. Input the`exit` command into BusyBreak, and the program will exit by itself.
 
 ### Adding activities
-* `add d/2025-01-01 t/10:00 desc/Visit Museum c/20`
-* `list` to verify that the activity has been added with the correct details.
+a. Test case: `add d/2025-10-31 t/13:00 desc/eat lunch c/15`
+* Expected: Activity is added to the list. Description "eat lunch", 
+cost "15", date "2025-10-31", time "13:00" are correctly stored. Status message confirms successful addition.
+
+b. Test case: `add d/2025-10-31 t/13:00 desc/eat|lunch c/15`
+* Expected: Activity is not added. Error message says cannot contain the '|' character. List remains unchanged.
+
+c. Test case: `add d/2021-13-32 t/13:00 desc/thing c/15`
+* Expected: Activity is not added. Error message notifies of invalid date. List unchanged.
+
+d.Test case: `add d/2025-10-31 t/13:00 desc/ c/15`
+* Expected: Activity is not added. Error message indicates description "is empty". List unchanged.
+
+e. Test case: `add t/13:00 desc/eat lunch c/15`
+* Expected: Activity is not added. Error message notifies of missing date. List unchanged.
 
 ### Editing activities
-* After adding an activity
-* `edit 1 d/2025-02-02 t/11:11 desc/Go to water park c/100` or any other permutation
-of the order of the fields (including leaving some out).
-* `list` to verify the activity has been updated with the correct details.
+a. Prerequisites: List has at least one activity (use add to create one if needed).
+
+b. Test case: `edit 1 d/2001-09-11 t/08:46 desc/new description c/21`
+* Expected: Activity 1 is updated with the same details when listed.
+
+c. Test case: `edit 1 c/21 d/2001-09-11 t/08:46`
+* Expected: Only specified fields are updated (cost, date, time). Description remains unchanged.
+
+d. Test case: `edit 99 d/2025-01-01`
+* Expected: Error message is shown. No changes to any activity.
+
+e. Test case: `edit xxx d/2025-01-01`
+* Expected: No changes. Error message is shown.
+
+f. Test case: `edit 1 xxx/21`
+* Expected: No changes. Error message is shown.
+
+g. Test case: `edit 1`
+* Expected: No changes. Error message is shown.
 
 ### Listing activities
-* `list`
-* Shows all the activities in the list.
+a. Test case: `list` (with no activities added)
+* Expected: Itinerary is empty.
+
+b. Add activities:<br/>
+`add d/2025-01-01 t/13:00 desc/activityA c/15`<br/>
+`add d/2025-01-01 t/13:00 desc/activityB c/15`<br/>
+`add d/2025-01-01 t/13:00 desc/activityC c/15`<br/>
+
+Test case: `list`
+* Expected: All 3 activities displayed, in order of adding.
 
 ### Viewing activities
-* `view 2025-02-02`
-* Shows the activities on that day
+a. Prerequisites: Ensure multiple activities exist with different dates.
+Example: <br/>
+`add d/2025-10-09 t/09:00 desc/visit museum c/67`<br/>
+`add d/2025-10-10 t/14:00 desc/go shopping c/100`<br/>
+
+Test case: `view 2025-10-09`
+* Expected: Only one activity (visit museum) is shown.
 
 ### Deleting activities
-* `delete 1` 
-* Shows the task that has been deleted
-* `list` should not show that activity
+a. Prerequisite: List all activities using `list` command. Ensure multiple activities in the list.
 
-### Sorting activities and trips
-* `schedule` to sort activities by time
-* `schedule trip` to sort trips by time
+b. Test case: `delete 1`
+* Expected: First activity is removed from the list. Remaining activities shift up and order is preserved.
+Status message confirms deletion.
+
+c. Test case: `delete 99`
+* Expected: No activity is deleted. List remains unchanged. Error message is shown.
+
+d. Test case: `delete xxx`
+* Expected: No activity is deleted. List remains unchanged. Error message is shown.
 
 ### Managing trips
-* Adding a trip	`trip add sd/2025-01-01 st/00:01 ed/2025-01-01 et/12:00 by/plane`
-* Listing all trips	`trip list`
-* Deleting a trip `trip delete 1`
+a. Test case: `trip add sd/2025-01-01 st/00:01 ed/2025-01-01 et/12:00 by/plane`
+* Expected: Trip is successfully added. 
+
+b. Test case: <br/>
+`trip add sd/2025-01-01 st/00:01 ed/2025-01-01 et/12:00 by/plane`<br/>
+`trip add sd/2025-01-01 st/00:01 ed/2025-01-01 et/12:00 by/plane`
+* Expected: Second duplicate trip is not added again. Error message is shown.
+
+c. Test case:`trip list` (no trips added)
+* Expected: Message indicates no trips added.
+
+d. Test case: `trip delete 99`
+Expected: No trip is deleted. Error message is shown.
+
+e. Test case: `trip invalid`
+Expected: Error message is shown.
+
+### Sorting trips
+a. Prerequisite: Add multiple trips with non-overlapping times:<br/>
+`trip add sd/2025-01-03 st/08:00 ed/2025-01-03 et/12:00 by/train`<br/>
+`trip add sd/2025-01-01 st/08:00 ed/2025-01-01 et/18:00 by/flight`<br/>
+`trip add sd/2025-01-02 st/08:00 ed/2025-01-02 et/10:00 by/car`<br/>
+
+b. Test case: `schdule trip`
+* Expected: Trips are sorted by start date/time.
+
+c. Add overlapping trips: <br/>
+`trip add sd/2025-01-01 st/08:00 ed/2025-01-01 et/18:00 by/flight`<br/>
+`trip add sd/2025-01-01 st/10:00 ed/2025-01-01 et/12:00 by/car`<br/>
+
+Test case: `schedule trip`
+* Expected: Sorting fails. Error message is shown.
+
 
 ### Checking activities and trips in date range
-* `check from/2025-01-01 to/2025-02-02`
+a. Prerequisite: Add at least one activity and one trip within the range:<br/>
+`add d/2025-01-02 t/10:00 desc/Test Activity c/50`<br/>
+`trip add sd/2025-01-02 st/08:00 ed/2025-01-02 et/18:00 by/car`<br/>
+
+b. Test case:`check from/2025-01-01 to/2025-02-02`
+* Expected: Both results shown.
+
+c. Test case: `check from/2025-01-05 to/2025-01-03`
+* Expected: Error message is shown.
 
 ### Clearing data
-* Clearing all activities `clear`
-* Clearing all budget `clear budget`
-* Clearing all trips `clear trip`
-* Clearing all activities, budget and trips	`clear all`
-* Clearing all activities and trips on or before the date `clear before 2025-01-02`
+a. Prerequisite: Add at least one trip and one activity:<br/>
+`add d/2025-01-02 t/10:00 desc/Test Activity c/50`<br/>
+`trip add sd/2025-01-02 st/08:00 ed/2025-01-02 et/18:00 by/car`<br/>
+
+b. Test case: `clear`
+* Expected: All activities are cleared.
+
+c. Test case: `clear trip`
+* Expected: All trips are cleared.
 
 ### Budget management
-* Display spending by category	`breakdown`
-* Set budget `budget set AMOUNT`
-* Add an expense `budget add n/Souvenier c/100 cat/Shopping`
-* List expenses	`budget list`
-* Delete an expense	`budget delete 1`
-* Change expense category `budget setcat 1 Food`
-* Sync budget with activities `budget sync`
+a. Test case: `budget set 100`
+* Expected: Total budget set at 100
+
+b. Test case `budget set -1`
+* Expected: Error message shown.
+
+c. Test case: `budget add n/Souvenir c/100 cat/Shopping`
+* Expected: Expense "Souvenir" added under "Shopping". Total spent: 100.
+
+d. Test case: `budget delete 1` (continue from previous test case)
+* Expected: "Souvenir" removed. Budget returns to 100.
+
+e. Test case: `budget setcat 1 Food` (continue from test case c)
+* Expected: Category changed to Food. Amount and totals remain unchanged.
 
 ### Finding an item
-* `find visit`
-* Shows all activities with the keyword
+a. Prerequisite: Add activities:<br/>
+`add d/2025-01-01 t/13:00 desc/eat lunch c/15`<br/>
+`add d/2025-01-01 t/13:00 desc/eat breakfast c/15`<br/>
+`add d/2025-01-01 t/13:00 desc/eat dinner c/15`<br/>
+
+b. Test case: `find LUNCH`
+* Expected: "eat lunch" activity is listed.
+
+c. Test case: `find eat`
+* Expected: All 3 activities are listed.
+
+### Undoing a change
+a. Prerequisite: Make a change:<br/>
+`add d/2025-01-01 t/13:00 desc/eat lunch c/15`<br/>
+`delete 1`
+
+b. Test case: `undo`
+* Expected: Activity shows in the list
 
 ### Exiting the program	
-* `exit`
-* Program will terminate
+a. Test case: `exit`
+* Expected: Program will terminate
 

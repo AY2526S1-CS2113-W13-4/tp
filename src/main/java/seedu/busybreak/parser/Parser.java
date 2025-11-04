@@ -45,15 +45,70 @@ public class Parser {
         return in;
     }
 
-    public static int parseActivityIndex(String activityIndexString) {
-        return Integer.parseInt(activityIndexString) - 1;
+    private static boolean hasAtLeastOneEditField(String[] userInputArray) {
+        for(int i = 2; i < userInputArray.length; i++){
+            String input = userInputArray[i].trim();
+            if (input.startsWith("d/") || input.startsWith("t/") ||
+                    input.startsWith("desc/") || input.startsWith("c/")){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static ParseEditDetails parseEditActivityDetails(String[] userInputArray) {
+    /**
+     * Checks whether the delete command input contains a valid index.
+     *
+     * @param userInputArray Tokenised user input containing the delete command and its arguments.
+     * @throws IllegalArgumentException If the input does not contain a valid index to delete.
+     */
+    public static void checkValidDeleteInput(String[] userInputArray) {
+        if (userInputArray.length == 1) {
+            throw new IllegalArgumentException("Input must contain a valid index to be deleted.");
+        }
+    }
+
+    private static void checkValidEditInput(String[] userInputArray) {
+        if (userInputArray.length == 1 || !hasAtLeastOneEditField(userInputArray)) {
+            throw new IllegalArgumentException("Input must contain a valid index and valid fields to be edited.");
+        }
+    }
+
+    private static String[] getEditDetails(String[] userInputArray) {
         String[] inputDetailsArray = Arrays.copyOfRange(userInputArray, 2, userInputArray.length);
         String inputDetails = String.join(" ", inputDetailsArray).trim();
-        String[] editDetails = inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
+        return inputDetails.split("\\s+(?=desc/|d/|t/|c/)");
+    }
 
+    private static String extractDetailValue(String editDetail) {
+        int slash = editDetail.trim().indexOf("/");
+        if (slash <= 0) {
+            return null;
+        }
+
+        String detailValue = editDetail.trim().substring(slash + 1).trim();
+        return detailValue.isEmpty() ? null : detailValue;
+    }
+
+    private static String extractDetailName(String editDetail) {
+        int slash = editDetail.trim().indexOf("/");
+        if (slash <= 0) {
+            return null;
+        }
+
+        return editDetail.trim().substring(0, slash).trim();
+    }
+
+    private static boolean isNumeric(String str) {
+        try{
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
+    private static ParseEditDetails processEditDetails(String[] editDetails) {
         String date = null;
         String time = null;
         String description = null;
@@ -61,13 +116,21 @@ public class Parser {
         boolean hasInvalidDetail = false;
 
         for (String editDetail : editDetails) {
-            int slash = editDetail.trim().indexOf("/");
-            String detailName = editDetail.trim().substring(0, slash);
-            String detailValue = editDetail.trim().substring(slash + 1);
+            String detailName = extractDetailName(editDetail);
+            String detailValue = extractDetailValue(editDetail);
+
+            if (detailName == null || detailValue == null) {
+                hasInvalidDetail = true;
+                continue;
+            }
 
             switch (detailName) {
             case "c":
-                cost = detailValue;
+                if (isNumeric(detailValue) && Double.parseDouble(detailValue) >= 0) {
+                    cost = detailValue;
+                } else {
+                    hasInvalidDetail = true;
+                }
                 break;
             case "desc":
                 description = detailValue;
@@ -82,8 +145,40 @@ public class Parser {
                 hasInvalidDetail = true;
             }
         }
-
         return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
+    }
+
+    /**
+     * Parses the activity index from a string representation.
+     * Converts from a one-based index into a zero-based index used internally.
+     *
+     * @param activityIndexString The string containing the user-provided activity index.
+     * @return The zero-based index of the activity.
+     * @throws NumberFormatException If the provided index is not a valid integer.
+     */
+    public static int parseActivityIndex(String activityIndexString) {
+        return Integer.parseInt(activityIndexString) - 1;
+    }
+
+    /**
+     * Parses and validates the details provided in an edit command.
+     * Ensures that an index and at least one valid edit field are included.
+     * Extracts each individual field, marking invalid or missing details.
+     *
+     * @param userInputArray The tokenised user input containing each of the fields to be edited.
+     * @return A ParseEditDetails record containing parsed edit fields, or null if input is invalid.
+     */
+    public static ParseEditDetails parseEditActivityDetails(String[] userInputArray) {
+        try {
+            checkValidEditInput(userInputArray);
+            String[] editDetails = getEditDetails(userInputArray);
+            return processEditDetails(editDetails);
+        } catch (IllegalArgumentException e) {
+            Ui.showLine();
+            System.out.println(e.getMessage());
+            Ui.showLine();
+            return null;
+        }
     }
 
     /**
@@ -98,9 +193,8 @@ public class Parser {
         return Arrays.stream(userInput, 1, userInput.length).collect(Collectors.joining(" "));
     }
 
-
-    public record ParseEditDetails(String date, String time, String description, String cost,
-                                   boolean hasInvalidDetail) {
+    public record ParseEditDetails(String date, String time, String description,
+                                   String cost, boolean hasInvalidDetail) {
     }
 
     /**

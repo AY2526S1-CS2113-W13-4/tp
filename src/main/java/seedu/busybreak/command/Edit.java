@@ -8,12 +8,30 @@ import seedu.busybreak.Ui;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Handles editing an existing activity in the itinerary list.
+ */
 public class Edit {
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
 
+    /**
+     * Edits the details of an existing activity based on the user's input.
+     * Parses and validates the input, applies valid edits to the target activity,
+     * updates the budget plan, and saves the updated data to storage.
+     *
+     * @param userInputArray Tokenised user input containing the edit command, index, and edit fields.
+     * @throws NumberFormatException If the index provided is not a valid integer.
+     * @throws IllegalArgumentException If the input format or the edit details are invalid.
+     * @throws AssertionError If an internal invariant is violated.
+     */
     public static void editActivityDataInList(String[] userInputArray) {
         try {
-            logger.log(Level.INFO, "Editing Activity " +  userInputArray[1]);
+            Parser.ParseEditDetails editDetails = Parser.parseEditActivityDetails(userInputArray);
+            if (editDetails == null || editDetails.hasInvalidDetail()) {
+                handleInvalidEditDetails(editDetails);
+                return;
+            }
+
             int index = Parser.parseActivityIndex(userInputArray[1]);
 
             if (index < 0 || index >= BusyBreak.list.size()) {
@@ -21,14 +39,9 @@ public class Edit {
                 return;
             }
             assert index >= 0 && index < BusyBreak.list.size() : "Index out of bounds";
+            logger.log(Level.INFO, "Editing Activity " +  userInputArray[1]);
 
             Activity editedActivity = BusyBreak.list.get(index);
-            Parser.ParseEditDetails editDetails = Parser.parseEditActivityDetails(userInputArray);
-
-            if (editDetails.hasInvalidDetail()){
-                Ui.showInvalidDetailMessage();
-                return;
-            }
 
             String oldDesc = editedActivity.getDescription();
             String oldCost = editedActivity.getCost();
@@ -43,27 +56,37 @@ public class Edit {
 
         } catch (NumberFormatException e) {
             Ui.showInvalidIndexFormatMessage();
+        } catch (IllegalArgumentException | AssertionError e) {
+            Ui.showLine();
+            System.out.println("Invalid user input: " + e.getMessage());
+            Ui.showLine();
+        }
+    }
+
+    private static void handleInvalidEditDetails(Parser.ParseEditDetails editDetails) {
+        if (editDetails != null && editDetails.hasInvalidDetail()) {
+            Ui.showInvalidDetailMessage();
         }
     }
 
     private static void applyEditsToActivity(Activity editedActivity, Parser.ParseEditDetails editDetails) {
-        if (editDetails.cost() != null){
+        if (editDetails.cost() != null) {
             editedActivity.setCost(editDetails.cost());
             assert editedActivity.getCost().equals(editDetails.cost()) : "Cost must match edited cost";
         }
 
-        if (editDetails.description() != null){
+        if (editDetails.description() != null) {
             editedActivity.setDescription(editDetails.description());
             assert editedActivity.getDescription().equals(editDetails.description()) : "Description " +
                     "must match edited description";
         }
 
-        if (editDetails.time() != null){
+        if (editDetails.time() != null) {
             editedActivity.setTime(editDetails.time());
             assert editedActivity.getTime().equals(editDetails.time()) : "Time must match edited time";
         }
 
-        if (editDetails.date() != null){
+        if (editDetails.date() != null) {
             editedActivity.setDate(editDetails.date());
             assert editedActivity.getDate().equals(editDetails.date()) : "Date must match edited date";
         }
