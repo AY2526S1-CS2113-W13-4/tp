@@ -56,6 +56,12 @@ public class Parser {
         return false;
     }
 
+    /**
+     * Checks whether the delete command input contains a valid index.
+     *
+     * @param userInputArray Tokenised user input containing the delete command and its arguments.
+     * @throws IllegalArgumentException If the input does not contain a valid index to delete.
+     */
     public static void checkValidDeleteInput(String[] userInputArray) {
         if (userInputArray.length == 1) {
             throw new IllegalArgumentException("Input must contain a valid index to be deleted.");
@@ -102,50 +108,66 @@ public class Parser {
         }
     }
 
-     private static ParseEditDetails processEditDetails(String[] editDetails) {
-         String date = null;
-         String time = null;
-         String description = null;
-         String cost = null;
-         boolean hasInvalidDetail = false;
+    private static ParseEditDetails processEditDetails(String[] editDetails) {
+     String date = null;
+     String time = null;
+     String description = null;
+     String cost = null;
+     boolean hasInvalidDetail = false;
 
-         for (String editDetail : editDetails) {
-             String detailName = extractDetailName(editDetail);
-             String detailValue = extractDetailValue(editDetail);
+     for (String editDetail : editDetails) {
+         String detailName = extractDetailName(editDetail);
+         String detailValue = extractDetailValue(editDetail);
 
-             if (detailName == null || detailValue == null) {
-                 hasInvalidDetail = true;
-                 continue;
-             }
-
-             switch (detailName) {
-                 case "c":
-                     if (isNumeric(detailValue) && Double.parseDouble(detailValue) >= 0) {
-                         cost = detailValue;
-                     } else {
-                         hasInvalidDetail = true;
-                     }
-                     break;
-                 case "desc":
-                     description = detailValue;
-                     break;
-                 case "t":
-                     time = detailValue;
-                     break;
-                 case "d":
-                     date = detailValue;
-                     break;
-                 default:
-                     hasInvalidDetail = true;
-             }
+         if (detailName == null || detailValue == null) {
+             hasInvalidDetail = true;
+             continue;
          }
-         return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
-     }
 
+         switch (detailName) {
+             case "c":
+                 if (isNumeric(detailValue) && Double.parseDouble(detailValue) >= 0) {
+                     cost = detailValue;
+                 } else {
+                     hasInvalidDetail = true;
+                 }
+                 break;
+             case "desc":
+                 description = detailValue;
+                 break;
+             case "t":
+                 time = detailValue;
+                 break;
+             case "d":
+                 date = detailValue;
+                 break;
+             default:
+                 hasInvalidDetail = true;
+         }
+     }
+     return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
+    }
+
+    /**
+     * Parses the activity index from a string representation.
+     * Converts from a one-based index into a zero-based index used internally.
+     *
+     * @param activityIndexString The string containing the user-provided activity index.
+     * @return The zero-based index of the activity.
+     * @throws NumberFormatException If the provided index is not a valid integer.
+     */
     public static int parseActivityIndex(String activityIndexString) {
         return Integer.parseInt(activityIndexString) - 1;
     }
 
+    /**
+     * Parses and validates the details provided in an edit command.
+     * Ensures that an index and at least one valid edit field are included.
+     * Extracts each individual field, marking invalid or missing details.
+     *
+     * @param userInputArray The tokenised user input containing each of the fields to be edited.
+     * @return A ParseEditDetails record containing parsed edit fields, or null if input is invalid.
+     */
     public static ParseEditDetails parseEditActivityDetails(String[] userInputArray) {
         try {
             checkValidEditInput(userInputArray);

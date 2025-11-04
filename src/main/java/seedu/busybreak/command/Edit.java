@@ -8,9 +8,22 @@ import seedu.busybreak.Ui;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Handles editing an existing activity in the itinerary list.
+ */
 public class Edit {
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
 
+    /**
+     * Edits the details of an existing activity based on the user's input.
+     * Parses and validates the input, applies valid edits to the target activity,
+     * updates the budget plan, and saves the updated data to storage.
+     *
+     * @param userInputArray Tokenised user input containing the edit command, index, and edit fields.
+     * @throws NumberFormatException If the index provided is not a valid integer.
+     * @throws IllegalArgumentException If the input format or the edit details are invalid.
+     * @throws AssertionError If an internal invariant is violated.
+     */
     public static void editActivityDataInList(String[] userInputArray) {
         try {
             Parser.ParseEditDetails editDetails = Parser.parseEditActivityDetails(userInputArray);

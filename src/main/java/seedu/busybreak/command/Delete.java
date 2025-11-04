@@ -8,9 +8,21 @@ import seedu.busybreak.Ui;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Handles deleting of an activity from the itinerary list.
+ */
 public class Delete {
     private static Logger logger = Logger.getLogger(BusyBreak.class.getName());
 
+    /**
+     * Deletes an activity from the activity list based on the user input.
+     * Validates the input, removes the activity if the index is valid,
+     * updates the budget plan, and saves the updated data to storage.
+     *
+     * @param userInputArray Tokenised user input containing the delete command and index.
+     * @throws NumberFormatException If the index provided is not an integer.
+     * @throws IllegalArgumentException If the input format is invalid.
+     */
     public static void deleteActivityDataFromList(String[] userInputArray) {
         try {
             Parser.checkValidDeleteInput(userInputArray);
