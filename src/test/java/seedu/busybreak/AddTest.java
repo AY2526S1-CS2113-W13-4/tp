@@ -74,7 +74,7 @@ public class AddTest {
         ArrayList<Activity> list = (ArrayList<Activity>) listField.get(null);
         assertTrue(list.isEmpty());
         String output = outputStream.toString();
-        assertTrue(output.contains("negative"));
+        assertTrue(output.contains("Invalid"));
     }
 
     @Test
