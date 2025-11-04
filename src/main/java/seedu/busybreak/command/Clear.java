@@ -1,10 +1,13 @@
 package seedu.busybreak.command;
 
 import seedu.busybreak.BusyBreak;
+import seedu.busybreak.activity.Activity;
 import seedu.busybreak.storage.Storage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 //@@author msc-123456
 /**
@@ -52,8 +55,14 @@ public class Clear {
     }
 
     private static void clearActivities(boolean printMessage) {
+        List<Activity> activitiesToRemove = new ArrayList<>(BusyBreak.list);
+        for (Activity activity : activitiesToRemove) {
+            BusyBreak.budgetPlan.removeActivityExpense(activity.getDescription(), activity.getCost());
+        }
+
         BusyBreak.list.clear();
         storage.saveActivities();
+        storage.saveBudgets();
         if (printMessage) {
             System.out.println(LINE);
             System.out.println("All activities have been cleared.");
@@ -99,10 +108,19 @@ public class Clear {
             int initialActivitySize = BusyBreak.list.size();
             int initialTripSize = BusyBreak.trips.size();
 
-            BusyBreak.list.removeIf(activity -> {
+            List<Activity> activitiesToRemove = new ArrayList<>();
+            for (Activity activity : BusyBreak.list) {
                 LocalDate activityDate = activity.getDateTimeObject().getDate();
-                return !activityDate.isAfter(targetDate);
-            });
+                if (!activityDate.isAfter(targetDate)) {
+                    activitiesToRemove.add(activity);
+                }
+            }
+
+            for (Activity activity : activitiesToRemove) {
+                BusyBreak.budgetPlan.removeActivityExpense(activity.getDescription(), activity.getCost());
+            }
+
+            BusyBreak.list.removeAll(activitiesToRemove);
 
             BusyBreak.trips.removeIf(trip -> {
                 LocalDate tripStartDate = trip.getStartDateTime().getDate();
@@ -112,6 +130,7 @@ public class Clear {
             int removedActivities = initialActivitySize - BusyBreak.list.size();
             int removedTrips = initialTripSize - BusyBreak.trips.size();
             storage.saveActivities();
+            storage.saveBudgets();
             storage.saveTrips();
 
             System.out.println(LINE);
