@@ -14,4 +14,5 @@ Teammate Project Portfolio Page:
 * [tam308](team/tam308.md)
 * [enwei29](team/enwei29.md)
 * [samika2005](team/samika2005.md)
+* [blimc1](team/blimc1.md)
 
