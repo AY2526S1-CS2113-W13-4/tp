@@ -425,11 +425,11 @@ Examples:
 ### Clearing Data: `clear`
 Removes data based on the specified scope.<br/>
 Formats:
-* `clear`: Clears all activities in the itinerary
+* `clear`: Clears all activities (and corresponding budget) in the itinerary
 * `clear budget`: Clears all budget entries and set the total budget as 0
 * `clear trip`: Clears all trips
 * `clear all`: Clears all activities, budget entries, and trips
-* `clear before yyyy-MM-dd`: Clears activities and trips scheduled on or before the specified date<br/>
+* `clear before yyyy-MM-dd`: Clears activities (and corresponding budget) and trips scheduled on or before the specified date<br/>
 
 Examples:
 * `clear before 2025-01-01`
