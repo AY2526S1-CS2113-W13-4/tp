@@ -131,7 +131,7 @@ public class Parser {
                 } else {
                     hasInvalidDetail = true;
                 }
-            break;
+                break;
             case "desc":
                 description = detailValue;
                 break;
