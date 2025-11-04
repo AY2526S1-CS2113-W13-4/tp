@@ -162,6 +162,18 @@ public class Parser {
         if (parseCost.length != 2) {
             throw new IllegalArgumentException("Missing cost! Set one with c/");
         }
+        String cost = parseCost[1].trim();
+        if (cost.isEmpty()) {
+            throw new IllegalArgumentException("Cost is empty!");
+        }
+        try {
+            double value = Double.parseDouble(cost);
+            if (cost.startsWith(".") || cost.endsWith(".") || value < 0) {
+                throw new IllegalArgumentException("Invalid cost format!");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid cost format!");
+        }
         return parseCost;
     }
 
