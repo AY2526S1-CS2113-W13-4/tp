@@ -48,6 +48,21 @@ public class Load {
                     invalid++;
                     continue;
                 }
+                String costStr = p[3].trim();
+                if (costStr.isEmpty()) {
+                    invalid++;
+                    continue;
+                }
+                double cost;
+                try {
+                    cost = Double.parseDouble(costStr);
+                    if (cost < 0) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException e) {
+                    invalid++;
+                    continue;
+                }
                 try {
                     BusyBreak.list.add(new Activity(p[0], p[1], p[2], p[3]));
                 } catch (Exception e) {
