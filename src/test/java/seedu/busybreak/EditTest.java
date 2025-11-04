@@ -110,7 +110,7 @@ public class EditTest {
     }
 
     @Test
-    void editActivity_NoFields_PrintsError() {
+    void editActivityNoFieldsPrintsError() {
         BusyBreak.list.add(new Activity("2025-01-01", "12:00", "Test", "10"));
 
         String[] cmd = {"edit", "1"};

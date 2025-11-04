@@ -109,43 +109,43 @@ public class Parser {
     }
 
     private static ParseEditDetails processEditDetails(String[] editDetails) {
-     String date = null;
-     String time = null;
-     String description = null;
-     String cost = null;
-     boolean hasInvalidDetail = false;
+        String date = null;
+        String time = null;
+        String description = null;
+        String cost = null;
+        boolean hasInvalidDetail = false;
 
-     for (String editDetail : editDetails) {
-         String detailName = extractDetailName(editDetail);
-         String detailValue = extractDetailValue(editDetail);
+        for (String editDetail : editDetails) {
+            String detailName = extractDetailName(editDetail);
+            String detailValue = extractDetailValue(editDetail);
 
-         if (detailName == null || detailValue == null) {
-             hasInvalidDetail = true;
-             continue;
-         }
+            if (detailName == null || detailValue == null) {
+                hasInvalidDetail = true;
+                continue;
+            }
 
-         switch (detailName) {
-             case "c":
-                 if (isNumeric(detailValue) && Double.parseDouble(detailValue) >= 0) {
-                     cost = detailValue;
-                 } else {
-                     hasInvalidDetail = true;
-                 }
-                 break;
-             case "desc":
-                 description = detailValue;
-                 break;
-             case "t":
-                 time = detailValue;
-                 break;
-             case "d":
-                 date = detailValue;
-                 break;
-             default:
-                 hasInvalidDetail = true;
-         }
-     }
-     return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
+            switch (detailName) {
+            case "c":
+                if (isNumeric(detailValue) && Double.parseDouble(detailValue) >= 0) {
+                    cost = detailValue;
+                } else {
+                    hasInvalidDetail = true;
+                }
+            break;
+            case "desc":
+                description = detailValue;
+                break;
+            case "t":
+                time = detailValue;
+                break;
+            case "d":
+                date = detailValue;
+                break;
+            default:
+                hasInvalidDetail = true;
+            }
+        }
+        return new ParseEditDetails(date, time, description, cost, hasInvalidDetail);
     }
 
     /**
